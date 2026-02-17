@@ -327,3 +327,62 @@ exports.materialDelete = async (Details) => {
             console.log(row)
             return ("success");
 };
+exports.materialPaymentReports = async (Details) => {
+        const orders = await pool.query("select Supplier_name,Payment_Date,Amount from material_payments where (Project_id = ?) and (Payment_Date BETWEEN ? AND ?) Order By Payment_Date;",[Details.Id,Details.Start,Details.End]).catch(err=>console.log(err))
+            //console.log(orders)
+            return(orders);
+};
+exports.stockList = async (project) => {
+    try{
+    const rows = await pool.query("Select * from material_stock_list where Project_id = ? ",[project.pro_id]);
+    res.send(rows) ;  
+    }catch(err ) {
+        console.log("Connection Failed",err)
+    } 
+};
+exports.measurementDelete = async (Details) => {
+        const row = await pool.query("Delete from daily_process_details where Project_id = ? and Dailyprocess_id=?;",[Details.Project_id,Details.Dailyprocess_id]).catch(err=>console.log(err))
+            console.log(row)
+            return("success");
+};
+exports.measurementReports = async (Details) => {
+     
+        //console.log(req.body);
+        const material = await pool.query("select * from daily_process_details where (Project_id = ?) and (Date BETWEEN ? AND ?) Order By Date;",[Details.Id,Details.Start,Details.End]).catch(err=>console.log(err))
+        console.log(material)
+        return(material);
+};
+exports.overAllReports = async (Details) => {
+    const orders = await pool.query('select DATE ,contractor," " as site_location, total as total,paid as paid,balance as balance,STATUS FROM labour_worked_details WHERE Project_id = ? and  DATE BETWEEN ? AND ?  union all SELECT order_date,supplier_name,material_name,amount,paid,balance ,status from order_details where project_id= ? and order_date BETWEEN ? AND ? order by date;',[Details.Id,Details.Start,Details.End,Details.Id,Details.Start,Details.End]).catch(err=>console.log(err))
+            //console.log(orders)
+            return(orders);
+};
+exports.reports = async (Details) => {
+     try {
+        const Details = req.body;
+        //console.log(req.body);
+        const orders = await pool.query("SELECT * FROM order_details WHERE (Project_id = ?) AND (Order_date BETWEEN ? AND ?) Order By Order_date;", [Details.Id, Details.Start, Details.End]).catch(err => console.log(err));
+        const Labour = await pool.query("SELECT * FROM labour_worked_details WHERE (Project_id = ?) AND (Date BETWEEN ? AND ?) Order By Date;", [Details.Id, Details.Start, Details.End]).catch(err => console.log(err));
+        console.log(orders, Labour)
+        const detail = {
+            order: orders,
+            labour: Labour
+        };
+        return(detail);
+    } catch (error) {
+        console.error(error);
+       return({ error: "Internal server error" });
+    }
+};
+exports.deleteMaterial = async (Details) => {
+      const materialName = Details.materialName;
+    pool.query("DELETE FROM mas_material_list WHERE Material_name = ?", [materialName], (err, result) => {
+        if (err) {
+            console.error("Error deleting material from database: ", err);
+            res.status(500).send('Error deleting material from database');
+            return;
+        }
+        console.log("Material deleted from database");
+        return({ message: 'Material deleted successfully' });
+    });
+};

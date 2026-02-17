@@ -316,3 +316,57 @@ exports.fetchContractorPay = async () => {
             console.log(material)
             return(material);
 };
+exports.contractorReport = async (Details) => {
+    if(Details.contractor == "null"){
+    try {
+        //console.log(req.body);
+        const material = await pool.query('SELECT * FROM labour_worked_details WHERE (Project_id = ?) AND (Date BETWEEN ? AND ?) Order By Date', [Details.Id, Details.Start, Details.End]).catch(err => console.log(err));
+        
+        // Convert BigInt values to strings or numbers
+        const materialWithConvertedBigInt = material.map(row => {
+            return {
+                ...row,
+                Salary: row.Salary.toString(), // Convert Salary to string
+                Total: row.Total.toString(), // Convert Total to string
+            };
+        });
+      //  console.log(materialWithConvertedBigInt);
+        res.status(200).json(materialWithConvertedBigInt);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: "Internal server error" });
+    }
+    }
+    else{
+        try {
+            //console.log(req.body);
+            const material = await pool.query('SELECT * FROM labour_worked_details WHERE (Project_id = ?) AND (Contractor = ?) AND (Date BETWEEN ? AND ?) Order By Date ;', [Details.Id,Details.contractor, Details.Start, Details.End]).catch(err => console.log(err));
+            
+            // Convert BigInt values to strings or numbers
+            const materialWithConvertedBigInt = material.map(row => {
+                return {
+                    ...row,
+                    Salary: row.Salary.toString(), // Convert Salary to string
+                    Total: row.Total.toString(), // Convert Total to string
+                };
+            });
+          //  console.log(materialWithConvertedBigInt);
+            res.status(200).json(materialWithConvertedBigInt);
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ error: "Internal server error" });
+        }
+    }
+};
+exports.contractorDelete = async (Details) => {
+        console.log(Details);
+        const row = await pool.query("Delete from mas_labour_details where id=?;",[Number(Details.id)]).catch(err=>console.log(err))
+            console.log(row)
+            res.status(200).send("success");
+};
+exports.supplierDelete = async (Details) => {
+      console.log(Details);
+        const row = await pool.query("Delete from mas_material_list where id=?;",[Number(Details.id)]).catch(err=>console.log(err))
+            console.log(row)
+            res.status(200).send("success");
+};

@@ -120,3 +120,18 @@ exports.fetchSupplier = async (req, res, next) => {
     next(err);
   }
 };
+exports.labourTypeDelete = async (req, res, next) => {
+  try {
+    const details=req.body
+    console.log(details)
+    const data = await masterService.labourTypeDelete(details);
+
+    res.status(200).json({
+      success: true,
+      data
+    });
+
+  } catch (err) {
+    next(err);
+  }
+};

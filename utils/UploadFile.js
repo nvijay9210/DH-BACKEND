@@ -90,7 +90,7 @@ const dynamicUpload = ({ folder, fields }) => {
       try {
         if (!req.files) return next();
 
-        const tenantId = req.body.tenant_id;
+        const tenantId = req.body.tenant_id||1;
         if (!tenantId) {
           return next(new AppError("tenant_id required", 400));
         }

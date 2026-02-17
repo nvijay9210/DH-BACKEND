@@ -31,6 +31,12 @@ app.use(
   })
 );
 
+// 👇 VERY IMPORTANT
+app.use(
+  "/uploads",
+  express.static(path.join(__dirname, "..", "UPLOADS"))
+);
+
 // ✅ Health check
 app.get("/", (req, res) => {
   res.send("Backend running successfully 🚀");

@@ -18,4 +18,9 @@ router.post('/AllLabourPaymentUpdate', asyncHandler(labourController.allLabourPa
 
 // Fetch contractor balances (GET)
 router.get('/FetchContractorPay', asyncHandler(labourController.fetchContractorPay));
+router.post('/ContractorReport', asyncHandler(labourController.contractorReport));
+module.exports = router;
+router.post('/ContractorDelete', asyncHandler(labourController.contractorDelete));
+module.exports = router;
+router.post('/SupplierDelete', asyncHandler(labourController.supplierDelete));
 module.exports = router;

@@ -100,7 +100,7 @@ router.post(
   "/FetchProjectEdit",
   asyncHandler(projectController.FetchProjectEdit)
 );
-router.post(
+router.put(
   "/EditProject_Details",
   dynamicUpload({
     folder: "Project",

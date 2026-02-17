@@ -5,7 +5,7 @@ const { asyncHandler } = require("../utils/Async");
 
 // Material Used
 router.post("/Material_List", asyncHandler(materialController.matList));
-router.post("/MatUsed", asyncHandler(materialController.matUsed));
+router.put("/MatUsed", asyncHandler(materialController.matUsed));
 router.put("/EditMaterialUsed", asyncHandler(materialController.editMaterialUsed));
 
 // Measurement Details
@@ -25,5 +25,11 @@ router.get("/fetchMaterial", asyncHandler(materialController.fetchMaterial));
 
 // Delete Material
 router.post("/MaterialDelete", asyncHandler(materialController.materialDelete));
+router.post("/MaterialPaymentReports", asyncHandler(materialController.materialPaymentReports));
+router.post("/Stock_List", asyncHandler(materialController.stockList));
+router.post("/MeasurementDelete", asyncHandler(materialController.measurementDelete));
+router.post("/MeasurementReports", asyncHandler(materialController.measurementReports));
+router.post("/OverAllReports", asyncHandler(materialController.overAllReports));
+router.post("/Reports", asyncHandler(materialController.reports));
 
 module.exports = router;

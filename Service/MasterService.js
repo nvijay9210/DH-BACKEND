@@ -83,3 +83,9 @@ exports.fetchSupplier = async (Data) => {
           console.log("Connection Failed",err)
       } 
 };
+exports.labourTypeDelete = async (Details) => {
+          console.log(Details);
+        const row = await pool.query("Delete from mas_labour_details where id=?;",[Number(Details.id)]).catch(err=>console.log(err))
+            console.log(row)
+            res.status(200).send("success");
+};

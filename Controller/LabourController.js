@@ -148,3 +148,45 @@ exports.fetchContractorPay = async (req, res, next) => {
     next(err);
   }
 };
+exports.contractorReport = async (req, res, next) => {
+  try {
+    const details=req.body
+    const data = await labourService.contractorReport(details);
+
+    res.status(200).json({
+      success: true,
+      data
+    });
+
+  } catch (err) {
+    next(err);
+  }
+};
+exports.contractorDelete = async (req, res, next) => {
+  try {
+    const details=req.body
+    const data = await labourService.contractorDelete(details);
+
+    res.status(200).json({
+      success: true,
+      data
+    });
+
+  } catch (err) {
+    next(err);
+  }
+};
+exports.supplierDelete = async (req, res, next) => {
+  try {
+    const details=req.body
+    const data = await labourService.supplierDelete(details);
+
+    res.status(200).json({
+      success: true,
+      data
+    });
+
+  } catch (err) {
+    next(err);
+  }
+};
