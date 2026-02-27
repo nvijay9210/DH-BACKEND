@@ -222,28 +222,30 @@ exports.measurementDetails = async (material_report) => {
   }
 };
 exports.updateMaterial = async (materialUpdates) => {
-  const convert = (str)=> {
-        var date = new Date(str),
-          mnth = ("0" + (date.getMonth() + 1)).slice(-2),
-          day = ("0" + date.getDate()).slice(-2);
-        return [date.getFullYear(), mnth, day].join("-");
-      }
-    
-    // Check if materialUpdates is an array
-    if (!Array.isArray(materialUpdates)) {
-        return res.status(400).json({ error: 'Material updates must be an array' });
-    }
+  const convert = (str) => {
+    var date = new Date(str),
+      mnth = ("0" + (date.getMonth() + 1)).slice(-2),
+      day = ("0" + date.getDate()).slice(-2);
+    return [date.getFullYear(), mnth, day].join("-");
+  };
 
-    // Iterate over each update and execute the necessary database operations
-    for (const update of materialUpdates) {
-        // Extract relevant data from the update object
-        const { username, currentDate, ...materialUpdate } = update;
+  // Check if materialUpdates is an array
+  if (!Array.isArray(materialUpdates)) {
+    return ({ error: "Material updates must be an array" });
+  }
 
-        // Convert DATE to MySQL datetime format
-        materialUpdate.DATE = convert(materialUpdate.DATE);
-        materialUpdate.LAST_UPDATED_DATETIME = convert(materialUpdate.LAST_UPDATED_DATETIME);
-        // Construct the update query
-        const updateQuery = `
+  // Iterate over each update and execute the necessary database operations
+  for (const update of materialUpdates) {
+    // Extract relevant data from the update object
+    const { username, currentDate, ...materialUpdate } = update;
+
+    // Convert DATE to MySQL datetime format
+    materialUpdate.DATE = convert(materialUpdate.DATE);
+    materialUpdate.LAST_UPDATED_DATETIME = convert(
+      materialUpdate.LAST_UPDATED_DATETIME
+    );
+    // Construct the update query
+    const updateQuery = `
             UPDATE daily_process_details 
             SET 
                 Project_id = ?, 
@@ -268,121 +270,195 @@ exports.updateMaterial = async (materialUpdates) => {
                 Dailyprocess_id = ?
         `;
 
-        // Extract necessary data from materialUpdate
-        const { Project_id, Project_name, DATE, Measurement,Units, Nos, Length, breadth, D_H, Quantity, Rate, Amount, Remarks,Paid,Balance,Status,LAST_UPDATED_BY,LAST_UPDATED_DATETIME, Dailyprocess_id } = materialUpdate;
+    // Extract necessary data from materialUpdate
+    const {
+      Project_id,
+      Project_name,
+      DATE,
+      Measurement,
+      Units,
+      Nos,
+      Length,
+      breadth,
+      D_H,
+      Quantity,
+      Rate,
+      Amount,
+      Remarks,
+      Paid,
+      Balance,
+      Status,
+      LAST_UPDATED_BY,
+      LAST_UPDATED_DATETIME,
+      Dailyprocess_id,
+    } = materialUpdate;
 
-        try {
-            // Execute the update query
-            await pool.query(updateQuery, [
-                Project_id,
-                Project_name,
-                DATE,
-                Measurement,
-                Units,
-                Nos,
-                Length,
-                breadth,
-                D_H,
-                Quantity,
-                Rate,
-                Amount,
-                Remarks,
-                Paid,
-                Balance,
-                Status,
-                LAST_UPDATED_BY,
-                LAST_UPDATED_DATETIME, // Using only date portion
-                Dailyprocess_id
-            ]);
-            console.log('Details saved to the database');
-            return ('Details saved to the database');
-        } catch (error) {
-            console.error('Error saving details to the database:', error.message);
-            return ({ error: 'Error saving details to the database' });
-        }
+    try {
+      // Execute the update query
+      await pool.query(updateQuery, [
+        Project_id,
+        Project_name,
+        DATE,
+        Measurement,
+        Units,
+        Nos,
+        Length,
+        breadth,
+        D_H,
+        Quantity,
+        Rate,
+        Amount,
+        Remarks,
+        Paid,
+        Balance,
+        Status,
+        LAST_UPDATED_BY,
+        LAST_UPDATED_DATETIME, // Using only date portion
+        Dailyprocess_id,
+      ]);
+      console.log("Details saved to the database");
+      return "Details saved to the database";
+    } catch (error) {
+      console.error("Error saving details to the database:", error.message);
+      return { error: "Error saving details to the database" };
     }
+  }
 };
 exports.fetchMaterialUpdate = async (Details) => {
-     const material = await pool.query("select * from daily_process_details where Project_id = ? and Date =?;",[Details.Id,Details.date]).catch(err=>console.log(err))
-            console.log(material)
-            return (material);
+  const material = await pool
+    .query(
+      "select * from daily_process_details where Project_id = ? and Date =?;",
+      [Details.Id, Details.date]
+    )
+    .catch((err) => console.log(err));
+  console.log(material);
+  return material;
 };
 exports.fetchMaterialUsed = async (Details) => {
-        const material = await pool.query("select * from materials_used where Project_id = ? and Date =?;",[Details.Id,Details.date]).catch(err=>console.log(err))
-            console.log(material)
-            return (material);
+  const material = await pool
+    .query("select * from materials_used where Project_id = ? and Date =?;", [
+      Details.Id,
+      Details.date,
+    ])
+    .catch((err) => console.log(err));
+  console.log(material);
+  return material;
 };
 exports.fetchMaterial = async (Details) => {
-     try{
+  try {
     const rows = await pool.query("Select * from mas_material_list");
-      return(rows)    
-      }
-      catch(err ) {
-          console.log("Connection Failed",err)
-      } 
+    return rows;
+  } catch (err) {
+    console.log("Connection Failed", err);
+  }
 };
 exports.materialDelete = async (Details) => {
- console.log(Details);
-        const row = await pool.query("Delete from mas_material_list where id=?;",[Number(Details.id)]).catch(err=>console.log(err))
-            console.log(row)
-            return ("success");
+  //console.log(details);
+  const row = await pool
+    .query("Delete from mas_material_list where id=?;", [Number(Details.id)])
+    .catch((err) => console.log(err));
+  console.log(row);
+  return "success";
 };
 exports.materialPaymentReports = async (Details) => {
-        const orders = await pool.query("select Supplier_name,Payment_Date,Amount from material_payments where (Project_id = ?) and (Payment_Date BETWEEN ? AND ?) Order By Payment_Date;",[Details.Id,Details.Start,Details.End]).catch(err=>console.log(err))
-            //console.log(orders)
-            return(orders);
+  const orders = await pool
+    .query(
+      "select Supplier_name,Payment_Date,Amount from material_payments where (Project_id = ?) and (Payment_Date BETWEEN ? AND ?) Order By Payment_Date;",
+      [Details.Id, Details.Start, Details.End]
+    )
+    .catch((err) => console.log(err));
+  //console.log(orders)
+  return orders;
 };
 exports.stockList = async (project) => {
-    try{
-    const rows = await pool.query("Select * from material_stock_list where Project_id = ? ",[project.pro_id]);
-    res.send(rows) ;  
-    }catch(err ) {
-        console.log("Connection Failed",err)
-    } 
+  try {
+    const rows = await pool.query(
+      "Select * from material_stock_list where Project_id = ? ",
+      [project.pro_id]
+    );
+    return (rows);
+  } catch (err) {
+    console.log("Connection Failed", err);
+  }
 };
 exports.measurementDelete = async (Details) => {
-        const row = await pool.query("Delete from daily_process_details where Project_id = ? and Dailyprocess_id=?;",[Details.Project_id,Details.Dailyprocess_id]).catch(err=>console.log(err))
-            console.log(row)
-            return("success");
+  const row = await pool
+    .query(
+      "Delete from daily_process_details where Project_id = ? and Dailyprocess_id=?;",
+      [Details.Project_id, Details.Dailyprocess_id]
+    )
+    .catch((err) => console.log(err));
+  console.log(row);
+  return "success";
 };
 exports.measurementReports = async (Details) => {
-     
-        //console.log(req.body);
-        const material = await pool.query("select * from daily_process_details where (Project_id = ?) and (Date BETWEEN ? AND ?) Order By Date;",[Details.Id,Details.Start,Details.End]).catch(err=>console.log(err))
-        console.log(material)
-        return(material);
+  //console.log(req.body);
+  const material = await pool
+    .query(
+      "select * from daily_process_details where (Project_id = ?) and (Date BETWEEN ? AND ?) Order By Date;",
+      [Details.Id, Details.Start, Details.End]
+    )
+    .catch((err) => console.log(err));
+  console.log(material);
+  return material;
 };
 exports.overAllReports = async (Details) => {
-    const orders = await pool.query('select DATE ,contractor," " as site_location, total as total,paid as paid,balance as balance,STATUS FROM labour_worked_details WHERE Project_id = ? and  DATE BETWEEN ? AND ?  union all SELECT order_date,supplier_name,material_name,amount,paid,balance ,status from order_details where project_id= ? and order_date BETWEEN ? AND ? order by date;',[Details.Id,Details.Start,Details.End,Details.Id,Details.Start,Details.End]).catch(err=>console.log(err))
-            //console.log(orders)
-            return(orders);
+  const orders = await pool
+    .query(
+      'select DATE ,contractor," " as site_location, total as total,paid as paid,balance as balance,STATUS FROM labour_worked_details WHERE Project_id = ? and  DATE BETWEEN ? AND ?  union all SELECT order_date,supplier_name,material_name,amount,paid,balance ,status from order_details where project_id= ? and order_date BETWEEN ? AND ? order by date;',
+      [
+        Details.Id,
+        Details.Start,
+        Details.End,
+        Details.Id,
+        Details.Start,
+        Details.End,
+      ]
+    )
+    .catch((err) => console.log(err));
+  //console.log(orders)
+  return orders;
 };
 exports.reports = async (Details) => {
-     try {
-        const Details = req.body;
-        //console.log(req.body);
-        const orders = await pool.query("SELECT * FROM order_details WHERE (Project_id = ?) AND (Order_date BETWEEN ? AND ?) Order By Order_date;", [Details.Id, Details.Start, Details.End]).catch(err => console.log(err));
-        const Labour = await pool.query("SELECT * FROM labour_worked_details WHERE (Project_id = ?) AND (Date BETWEEN ? AND ?) Order By Date;", [Details.Id, Details.Start, Details.End]).catch(err => console.log(err));
-        console.log(orders, Labour)
-        const detail = {
-            order: orders,
-            labour: Labour
-        };
-        return(detail);
-    } catch (error) {
-        console.error(error);
-       return({ error: "Internal server error" });
-    }
+  try {
+    const Details = req.body;
+    //console.log(req.body);
+    const orders = await pool
+      .query(
+        "SELECT * FROM order_details WHERE (Project_id = ?) AND (Order_date BETWEEN ? AND ?) Order By Order_date;",
+        [Details.Id, Details.Start, Details.End]
+      )
+      .catch((err) => console.log(err));
+    const Labour = await pool
+      .query(
+        "SELECT * FROM labour_worked_details WHERE (Project_id = ?) AND (Date BETWEEN ? AND ?) Order By Date;",
+        [Details.Id, Details.Start, Details.End]
+      )
+      .catch((err) => console.log(err));
+    console.log(orders, Labour);
+    const detail = {
+      order: orders,
+      labour: Labour,
+    };
+    return detail;
+  } catch (error) {
+    console.error(error);
+    return { error: "Internal server error" };
+  }
 };
 exports.deleteMaterial = async (Details) => {
-      const materialName = Details.materialName;
-    pool.query("DELETE FROM mas_material_list WHERE Material_name = ?", [materialName], (err, result) => {
-        if (err) {
-            console.error("Error deleting material from database: ", err);
-            res.status(500).send('Error deleting material from database');
-            return;
-        }
-        console.log("Material deleted from database");
-        return({ message: 'Material deleted successfully' });
-    });
+  const materialName = Details.materialName;
+  pool.query(
+    "DELETE FROM mas_material_list WHERE Material_name = ?",
+    [materialName],
+    (err, result) => {
+      if (err) {
+        console.error("Error deleting material from database: ", err);
+        return("Error deleting material from database");
+        
+      }
+      console.log("Material deleted from database");
+      return { message: "Material deleted successfully" };
+    }
+  );
 };

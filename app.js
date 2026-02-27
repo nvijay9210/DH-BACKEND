@@ -11,6 +11,12 @@ const labourRouter=require('./Routes/LabourRoute')
 const paymentRouter=require('./Routes/PaymentRoute')
 const projectRouter=require('./Routes/ProjectRoute')
 const userRouter=require('./Routes/UserRoute')
+const tenantRouter=require('./Routes/TenantRoute')
+const branchRouter=require('./Routes/BranchRoute')
+
+const authMiddleware=require('./Middleware/AuthMiddleware')
+const contextMiddleware=require('./Middleware/ContextMiddleware')
+const branchAccessMiddleware=require('./Middleware/BranchAccessMiddleware')
 
 const app = express();
 
@@ -67,6 +73,8 @@ app.use(`/api/labour`, labourRouter);
 app.use(`/api/payment`, paymentRouter);
 app.use(`/api/project`, projectRouter);
 app.use(`/api/user`, userRouter);
+app.use(`/api/tenant`,authMiddleware, tenantRouter);
+app.use(`/api/branch`,authMiddleware,contextMiddleware,branchAccessMiddleware, branchRouter);
 
 
 

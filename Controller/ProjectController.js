@@ -11,14 +11,13 @@ exports.createProject = async (req, res, next) => {
       success: true,
       message: "Project created successfully",
       data: {
-        projectId: result.insertId
-      }
+        projectId: result.insertId,
+      },
     });
   } catch (err) {
     next(err);
   }
 };
-
 
 /* =========================================
    Update Project
@@ -29,26 +28,24 @@ exports.updateProject = async (req, res, next) => {
 
     const result = await projectService.updateProject({
       ...req.body,
-      Project_id: projectId
+      Project_id: projectId,
     });
 
     if (result.affectedRows === 0) {
       return res.status(404).json({
         success: false,
-        message: "Project not found"
+        message: "Project not found",
       });
     }
 
     return res.status(200).json({
       success: true,
-      message: "Project updated successfully"
+      message: "Project updated successfully",
     });
-
   } catch (err) {
     next(err);
   }
 };
-
 
 /* =========================================
    Get Project List
@@ -60,14 +57,12 @@ exports.getProjectList = async (req, res, next) => {
     return res.status(200).json({
       success: true,
       count: data.length,
-      data
+      data,
     });
-
   } catch (err) {
     next(err);
   }
 };
-
 
 /* =========================================
    Get Total Cost
@@ -78,14 +73,12 @@ exports.getProjectTotalCost = async (req, res, next) => {
 
     return res.status(200).json({
       success: true,
-      data
+      data,
     });
-
   } catch (err) {
     next(err);
   }
 };
-
 
 /* =========================================
    Get Total Spended
@@ -96,14 +89,12 @@ exports.getProjectSpended = async (req, res, next) => {
 
     return res.status(200).json({
       success: true,
-      data
+      data,
     });
-
   } catch (err) {
     next(err);
   }
 };
-
 
 /* =========================================
    Individual Project Spended
@@ -115,14 +106,12 @@ exports.getIndividualProjectSpended = async (req, res, next) => {
     return res.status(200).json({
       success: true,
       count: data.length,
-      data
+      data,
     });
-
   } catch (err) {
     next(err);
   }
 };
-
 
 /* =========================================
    Individual Project Total
@@ -134,41 +123,37 @@ exports.getIndividualProjectTotal = async (req, res, next) => {
     return res.status(200).json({
       success: true,
       count: data.length,
-      data
+      data,
     });
-
   } catch (err) {
     next(err);
   }
 };
-
 
 /* =========================================
    Get Project By ID
 ========================================= */
 exports.getProjectById = async (req, res, next) => {
   try {
-    const projectId = req.params.id;  // ✅ use params
+    const projectId = req.params.id; // ✅ use params
 
     const data = await projectService.getProjectById(projectId);
 
     if (!data) {
       return res.status(404).json({
         success: false,
-        message: "Project not found"
+        message: "Project not found",
       });
     }
 
     return res.status(200).json({
       success: true,
-      data
+      data,
     });
-
   } catch (err) {
     next(err);
   }
 };
-
 
 /* =========================================
    Delete Project Payment
@@ -182,15 +167,14 @@ exports.deleteProjectPayment = async (req, res, next) => {
     if (result.affectedRows === 0) {
       return res.status(404).json({
         success: false,
-        message: "Payment not found"
+        message: "Payment not found",
       });
     }
 
     res.status(200).json({
       success: true,
-      message: "Payment deleted successfully"
+      message: "Payment deleted successfully",
     });
-
   } catch (err) {
     next(err);
   }
@@ -198,15 +182,14 @@ exports.deleteProjectPayment = async (req, res, next) => {
 
 exports.projectDetailsController = async (req, res, next) => {
   try {
-    const details=req.body
-    console.log(details)
+    const details = req.body;
+    //console.log(details)
     const data = await projectService.projectDetailsService(details);
 
     res.status(200).json({
       success: true,
-      data
+      data,
     });
-
   } catch (err) {
     next(err);
   }
@@ -219,9 +202,8 @@ exports.projectList = async (req, res, next) => {
     res.status(200).json({
       success: true,
       count: data.length,
-      data
+      data,
     });
-
   } catch (err) {
     next(err);
   }
@@ -234,9 +216,8 @@ exports.ProjectTotalCost = async (req, res, next) => {
     res.status(200).json({
       success: true,
       count: data.length,
-      data
+      data,
     });
-
   } catch (err) {
     next(err);
   }
@@ -248,9 +229,8 @@ exports.ProjectSpended = async (req, res, next) => {
     res.status(200).json({
       success: true,
       count: data.length,
-      data
+      data,
     });
-
   } catch (err) {
     next(err);
   }
@@ -264,9 +244,8 @@ exports.IndividualProjectSpended = async (req, res, next) => {
 
     return res.status(200).json({
       success: true,
-      data
+      data,
     });
-
   } catch (err) {
     next(err);
   }
@@ -280,9 +259,8 @@ exports.IndividualProjectSpended = async (req, res, next) => {
 
     return res.status(200).json({
       success: true,
-      data
+      data,
     });
-
   } catch (err) {
     next(err);
   }
@@ -295,9 +273,8 @@ exports.IndividualProjectTotal = async (req, res, next) => {
 
     return res.status(200).json({
       success: true,
-      data
+      data,
     });
-
   } catch (err) {
     next(err);
   }
@@ -310,27 +287,24 @@ exports.FetchProjectEdit = async (req, res, next) => {
 
     return res.status(200).json({
       success: true,
-      data
+      data,
     });
-
   } catch (err) {
     next(err);
   }
 };
 exports.EditProject_Details = async (req, res, next) => {
   try {
-    const details=req.body
+    const details = req.body;
     const data = await projectService.EditProject_Details(details);
 
     // console.log("Controller Data:", data);
 
     return res.status(200).json({
       success: true,
-      data
+      data,
     });
-
   } catch (err) {
     next(err);
   }
 };
-

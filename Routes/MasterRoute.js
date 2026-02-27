@@ -4,10 +4,10 @@ const masterController = require("../Controller/MasterController");
 const { asyncHandler } = require("../utils/Async");
 
 // Master Data – POST (Create)
-router.post('/Material_List', asyncHandler(masterController.createMaterial));
-router.post('/Labour_List', asyncHandler(masterController.createLabourType));
-router.post('/ContractorList', asyncHandler(masterController.createContractor));
-router.post('/SupplierList', asyncHandler(masterController.createSupplier));
+router.post('/Material_List', asyncHandler(masterController.materialList));
+router.post('/Labour_List', asyncHandler(masterController.labourList));
+router.post('/ContractorList', asyncHandler(masterController.contractorList));
+router.post('/SupplierList', asyncHandler(masterController.supplierList));
 
 // Master Data – GET (Fetch All)
 router.get('/fetchMaterial', asyncHandler(masterController.fetchMaterial));

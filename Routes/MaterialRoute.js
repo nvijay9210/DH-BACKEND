@@ -4,7 +4,7 @@ const materialController = require("../Controller/MaterialController");
 const { asyncHandler } = require("../utils/Async");
 
 // Material Used
-router.post("/Material_List", asyncHandler(materialController.matList));
+// router.post("/Material_List", asyncHandler(materialController.matList));
 router.put("/MatUsed", asyncHandler(materialController.matUsed));
 router.put("/EditMaterialUsed", asyncHandler(materialController.editMaterialUsed));
 

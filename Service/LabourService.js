@@ -59,7 +59,7 @@ exports.labourDetails = async (Order) => {
     }
   });
   // Respond with success message
-  return("Details saved to the database");
+  return "Details saved to the database";
 };
 exports.updateLabour = async (details) => {
   const { username, currentDate, LabourUpdate } = details; // Destructure username, currentDate, and LabourUpdate from the request body
@@ -123,10 +123,10 @@ exports.updateLabour = async (details) => {
       console.log("Order update to database");
     } catch (error) {
       console.error("Error saving order to database:", error.message);
-        return({ error: "Error saving order to database" });
+      return { error: "Error saving order to database" };
     }
   });
-  return("Orders saved to database");
+  return "Orders saved to database";
 };
 exports.fetchLabourUpdate = async (Details) => {
   const row = await pool
@@ -136,7 +136,7 @@ exports.fetchLabourUpdate = async (Details) => {
     )
     .catch((err) => console.log(err));
   console.log(row);
-  return("success");
+  return "success";
 };
 exports.labourDelete = async (Details) => {
   try {
@@ -153,220 +153,280 @@ exports.labourDelete = async (Details) => {
       };
     });
     // console.log(labourWithConvertedBigInt);
-    return(labourWithConvertedBigInt);
+    return labourWithConvertedBigInt;
   } catch (error) {
     console.error(error);
-    return({ error: "Internal server error" });
+    return { error: "Internal server error" };
   }
 };
 exports.labourReports = async (Details) => {
-   try {
-        //console.log(req.body);
-        const material = await pool.query(
-  `SELECT * 
+  try {
+    //console.log(req.body);
+    const material = await pool
+      .query(
+        `SELECT * 
    FROM labour_worked_details 
    WHERE (Project_id = ?) 
      AND (Date BETWEEN ? AND ?)
    ORDER BY Labour_id, Date;`,
-  [Details.Id, Details.Start, Details.End]
-).catch(err => console.log(err));
+        [Details.Id, Details.Start, Details.End]
+      )
+      .catch((err) => console.log(err));
 
-        
-        // Convert BigInt values to strings or numbers
-        const materialWithConvertedBigInt = material.map(row => {
-            return {
-                ...row,
-                Salary: row.Salary.toString(), // Convert Salary to string
-                Total: row.Total.toString(), // Convert Total to string
-            };
-        });
-        console.log(materialWithConvertedBigInt);
-        return(materialWithConvertedBigInt);
-    } catch (error) {
-        console.error(error);
-        return({ error: "Internal server error" });
-    }
+    // Convert BigInt values to strings or numbers
+    const materialWithConvertedBigInt = material.map((row) => {
+      return {
+        ...row,
+        Salary: row.Salary.toString(), // Convert Salary to string
+        Total: row.Total.toString(), // Convert Total to string
+      };
+    });
+    console.log(materialWithConvertedBigInt);
+    return materialWithConvertedBigInt;
+  } catch (error) {
+    console.error(error);
+    return { error: "Internal server error" };
+  }
 };
 exports.labourPayment = async (Details) => {
-   if(Details.contractor == "null"){
+  if (Details.contractor == "null") {
     try {
-        //console.log(req.body);
-        const material = await pool.query('SELECT * FROM labour_worked_details WHERE (Project_id = ?) AND (STATUS <>"Paid") AND (Date BETWEEN ? AND ?) Order By Date ASC ;', [Details.Id, Details.Start, Details.End]).catch(err => console.log(err));
-        
-        // Convert BigInt values to strings or numbers
-        const materialWithConvertedBigInt = material.map(row => {
-            return {
-                ...row,
-                Salary: row.Salary.toString(), // Convert Salary to string
-                Total: row.Total.toString(), // Convert Total to string
-            };
-        });
-        console.log(materialWithConvertedBigInt);
-        return(materialWithConvertedBigInt);
+      //console.log(req.body);
+      const material = await pool
+        .query(
+          'SELECT * FROM labour_worked_details WHERE (Project_id = ?) AND (STATUS <>"Paid") AND (Date BETWEEN ? AND ?) Order By Date ASC ;',
+          [Details.Id, Details.Start, Details.End]
+        )
+        .catch((err) => console.log(err));
+
+      // Convert BigInt values to strings or numbers
+      const materialWithConvertedBigInt = material.map((row) => {
+        return {
+          ...row,
+          Salary: row.Salary.toString(), // Convert Salary to string
+          Total: row.Total.toString(), // Convert Total to string
+        };
+      });
+      console.log(materialWithConvertedBigInt);
+      return materialWithConvertedBigInt;
     } catch (error) {
-        console.error(error);
-        return({ error: "Internal server error" });
+      console.error(error);
+      return { error: "Internal server error" };
     }
+  } else {
+    try {
+      //console.log(req.body);
+      const material = await pool
+        .query(
+          'SELECT * FROM labour_worked_details WHERE (Project_id = ?) AND (STATUS <>"Paid") AND (Contractor = ?) AND (Date BETWEEN ? AND ?) Order By Date And Status != "Paid";',
+          [Details.Id, Details.contractor, Details.Start, Details.End]
+        )
+        .catch((err) => console.log(err));
+
+      // Convert BigInt values to strings or numbers
+      const materialWithConvertedBigInt = material.map((row) => {
+        return {
+          ...row,
+          Salary: row.Salary.toString(), // Convert Salary to string
+          Total: row.Total.toString(), // Convert Total to string
+        };
+      });
+      console.log(materialWithConvertedBigInt);
+      return materialWithConvertedBigInt;
+    } catch (error) {
+      console.error(error);
+      return { error: "Internal server error" };
     }
-    else{
-        try {
-            //console.log(req.body);
-            const material = await pool.query('SELECT * FROM labour_worked_details WHERE (Project_id = ?) AND (STATUS <>"Paid") AND (Contractor = ?) AND (Date BETWEEN ? AND ?) Order By Date And Status != "Paid";', [Details.Id,Details.contractor, Details.Start, Details.End]).catch(err => console.log(err));
-            
-            // Convert BigInt values to strings or numbers
-            const materialWithConvertedBigInt = material.map(row => {
-                return {
-                    ...row,
-                    Salary: row.Salary.toString(), // Convert Salary to string
-                    Total: row.Total.toString(), // Convert Total to string
-                };
-            });
-            console.log(materialWithConvertedBigInt);
-            return(materialWithConvertedBigInt);
-        } catch (error) {
-            console.error(error);
-            return({ error: "Internal server error" });
-        }
-    }
+  }
 };
 exports.labourPaymentUpdate = async (Details) => {
-   if(Details.contractor == "null"){
+  if (Details.contractor == "null") {
     try {
-        const update = await pool.query('Update labour_worked_details set Paid=Total,Status="Paid",Balance=0,Payment_Date =? WHERE STATUS<>"Paid" and (Project_id = ?) AND (Date BETWEEN ? AND ?) Order By Date;',[Details.Payment_Date,Details.Id, Details.Start, Details.End] ).catch(err => console.log(err));
-        res.sendStatus(200);
-    }catch(err){
-        console.error(err);
-        return({ error: "Internal server error" });
+      const update = await pool
+        .query(
+          'Update labour_worked_details set Paid=Total,Status="Paid",Balance=0,Payment_Date =? WHERE STATUS<>"Paid" and (Project_id = ?) AND (Date BETWEEN ? AND ?) Order By Date;',
+          [Details.Payment_Date, Details.Id, Details.Start, Details.End]
+        )
+        .catch((err) => console.log(err));
+      res.sendStatus(200);
+    } catch (err) {
+      console.error(err);
+      return { error: "Internal server error" };
     }
+  } else {
+    try {
+      const update = await pool
+        .query(
+          'Update labour_worked_details set Paid=Total,Status="Paid",Balance=0, Payment_Date =? WHERE STATUS<>"Paid" and (Project_id = ?) AND (Contractor = ?) AND (Date BETWEEN ? AND ?) Order By Date;',
+          [
+            Details.Payment_Date,
+            Details.Id,
+            Details.contractor,
+            Details.Start,
+            Details.End,
+          ]
+        )
+        .catch((err) => console.log(err));
+      res.sendStatus(200);
+    } catch (err) {
+      console.error(err);
+      return { error: "Internal server error" };
     }
-    else{
-        try {
-            const update = await pool.query('Update labour_worked_details set Paid=Total,Status="Paid",Balance=0, Payment_Date =? WHERE STATUS<>"Paid" and (Project_id = ?) AND (Contractor = ?) AND (Date BETWEEN ? AND ?) Order By Date;',[Details.Payment_Date,Details.Id,Details.contractor, Details.Start, Details.End] ).catch(err => console.log(err));
-            res.sendStatus(200);
-        }catch(err){
-            console.error(err);
-            return({ error: "Internal server error" });
-        }
-    }
+  }
 };
 exports.allLabourPaymentUpdate = async (Details) => {
-   if(Details.contractor == "null"){
+  if (Details.contractor == "null") {
     try {
-        const update = await pool.query('Update labour_worked_details set Paid=Total,Status="Paid",Balance=0,Payment_Date =? WHERE STATUS <>"Paid" and (Date BETWEEN ? AND ?) Order By Date;',[Details.Payment_Date, Details.Start, Details.End] ).catch(err => console.log(err));
-        res.sendStatus(200);
-    }catch(err){
-        console.error(err);
-        return({ error: "Internal server error" });
+      const update = await pool
+        .query(
+          'Update labour_worked_details set Paid=Total,Status="Paid",Balance=0,Payment_Date =? WHERE STATUS <>"Paid" and (Date BETWEEN ? AND ?) Order By Date;',
+          [Details.Payment_Date, Details.Start, Details.End]
+        )
+        .catch((err) => console.log(err));
+      res.sendStatus(200);
+    } catch (err) {
+      console.error(err);
+      return { error: "Internal server error" };
     }
+  } else {
+    try {
+      const update = await pool
+        .query(
+          'Update labour_worked_details set Paid=Total,Status="Paid",Balance=0,Payment_Date=? WHERE STATUS <>"Paid" and (Contractor = ?) AND (Date BETWEEN ? AND ?) Order By Date;',
+          [Details.Payment_Date, Details.contractor, Details.Start, Details.End]
+        )
+        .catch((err) => console.log(err));
+      res.sendStatus(200);
+    } catch (err) {
+      console.error(err);
+      return { error: "Internal server error" };
     }
-    else{
-        try {
-        const update = await pool.query('Update labour_worked_details set Paid=Total,Status="Paid",Balance=0,Payment_Date=? WHERE STATUS <>"Paid" and (Contractor = ?) AND (Date BETWEEN ? AND ?) Order By Date;',[Details.Payment_Date,Details.contractor, Details.Start, Details.End] ).catch(err => console.log(err));
-        res.sendStatus(200);
-        }catch(err){
-            console.error(err);
-            return({ error: "Internal server error" });
-        }
-    }
+  }
 };
 exports.allLabourPayment = async (Details) => {
-  if(Details.contractor == "null"){
+  if (Details.contractor == "null") {
     try {
-        //console.log(req.body);
-        const material = await pool.query('SELECT * FROM labour_worked_details WHERE STATUS <>"Paid" AND (Date BETWEEN ? AND ?) Order By Date ;', [ Details.Start, Details.End]).catch(err => console.log(err));
-        
-        // Convert BigInt values to strings or numbers
-        const materialWithConvertedBigInt = material.map(row => {
-            return {
-                ...row,
-                Salary: row.Salary.toString(), // Convert Salary to string
-                Total: row.Total.toString(), // Convert Total to string
-            };
-        });
-        console.log(materialWithConvertedBigInt);
-        return(materialWithConvertedBigInt);
+      //console.log(req.body);
+      const material = await pool
+        .query(
+          'SELECT * FROM labour_worked_details WHERE STATUS <>"Paid" AND (Date BETWEEN ? AND ?) Order By Date ;',
+          [Details.Start, Details.End]
+        )
+        .catch((err) => console.log(err));
+
+      // Convert BigInt values to strings or numbers
+      const materialWithConvertedBigInt = material.map((row) => {
+        return {
+          ...row,
+          Salary: row.Salary.toString(), // Convert Salary to string
+          Total: row.Total.toString(), // Convert Total to string
+        };
+      });
+      console.log(materialWithConvertedBigInt);
+      return materialWithConvertedBigInt;
     } catch (error) {
-        console.error(error);
-        return({ error: "Internal server error" });
+      console.error(error);
+      return { error: "Internal server error" };
     }
+  } else {
+    try {
+      //console.log(req.body);
+      const material = await pool
+        .query(
+          'SELECT * FROM labour_worked_details WHERE STATUS <>"Paid" AND (Contractor = ?) AND (Date BETWEEN ? AND ?) Order By Date ;',
+          [Details.contractor, Details.Start, Details.End]
+        )
+        .catch((err) => console.log(err));
+
+      // Convert BigInt values to strings or numbers
+      const materialWithConvertedBigInt = material.map((row) => {
+        return {
+          ...row,
+          Salary: row.Salary.toString(), // Convert Salary to string
+          Total: row.Total.toString(), // Convert Total to string
+        };
+      });
+      console.log(materialWithConvertedBigInt);
+      return materialWithConvertedBigInt;
+    } catch (error) {
+      console.error(error);
+      return { error: "Internal server error" };
     }
-    else{
-        try {
-            //console.log(req.body);
-            const material = await pool.query('SELECT * FROM labour_worked_details WHERE STATUS <>"Paid" AND (Contractor = ?) AND (Date BETWEEN ? AND ?) Order By Date ;', [Details.contractor, Details.Start, Details.End]).catch(err => console.log(err));
-            
-            // Convert BigInt values to strings or numbers
-            const materialWithConvertedBigInt = material.map(row => {
-                return {
-                    ...row,
-                    Salary: row.Salary.toString(), // Convert Salary to string
-                    Total: row.Total.toString(), // Convert Total to string
-                };
-            });
-            console.log(materialWithConvertedBigInt);
-            return(materialWithConvertedBigInt);
-        } catch (error) {
-            console.error(error);
-            return({ error: "Internal server error" });
-        }
-    }
+  }
 };
 exports.fetchContractorPay = async () => {
-     const material = await pool.query('select Contractor , Balance from labour_worked_details where STATUS <>"Paid";').catch(err=>console.log(err))
-            console.log(material)
-            return(material);
+  const material = await pool
+    .query(
+      'select Contractor , Balance from labour_worked_details where STATUS <>"Paid";'
+    )
+    .catch((err) => console.log(err));
+  console.log(material);
+  return material;
 };
 exports.contractorReport = async (Details) => {
-    if(Details.contractor == "null"){
+  if (Details.contractor == "null") {
     try {
-        //console.log(req.body);
-        const material = await pool.query('SELECT * FROM labour_worked_details WHERE (Project_id = ?) AND (Date BETWEEN ? AND ?) Order By Date', [Details.Id, Details.Start, Details.End]).catch(err => console.log(err));
-        
-        // Convert BigInt values to strings or numbers
-        const materialWithConvertedBigInt = material.map(row => {
-            return {
-                ...row,
-                Salary: row.Salary.toString(), // Convert Salary to string
-                Total: row.Total.toString(), // Convert Total to string
-            };
-        });
+      //console.log(req.body);
+      const material = await pool
+        .query(
+          "SELECT * FROM labour_worked_details WHERE (Project_id = ?) AND (Date BETWEEN ? AND ?) Order By Date",
+          [Details.Id, Details.Start, Details.End]
+        )
+        .catch((err) => console.log(err));
+
+      // Convert BigInt values to strings or numbers
+      const materialWithConvertedBigInt = material.map((row) => {
+        return {
+          ...row,
+          Salary: row.Salary.toString(), // Convert Salary to string
+          Total: row.Total.toString(), // Convert Total to string
+        };
+      });
       //  console.log(materialWithConvertedBigInt);
-        res.status(200).json(materialWithConvertedBigInt);
+      res.status(200).json(materialWithConvertedBigInt);
     } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: "Internal server error" });
+      console.error(error);
+      res.status(500).json({ error: "Internal server error" });
     }
+  } else {
+    try {
+      //console.log(req.body);
+      const material = await pool
+        .query(
+          "SELECT * FROM labour_worked_details WHERE (Project_id = ?) AND (Contractor = ?) AND (Date BETWEEN ? AND ?) Order By Date ;",
+          [Details.Id, Details.contractor, Details.Start, Details.End]
+        )
+        .catch((err) => console.log(err));
+
+      // Convert BigInt values to strings or numbers
+      const materialWithConvertedBigInt = material.map((row) => {
+        return {
+          ...row,
+          Salary: row.Salary.toString(), // Convert Salary to string
+          Total: row.Total.toString(), // Convert Total to string
+        };
+      });
+      //  console.log(materialWithConvertedBigInt);
+      res.status(200).json(materialWithConvertedBigInt);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: "Internal server error" });
     }
-    else{
-        try {
-            //console.log(req.body);
-            const material = await pool.query('SELECT * FROM labour_worked_details WHERE (Project_id = ?) AND (Contractor = ?) AND (Date BETWEEN ? AND ?) Order By Date ;', [Details.Id,Details.contractor, Details.Start, Details.End]).catch(err => console.log(err));
-            
-            // Convert BigInt values to strings or numbers
-            const materialWithConvertedBigInt = material.map(row => {
-                return {
-                    ...row,
-                    Salary: row.Salary.toString(), // Convert Salary to string
-                    Total: row.Total.toString(), // Convert Total to string
-                };
-            });
-          //  console.log(materialWithConvertedBigInt);
-            res.status(200).json(materialWithConvertedBigInt);
-        } catch (error) {
-            console.error(error);
-            res.status(500).json({ error: "Internal server error" });
-        }
-    }
+  }
 };
 exports.contractorDelete = async (Details) => {
-        console.log(Details);
-        const row = await pool.query("Delete from mas_labour_details where id=?;",[Number(Details.id)]).catch(err=>console.log(err))
-            console.log(row)
-            res.status(200).send("success");
+  //console.log(details);
+  const row = await pool
+    .query("Delete from mas_labour_details where id=?;", [Number(Details.id)])
+    .catch((err) => console.log(err));
+  console.log(row);
+  res.status(200).send("success");
 };
 exports.supplierDelete = async (Details) => {
-      console.log(Details);
-        const row = await pool.query("Delete from mas_material_list where id=?;",[Number(Details.id)]).catch(err=>console.log(err))
-            console.log(row)
-            res.status(200).send("success");
+  //console.log(details);
+  const row = await pool
+    .query("Delete from mas_material_list where id=?;", [Number(Details.id)])
+    .catch((err) => console.log(err));
+  console.log(row);
+  res.status(200).send("success");
 };

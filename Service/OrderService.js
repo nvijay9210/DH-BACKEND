@@ -189,7 +189,7 @@ exports.updateOrder = async (orders) => {
   return "Orders updated in database";
 };
 exports.orderDelete = async (Details) => {
-  console.log(Details);
+  //console.log(details);
   const row = await pool
     .query("Delete from order_details where Project_id = ? and Order_id=?;", [
       Details.Project_id,
@@ -214,7 +214,7 @@ exports.orderDelete = async (Details) => {
   return "success";
 };
 exports.fetchOrderUpdate = async (Details) => {
-  console.log(Details);
+  //console.log(details);
   const orders = await pool
     .query(
       "SELECT * FROM order_details WHERE Project_id = ? AND (Order_date BETWEEN ? AND ?) Order By Order_date",
