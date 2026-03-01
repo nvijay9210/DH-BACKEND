@@ -8,7 +8,7 @@ const { asyncHandler } = require("../utils/Async");
 router.post("/NewPayment", asyncHandler(paymentController.newPayment));
 router.post(
   "/FetchPaymentUpdate",
-  asyncHandler(paymentController.fetchPaymentUpdate)
+   asyncHandler(paymentController.fetchPaymentUpdate)
 );
 router.post(
   "/UpdatePaymentDetails",
