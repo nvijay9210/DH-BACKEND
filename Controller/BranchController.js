@@ -60,8 +60,9 @@ exports.updateBranch = async (req, res, next) => {
    Get Branch List
 ========================================= */
 exports.getBranches = async (req, res, next) => {
+  const {tenant_id}=req.user
   try {
-    const data = await branchService.getBranches();
+    const data = await branchService.getBranches(tenant_id);
 
     res.status(200).json({
       success: true,
