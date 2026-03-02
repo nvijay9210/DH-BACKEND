@@ -1,464 +1,634 @@
 const { pool } = require("../config/db");
 const { deleteFile } = require("../utils/UploadFile");
+const path = require("path");
 
-exports.materialList = async (Material) => {
+/* ===============================
+   Material List - Insert
+=================================*/
+exports.materialList = async (Material, tenant_id, branch_id) => {
+  let conn;
   try {
-    const result = await pool.query(
-      "insert into mas_material_list (Material_name,Created_by,created_datetime) values(?,?,?)",
-      [Material.Material_name, Material.username, Material.createdDate]
+    conn = await pool.getConnection();
+    
+    const result = await conn.query(
+      "INSERT INTO mas_material_list (tenant_id, branch_id, Material_name, Created_by, created_datetime) VALUES (?, ?, ?, ?, ?)",
+      [tenant_id, branch_id, Material.Material_name, Material.username, Material.createdDate]
     );
-    console.log(result);
-    console.log("Form data saved to database");
-    return "Form data saved to database";
+    
+    console.log("✅ Form data saved to database");
+    return { success: true, message: "Form data saved to database", insertId: result[0].insertId };
+    
   } catch (err) {
-    console.log(err);
+    console.error("❌ materialList Error:", err);
+    throw err;
+  } finally {
+    if (conn) conn.release();
   }
 };
-exports.materialUsed = async (Mat_Used) => {
+
+/* ===============================
+   Material Used - Insert & Update Stock
+=================================*/
+exports.materialUsed = async (Mat_Used, tenant_id, branch_id) => {
+  let conn;
   try {
-    const selectQuery =
-      "select Stock_List from material_stock_list where Project_id =?  and Material_List = ? ; ";
-    const updateQuery =
-      "Update material_stock_list set Stock_List= ? where Project_id =? and Material_List =? ";
-    const insertQuery =
-      "insert into materials_used(Project_id , Project_name , Date , Material_List , Material_Used,Created_by,CREATED_DATETIME) values (?,?,?,?,?,?,?)";
+    if (!Mat_Used || Mat_Used.length === 0) {
+      throw new Error("No material usage details provided");
+    }
 
-    Mat_Used.forEach(async (details) => {
-      const {
-        Project_id,
-        Project_name,
-        date,
-        Material,
-        Used,
-        username,
-        createdDate,
-      } = details;
-
-      try {
-        const Result = await pool.query(selectQuery, [Project_id, Material]);
-        const Stock = Result[0].Stock_List;
-        await pool.query(insertQuery, [
-          Project_id,
-          Project_name,
-          date,
-          Material,
-          Used,
-          username,
-          createdDate,
-        ]);
-        await pool.query(updateQuery, [Stock - Used, Project_id, Material]);
-        console.log("details saved to database");
-        return "details saved to database";
-      } catch (error) {
-        console.error("Error saving details to database:", error.message);
-        return { error: "Error saving details to database" };
-      }
-    });
-  } catch (err) {
-    console.log("Connection Failed", err);
-  }
-};
-exports.EditMaterialUsed = async (Mat_Used) => {
-  const convert = (str) => {
-    var date = new Date(str),
-      mnth = ("0" + (date.getMonth() + 1)).slice(-2),
-      day = ("0" + date.getDate()).slice(-2);
-    return [date.getFullYear(), mnth, day].join("-");
-  };
-
-  try {
-    const selectusedQuery =
-      "select Material_Used from materials_used where Project_id =? and Material_List = ? and DATE=?; ";
-    const selectstockQuery =
-      "select Stock_List from material_stock_list where Project_id =? and Material_List = ? ; ";
-    const stockupdateQuery =
-      "Update material_stock_list set Stock_List= ?  where Project_id =? and Material_List =? ";
-    const usedupdateQuery =
-      "Update materials_used set Material_Used =?,LAST_UPDATED_BY=?,LAST_UPDATED_DATETIME =? where Project_id =? and Material_List =? and DATE =? ";
-
-    Mat_Used.forEach(async (details) => {
-      const {
-        Project_id,
-        Project_name,
-        DATE,
-        Material_List,
-        Material_Used,
-        username,
-        currentDate,
-      } = details;
-
-      try {
-        const alreadyused = await pool.query(selectusedQuery, [
-          Project_id,
-          Material_List,
-          convert(DATE),
-        ]);
-        const alreadyusedStock = alreadyused[0].Material_Used;
-        console.log(alreadyusedStock);
-        const stockResult = await pool.query(selectstockQuery, [
-          Project_id,
-          Material_List,
-        ]);
-        const Stock = stockResult[0].Stock_List;
-        console.log(Number(Stock));
-        console.log(Number(Material_Used));
-        if (alreadyusedStock > Material_Used) {
-          await pool
-            .query(usedupdateQuery, [
-              Material_Used,
-              username,
-              convert(currentDate),
-              Project_id,
-              Material_List,
-              convert(DATE),
-            ])
-            .then((res) => console.log("1 - usedupdate", res))
-            .catch((err) => console.log(err));
-          const Result =
-            Number(Stock) + (Number(alreadyusedStock) - Number(Material_Used));
-          await pool
-            .query(stockupdateQuery, [Result, Project_id, Material_List])
-            .then((res) => console.log("1 - stockupdate", res))
-            .catch((err) => console.log(err));
-        }
-        if (alreadyusedStock < Material_Used) {
-          await pool
-            .query(usedupdateQuery, [
-              Material_Used,
-              username,
-              convert(currentDate),
-              Project_id,
-              Material_List,
-              convert(DATE),
-            ])
-            .then((res) => console.log("2 -usedupdate", res))
-            .catch((err) => console.log(err));
-          const Result =
-            Number(Stock) - (Number(Material_Used) - Number(alreadyusedStock));
-          await pool
-            .query(stockupdateQuery, [Result, Project_id, Material_List])
-            .then((res) => console.log("2 - stockupdate", res))
-            .catch((err) => console.log(err));
-        }
-        console.log("details saved to database");
-      } catch (error) {
-        console.error("Error saving details to database:", error.message);
-        return { error: "Error saving details to database" };
-      }
-    });
-  } catch (err) {
-    console.log("Connection Failed", err);
-  }
-  return { msg: "details saved to database" };
-};
-exports.measurementDetails = async (material_report) => {
-  const convert = (str) => {
-    var date = new Date(str),
-      mnth = ("0" + (date.getMonth() + 1)).slice(-2),
-      day = ("0" + date.getDate()).slice(-2);
-    return [date.getFullYear(), mnth, day].join("-");
-  };
-  if (!material_report || material_report.length === 0) {
-    console.error("No details found in the request");
-    return { error: "No details found in the request" };
-  }
-  try {
-    const {
-      Project_id,
-      Project_name,
-      Date,
-      Measurement,
-      Units,
-      Nos,
-      Length,
-      Breadth,
-      D_H,
-      Quantity,
-      Rate,
-      Amount,
-      Remarks,
-      Photos,
-      Paid,
-      Balance,
-      Status,
-      username,
-      currentDate,
-    } = req.body;
-
-    // Construct file path for the database (relative to the images folder)
-    const photoPath = req.file ? path.join("images", req.file.filename) : null;
-
-    // Insert measurement details into the database
-    await pool.query(
-      "INSERT INTO daily_process_details (Project_id, Project_name, DATE, Measurement,Units, Nos,Length, Breadth, D_H, Quantity, Rate, Amount, Remarks, Photos,Paid,Balance,Status, CREATED_BY, CREATED_DATETIME) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
-      [
-        Project_id,
-        Project_name,
-        Date,
-        Measurement,
-        Units,
-        Nos,
-        Length,
-        Breadth,
-        D_H,
-        Quantity,
-        Rate,
-        Amount,
-        Remarks,
-        photoPath,
-        Paid,
-        Balance,
-        Status,
-        username,
-        convert(currentDate),
-      ]
-    );
-
-    console.log("Measurement details inserted successfully");
-    return "Measurement details inserted successfully";
-  } catch (error) {
-    console.error("Error:", error);
-    return "Internal server error";
-  }
-};
-exports.updateMaterial = async (materialUpdates) => {
-  const convert = (str) => {
-    var date = new Date(str),
-      mnth = ("0" + (date.getMonth() + 1)).slice(-2),
-      day = ("0" + date.getDate()).slice(-2);
-    return [date.getFullYear(), mnth, day].join("-");
-  };
-
-  // Check if materialUpdates is an array
-  if (!Array.isArray(materialUpdates)) {
-    return ({ error: "Material updates must be an array" });
-  }
-
-  // Iterate over each update and execute the necessary database operations
-  for (const update of materialUpdates) {
-    // Extract relevant data from the update object
-    const { username, currentDate, ...materialUpdate } = update;
-
-    // Convert DATE to MySQL datetime format
-    materialUpdate.DATE = convert(materialUpdate.DATE);
-    materialUpdate.LAST_UPDATED_DATETIME = convert(
-      materialUpdate.LAST_UPDATED_DATETIME
-    );
-    // Construct the update query
+    conn = await pool.getConnection();
+    
+    const selectQuery = `
+      SELECT Stock_List FROM material_stock_list 
+      WHERE Project_id = ? AND Material_List = ? AND tenant_id = ? AND branch_id = ?
+    `;
+    
     const updateQuery = `
-            UPDATE daily_process_details 
-            SET 
-                Project_id = ?, 
-                Project_name = ?, 
-                Date = ?, 
-                Measurement = ?,
-                Units = ?, 
-                Nos = ?, 
-                Length = ?, 
-                Breadth = ?, 
-                D_H = ?, 
-                Quantity = ?, 
-                Rate = ?, 
-                Amount = ?, 
-                Remarks = ?, 
-                Paid = ?,
-                Balance = ?,
-                Status =?,
-                LAST_UPDATED_BY = ?, 
-                LAST_UPDATED_DATETIME = ? 
-            WHERE 
-                Dailyprocess_id = ?
-        `;
+      UPDATE material_stock_list 
+      SET Stock_List = ? 
+      WHERE Project_id = ? AND Material_List = ? AND tenant_id = ? AND branch_id = ?
+    `;
+    
+    const insertQuery = `
+      INSERT INTO materials_used 
+      (tenant_id, branch_id, Project_id, Project_name, Date, Material_List, Material_Used, Created_by, CREATED_DATETIME) 
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `;
 
-    // Extract necessary data from materialUpdate
-    const {
-      Project_id,
-      Project_name,
-      DATE,
-      Measurement,
-      Units,
-      Nos,
-      Length,
-      breadth,
-      D_H,
-      Quantity,
-      Rate,
-      Amount,
-      Remarks,
-      Paid,
-      Balance,
-      Status,
-      LAST_UPDATED_BY,
-      LAST_UPDATED_DATETIME,
-      Dailyprocess_id,
-    } = materialUpdate;
+    const promises = Mat_Used.map(async (details) => {
+      const { Project_id, Project_name, date, Material, Used, username, createdDate } = details;
 
-    try {
-      // Execute the update query
-      await pool.query(updateQuery, [
-        Project_id,
-        Project_name,
-        DATE,
-        Measurement,
-        Units,
-        Nos,
-        Length,
-        breadth,
-        D_H,
-        Quantity,
-        Rate,
-        Amount,
-        Remarks,
-        Paid,
-        Balance,
-        Status,
-        LAST_UPDATED_BY,
-        LAST_UPDATED_DATETIME, // Using only date portion
-        Dailyprocess_id,
-      ]);
-      console.log("Details saved to the database");
-      return "Details saved to the database";
-    } catch (error) {
-      console.error("Error saving details to the database:", error.message);
-      return { error: "Error saving details to the database" };
-    }
-  }
-};
-exports.fetchMaterialUpdate = async (Details) => {
-  const material = await pool
-    .query(
-      "select * from daily_process_details where Project_id = ? and Date =?;",
-      [Details.Id, Details.date]
-    )
-    .catch((err) => console.log(err));
-  console.log(material);
-  return material;
-};
-exports.fetchMaterialUsed = async (Details) => {
-  const material = await pool
-    .query("select * from materials_used where Project_id = ? and Date =?;", [
-      Details.Id,
-      Details.date,
-    ])
-    .catch((err) => console.log(err));
-  console.log(material);
-  return material;
-};
-exports.fetchMaterial = async (Details) => {
-  try {
-    const rows = await pool.query("Select * from mas_material_list");
-    return rows;
-  } catch (err) {
-    console.log("Connection Failed", err);
-  }
-};
-exports.materialDelete = async (Details) => {
-  //console.log(details);
-  const row = await pool
-    .query("Delete from mas_material_list where id=?;", [Number(Details.id)])
-    .catch((err) => console.log(err));
-  console.log(row);
-  return "success";
-};
-exports.materialPaymentReports = async (Details) => {
-  const orders = await pool
-    .query(
-      "select Supplier_name,Payment_Date,Amount from material_payments where (Project_id = ?) and (Payment_Date BETWEEN ? AND ?) Order By Payment_Date;",
-      [Details.Id, Details.Start, Details.End]
-    )
-    .catch((err) => console.log(err));
-  //console.log(orders)
-  return orders;
-};
-exports.stockList = async (project) => {
-  try {
-    const rows = await pool.query(
-      "Select * from material_stock_list where Project_id = ? ",
-      [project.pro_id]
-    );
-    return (rows);
-  } catch (err) {
-    console.log("Connection Failed", err);
-  }
-};
-exports.measurementDelete = async (Details) => {
-  const row = await pool
-    .query(
-      "Delete from daily_process_details where Project_id = ? and Dailyprocess_id=?;",
-      [Details.Project_id, Details.Dailyprocess_id]
-    )
-    .catch((err) => console.log(err));
-  console.log(row);
-  return "success";
-};
-exports.measurementReports = async (Details) => {
-  //console.log(req.body);
-  const material = await pool
-    .query(
-      "select * from daily_process_details where (Project_id = ?) and (Date BETWEEN ? AND ?) Order By Date;",
-      [Details.Id, Details.Start, Details.End]
-    )
-    .catch((err) => console.log(err));
-  console.log(material);
-  return material;
-};
-exports.overAllReports = async (Details) => {
-  const orders = await pool
-    .query(
-      'select DATE ,contractor," " as site_location, total as total,paid as paid,balance as balance,STATUS FROM labour_worked_details WHERE Project_id = ? and  DATE BETWEEN ? AND ?  union all SELECT order_date,supplier_name,material_name,amount,paid,balance ,status from order_details where project_id= ? and order_date BETWEEN ? AND ? order by date;',
-      [
-        Details.Id,
-        Details.Start,
-        Details.End,
-        Details.Id,
-        Details.Start,
-        Details.End,
-      ]
-    )
-    .catch((err) => console.log(err));
-  //console.log(orders)
-  return orders;
-};
-exports.reports = async (Details) => {
-  try {
-    const Details = req.body;
-    //console.log(req.body);
-    const orders = await pool
-      .query(
-        "SELECT * FROM order_details WHERE (Project_id = ?) AND (Order_date BETWEEN ? AND ?) Order By Order_date;",
-        [Details.Id, Details.Start, Details.End]
-      )
-      .catch((err) => console.log(err));
-    const Labour = await pool
-      .query(
-        "SELECT * FROM labour_worked_details WHERE (Project_id = ?) AND (Date BETWEEN ? AND ?) Order By Date;",
-        [Details.Id, Details.Start, Details.End]
-      )
-      .catch((err) => console.log(err));
-    console.log(orders, Labour);
-    const detail = {
-      order: orders,
-      labour: Labour,
-    };
-    return detail;
-  } catch (error) {
-    console.error(error);
-    return { error: "Internal server error" };
-  }
-};
-exports.deleteMaterial = async (Details) => {
-  const materialName = Details.materialName;
-  pool.query(
-    "DELETE FROM mas_material_list WHERE Material_name = ?",
-    [materialName],
-    (err, result) => {
-      if (err) {
-        console.error("Error deleting material from database: ", err);
-        return("Error deleting material from database");
-        
+      // Get current stock
+      const stockResult = await conn.query(selectQuery, [Project_id, Material, tenant_id, branch_id]);
+      const rows = stockResult[0];
+      
+      if (!rows || rows.length === 0) {
+        throw new Error(`Stock not found for Project ${Project_id}, Material ${Material}`);
       }
-      console.log("Material deleted from database");
-      return { message: "Material deleted successfully" };
+      
+      const Stock = rows[0].Stock_List;
+      
+      // Insert usage record
+      await conn.query(insertQuery, [
+        tenant_id, branch_id, Project_id, Project_name, date, Material, Used, username, createdDate
+      ]);
+      
+      // Update stock
+      await conn.query(updateQuery, [Stock - Used, Project_id, Material, tenant_id, branch_id]);
+      
+      console.log(`✅ Material used recorded: ${Material} (${Used} units)`);
+    });
+
+    await Promise.all(promises);
+    return { success: true, message: "Material usage saved successfully" };
+    
+  } catch (err) {
+    console.error("❌ materialUsed Error:", err);
+    throw err;
+  } finally {
+    if (conn) conn.release();
+  }
+};
+
+/* ===============================
+   Edit Material Used - Update Usage & Stock
+=================================*/
+exports.EditMaterialUsed = async (Mat_Used, tenant_id, branch_id) => {
+  let conn;
+  try {
+    if (!Mat_Used || Mat_Used.length === 0) {
+      throw new Error("No material updates provided");
     }
-  );
+
+    conn = await pool.getConnection();
+    
+    const convert = (str) => {
+      if (!str) return null;
+      const date = new Date(str);
+      const mnth = ("0" + (date.getMonth() + 1)).slice(-2);
+      const day = ("0" + date.getDate()).slice(-2);
+      return [date.getFullYear(), mnth, day].join("-");
+    };
+
+    const selectUsedQuery = `
+      SELECT Material_Used FROM materials_used 
+      WHERE Project_id = ? AND Material_List = ? AND DATE = ? AND tenant_id = ? AND branch_id = ?
+    `;
+    
+    const selectStockQuery = `
+      SELECT Stock_List FROM material_stock_list 
+      WHERE Project_id = ? AND Material_List = ? AND tenant_id = ? AND branch_id = ?
+    `;
+    
+    const stockUpdateQuery = `
+      UPDATE material_stock_list 
+      SET Stock_List = ? 
+      WHERE Project_id = ? AND Material_List = ? AND tenant_id = ? AND branch_id = ?
+    `;
+    
+    const usedUpdateQuery = `
+      UPDATE materials_used 
+      SET Material_Used = ?, LAST_UPDATED_BY = ?, LAST_UPDATED_DATETIME = ? 
+      WHERE Project_id = ? AND Material_List = ? AND DATE = ? AND tenant_id = ? AND branch_id = ?
+    `;
+
+    const promises = Mat_Used.map(async (details) => {
+      const {
+        Project_id, Project_name, DATE, Material_List, Material_Used,
+        username, currentDate
+      } = details;
+
+      const formattedDate = convert(DATE);
+      const formattedUpdateDate = convert(currentDate);
+
+      // Get already used quantity
+      const usedResult = await conn.query(selectUsedQuery, [
+        Project_id, Material_List, formattedDate, tenant_id, branch_id
+      ]);
+      const usedRows = usedResult[0];
+      
+      if (!usedRows || usedRows.length === 0) {
+        throw new Error("Usage record not found for update");
+      }
+      
+      const alreadyUsedStock = Number(usedRows[0].Material_Used);
+      const newUsed = Number(Material_Used);
+
+      // Get current stock
+      const stockResult = await conn.query(selectStockQuery, [
+        Project_id, Material_List, tenant_id, branch_id
+      ]);
+      const stockRows = stockResult[0];
+      
+      if (!stockRows || stockRows.length === 0) {
+        throw new Error("Stock record not found");
+      }
+      
+      const currentStock = Number(stockRows[0].Stock_List);
+      let newStock;
+
+      if (alreadyUsedStock > newUsed) {
+        // User reduced usage → add back to stock
+        newStock = currentStock + (alreadyUsedStock - newUsed);
+      } else if (alreadyUsedStock < newUsed) {
+        // User increased usage → deduct from stock
+        newStock = currentStock - (newUsed - alreadyUsedStock);
+      } else {
+        newStock = currentStock; // No change
+      }
+
+      // Update usage record
+      await conn.query(usedUpdateQuery, [
+        newUsed, username, formattedUpdateDate,
+        Project_id, Material_List, formattedDate, tenant_id, branch_id
+      ]);
+
+      // Update stock
+      await conn.query(stockUpdateQuery, [
+        newStock, Project_id, Material_List, tenant_id, branch_id
+      ]);
+
+      console.log(`✅ Material usage updated: ${Material_List}`);
+    });
+
+    await Promise.all(promises);
+    return { success: true, message: "Material usage updated successfully" };
+    
+  } catch (err) {
+    console.error("❌ EditMaterialUsed Error:", err);
+    throw err;
+  } finally {
+    if (conn) conn.release();
+  }
+};
+
+/* ===============================
+   Measurement Details - Insert
+=================================*/
+exports.measurementDetails = async (material_report, tenant_id, branch_id, file = null) => {
+  let conn;
+  try {
+    if (!material_report || Object.keys(material_report).length === 0) {
+      throw new Error("No details found in the request");
+    }
+
+    conn = await pool.getConnection();
+    
+    const convert = (str) => {
+      if (!str) return null;
+      const date = new Date(str);
+      const mnth = ("0" + (date.getMonth() + 1)).slice(-2);
+      const day = ("0" + date.getDate()).slice(-2);
+      return [date.getFullYear(), mnth, day].join("-");
+    };
+
+    const {
+      Project_id, Project_name, Date, Measurement, Units, Nos,
+      Length, Breadth, D_H, Quantity, Rate, Amount, Remarks,
+      Paid, Balance, Status, username, currentDate
+    } = material_report;
+
+    // Handle file upload path
+    const photoPath = file ? path.join("images", file.filename) : null;
+
+    const result = await conn.query(
+      `INSERT INTO daily_process_details 
+       (tenant_id, branch_id, Project_id, Project_name, DATE, Measurement, Units, Nos, 
+        Length, Breadth, D_H, Quantity, Rate, Amount, Remarks, Photos, Paid, Balance, 
+        Status, CREATED_BY, CREATED_DATETIME) 
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      [
+        tenant_id, branch_id, Project_id, Project_name, Date, Measurement, Units, Nos,
+        Length, Breadth, D_H, Quantity, Rate, Amount, Remarks, photoPath,
+        Paid, Balance, Status, username, convert(currentDate)
+      ]
+    );
+
+    console.log("✅ Measurement details inserted successfully");
+    return { 
+      success: true, 
+      message: "Measurement details inserted successfully",
+      insertId: result[0].insertId 
+    };
+    
+  } catch (error) {
+    console.error("❌ measurementDetails Error:", error);
+    throw error;
+  } finally {
+    if (conn) conn.release();
+  }
+};
+
+/* ===============================
+   Update Material - Daily Process Details
+=================================*/
+exports.updateMaterial = async (materialUpdates, tenant_id, branch_id) => {
+  let conn;
+  try {
+    if (!Array.isArray(materialUpdates) || materialUpdates.length === 0) {
+      throw new Error("Material updates must be a non-empty array");
+    }
+
+    conn = await pool.getConnection();
+    
+    const convert = (str) => {
+      if (!str) return null;
+      const date = new Date(str);
+      const mnth = ("0" + (date.getMonth() + 1)).slice(-2);
+      const day = ("0" + date.getDate()).slice(-2);
+      return [date.getFullYear(), mnth, day].join("-");
+    };
+
+    const updateQuery = `
+      UPDATE daily_process_details 
+      SET 
+        Project_id = ?, Project_name = ?, Date = ?, Measurement = ?, Units = ?, 
+        Nos = ?, Length = ?, Breadth = ?, D_H = ?, Quantity = ?, Rate = ?, 
+        Amount = ?, Remarks = ?, Paid = ?, Balance = ?, Status = ?, 
+        LAST_UPDATED_BY = ?, LAST_UPDATED_DATETIME = ? 
+      WHERE Dailyprocess_id = ? AND tenant_id = ? AND branch_id = ?
+    `;
+
+    const promises = materialUpdates.map(async (update) => {
+      const { username, currentDate, ...materialUpdate } = update;
+
+      const formattedDate = convert(materialUpdate.DATE);
+      const formattedUpdateDate = convert(currentDate);
+
+      const {
+        Project_id, Project_name, Measurement, Units, Nos,
+        Length, breadth, D_H, Quantity, Rate, Amount, Remarks,
+        Paid, Balance, Status, Dailyprocess_id
+      } = materialUpdate;
+
+      const result = await conn.query(updateQuery, [
+        Project_id, Project_name, formattedDate, Measurement, Units,
+        Nos, Length, breadth, D_H, Quantity, Rate, Amount, Remarks,
+        Paid, Balance, Status, username, formattedUpdateDate,
+        Dailyprocess_id, tenant_id, branch_id
+      ]);
+
+      if (result[0].affectedRows === 0) {
+        throw new Error(`Update failed: Record ${Dailyprocess_id} not found or access denied`);
+      }
+      
+      console.log(`✅ Daily process updated: ID ${Dailyprocess_id}`);
+    });
+
+    await Promise.all(promises);
+    return { success: true, message: "Material details updated successfully" };
+    
+  } catch (error) {
+    console.error("❌ updateMaterial Error:", error);
+    throw error;
+  } finally {
+    if (conn) conn.release();
+  }
+};
+
+/* ===============================
+   Fetch Material Update (Daily Process)
+=================================*/
+exports.fetchMaterialUpdate = async (Details, tenant_id, branch_id) => {
+  let conn;
+  try {
+    conn = await pool.getConnection();
+    
+    const result = await conn.query(
+      `SELECT * FROM daily_process_details 
+       WHERE Project_id = ? AND Date = ? AND tenant_id = ? AND branch_id = ?`,
+      [Details.Id, Details.date, tenant_id, branch_id]
+    );
+    
+    return result[0];
+    
+  } catch (err) {
+    console.error("❌ fetchMaterialUpdate Error:", err);
+    throw err;
+  } finally {
+    if (conn) conn.release();
+  }
+};
+
+/* ===============================
+   Fetch Material Used Records
+=================================*/
+exports.fetchMaterialUsed = async (Details, tenant_id, branch_id) => {
+  let conn;
+  try {
+    conn = await pool.getConnection();
+    
+    const result = await conn.query(
+      `SELECT * FROM materials_used 
+       WHERE Project_id = ? AND Date = ? AND tenant_id = ? AND branch_id = ?`,
+      [Details.Id, Details.date, tenant_id, branch_id]
+    );
+    
+    return result[0];
+    
+  } catch (err) {
+    console.error("❌ fetchMaterialUsed Error:", err);
+    throw err;
+  } finally {
+    if (conn) conn.release();
+  }
+};
+
+/* ===============================
+   Fetch All Materials (Master List)
+=================================*/
+exports.fetchMaterial = async (tenant_id, branch_id) => {
+  let conn;
+  try {
+    conn = await pool.getConnection();
+    
+    const result = await conn.query(
+      `SELECT * FROM mas_material_list WHERE tenant_id = ? AND branch_id = ?`,
+      [tenant_id, branch_id]
+    );
+    
+    return result[0];
+    
+  } catch (err) {
+    console.error("❌ fetchMaterial Error:", err);
+    throw err;
+  } finally {
+    if (conn) conn.release();
+  }
+};
+
+/* ===============================
+   Delete Material (Master)
+=================================*/
+exports.materialDelete = async (Details, tenant_id, branch_id) => {
+  let conn;
+  try {
+    conn = await pool.getConnection();
+    
+    const result = await conn.query(
+      `DELETE FROM mas_material_list WHERE id = ? AND tenant_id = ? AND branch_id = ?`,
+      [Number(Details.id), tenant_id, branch_id]
+    );
+    
+    if (result[0].affectedRows === 0) {
+      throw new Error("Material not found or access denied");
+    }
+    
+    console.log("✅ Material deleted successfully");
+    return { success: true, message: "Material deleted successfully" };
+    
+  } catch (err) {
+    console.error("❌ materialDelete Error:", err);
+    throw err;
+  } finally {
+    if (conn) conn.release();
+  }
+};
+
+/* ===============================
+   Material Payment Reports
+=================================*/
+exports.materialPaymentReports = async (Details, tenant_id, branch_id) => {
+  let conn;
+  try {
+    conn = await pool.getConnection();
+    
+    const result = await conn.query(
+      `SELECT Supplier_name, Payment_Date, Amount 
+       FROM material_payments 
+       WHERE tenant_id = ? AND branch_id = ? AND Project_id = ? 
+         AND Payment_Date BETWEEN ? AND ? 
+       ORDER BY Payment_Date`,
+      [tenant_id, branch_id, Details.Id, Details.Start, Details.End]
+    );
+    
+    return result[0];
+    
+  } catch (err) {
+    console.error("❌ materialPaymentReports Error:", err);
+    throw err;
+  } finally {
+    if (conn) conn.release();
+  }
+};
+
+/* ===============================
+   Stock List by Project
+=================================*/
+exports.stockList = async (project, tenant_id, branch_id) => {
+  let conn;
+  try {
+    conn = await pool.getConnection();
+    
+    const result = await conn.query(
+      `SELECT * FROM material_stock_list 
+       WHERE Project_id = ? AND tenant_id = ? AND branch_id = ?`,
+      [project.pro_id, tenant_id, branch_id]
+    );
+    
+    return result[0];
+    
+  } catch (err) {
+    console.error("❌ stockList Error:", err);
+    throw err;
+  } finally {
+    if (conn) conn.release();
+  }
+};
+
+/* ===============================
+   Delete Measurement Record
+=================================*/
+exports.measurementDelete = async (Details, tenant_id, branch_id) => {
+  let conn;
+  try {
+    conn = await pool.getConnection();
+    
+    const result = await conn.query(
+      `DELETE FROM daily_process_details 
+       WHERE Project_id = ? AND Dailyprocess_id = ? AND tenant_id = ? AND branch_id = ?`,
+      [Details.Project_id, Details.Dailyprocess_id, tenant_id, branch_id]
+    );
+    
+    if (result[0].affectedRows === 0) {
+      throw new Error("Measurement record not found or access denied");
+    }
+    
+    console.log("✅ Measurement record deleted successfully");
+    return { success: true, message: "Record deleted successfully" };
+    
+  } catch (err) {
+    console.error("❌ measurementDelete Error:", err);
+    throw err;
+  } finally {
+    if (conn) conn.release();
+  }
+};
+
+/* ===============================
+   Measurement Reports (Date Range)
+=================================*/
+exports.measurementReports = async (Details, tenant_id, branch_id) => {
+  let conn;
+  try {
+    conn = await pool.getConnection();
+    
+    const result = await conn.query(
+      `SELECT * FROM daily_process_details 
+       WHERE tenant_id = ? AND branch_id = ? AND Project_id = ? 
+         AND Date BETWEEN ? AND ? 
+       ORDER BY Date`,
+      [tenant_id, branch_id, Details.Id, Details.Start, Details.End]
+    );
+    
+    return result[0];
+    
+  } catch (err) {
+    console.error("❌ measurementReports Error:", err);
+    throw err;
+  } finally {
+    if (conn) conn.release();
+  }
+};
+
+/* ===============================
+   Overall Reports (Labour + Orders Union)
+=================================*/
+exports.overAllReports = async (Details, tenant_id, branch_id) => {
+  let conn;
+  try {
+    conn = await pool.getConnection();
+    
+    const result = await conn.query(
+      `SELECT DATE, contractor, " " as site_location, total as total, paid as paid, balance as balance, STATUS 
+       FROM labour_worked_details 
+       WHERE tenant_id = ? AND branch_id = ? AND Project_id = ? AND DATE BETWEEN ? AND ?
+       
+       UNION ALL 
+       
+       SELECT order_date, supplier_name, material_name, amount, paid, balance, status 
+       FROM order_details 
+       WHERE tenant_id = ? AND branch_id = ? AND project_id = ? AND order_date BETWEEN ? AND ? 
+       
+       ORDER BY DATE`,
+      [
+        tenant_id, branch_id, Details.Id, Details.Start, Details.End,
+        tenant_id, branch_id, Details.Id, Details.Start, Details.End
+      ]
+    );
+    
+    return result[0];
+    
+  } catch (err) {
+    console.error("❌ overAllReports Error:", err);
+    throw err;
+  } finally {
+    if (conn) conn.release();
+  }
+};
+
+/* ===============================
+   Combined Reports (Orders + Labour)
+=================================*/
+exports.reports = async (Details, tenant_id, branch_id) => {
+  let conn;
+  try {
+    conn = await pool.getConnection();
+    
+    const ordersResult = await conn.query(
+      `SELECT * FROM order_details 
+       WHERE tenant_id = ? AND branch_id = ? AND Project_id = ? 
+         AND Order_date BETWEEN ? AND ? 
+       ORDER BY Order_date`,
+      [tenant_id, branch_id, Details.Id, Details.Start, Details.End]
+    );
+    
+    const labourResult = await conn.query(
+      `SELECT * FROM labour_worked_details 
+       WHERE tenant_id = ? AND branch_id = ? AND Project_id = ? 
+         AND Date BETWEEN ? AND ? 
+       ORDER BY Date`,
+      [tenant_id, branch_id, Details.Id, Details.Start, Details.End]
+    );
+    
+    return {
+      order: ordersResult[0],
+      labour: labourResult[0]
+    };
+    
+  } catch (error) {
+    console.error("❌ reports Error:", error);
+    throw error;
+  } finally {
+    if (conn) conn.release();
+  }
+};
+
+/* ===============================
+   Delete Material by Name (Legacy - Use with Caution)
+=================================*/
+exports.deleteMaterial = async (Details, tenant_id, branch_id) => {
+  let conn;
+  try {
+    conn = await pool.getConnection();
+    
+    const result = await conn.query(
+      `DELETE FROM mas_material_list 
+       WHERE Material_name = ? AND tenant_id = ? AND branch_id = ?`,
+      [Details.materialName, tenant_id, branch_id]
+    );
+    
+    if (result[0].affectedRows === 0) {
+      throw new Error("Material not found or access denied");
+    }
+    
+    console.log("✅ Material deleted successfully");
+    return { success: true, message: "Material deleted successfully" };
+    
+  } catch (err) {
+    console.error("❌ deleteMaterial Error:", err);
+    throw err;
+  } finally {
+    if (conn) conn.release();
+  }
 };

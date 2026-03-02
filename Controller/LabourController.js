@@ -2,9 +2,10 @@ const labourService = require("../Service/LabourService");
 
 exports.labourDetails = async (req, res, next) => {
   try {
+    const { tenant_id, branch_id } = req;
     const details = req.body;
-    //console.log(details)
-    const data = await labourService.labourDetails(details);
+    console.log(tenant_id,branch_id)
+    const data = await labourService.labourDetails(details,tenant_id, branch_id);
 
     res.status(200).json({
       success: true,
@@ -16,9 +17,10 @@ exports.labourDetails = async (req, res, next) => {
 };
 exports.updateLabour = async (req, res, next) => {
   try {
+    const { tenant_id, branch_id } = req;
     const details = req.body;
     //console.log(details)
-    const data = await labourService.updateLabour(details);
+    const data = await labourService.updateLabour(details,tenant_id, branch_id);
 
     res.status(200).json({
       success: true,
@@ -30,9 +32,10 @@ exports.updateLabour = async (req, res, next) => {
 };
 exports.labourDelete = async (req, res, next) => {
   try {
+    const { tenant_id, branch_id } = req;
     const details = req.body;
     //console.log(details)
-    const data = await labourService.labourDelete(details);
+    const data = await labourService.labourDelete(details,tenant_id, branch_id);
 
     res.status(200).json({
       success: true,
@@ -44,9 +47,10 @@ exports.labourDelete = async (req, res, next) => {
 };
 exports.fetchLabourUpdate = async (req, res, next) => {
   try {
+    const { tenant_id, branch_id } = req;
     const details = req.body;
     //console.log(details)
-    const data = await labourService.fetchLabourUpdate(details);
+    const data = await labourService.fetchLabourUpdate(details,tenant_id, branch_id);
 
     res.status(200).json({
       success: true,
@@ -58,9 +62,10 @@ exports.fetchLabourUpdate = async (req, res, next) => {
 };
 exports.labourReports = async (req, res, next) => {
   try {
+    const { tenant_id, branch_id } = req;
     const details = req.body;
     //console.log(details)
-    const data = await labourService.labourReports(details);
+    const data = await labourService.labourReports(details,tenant_id, branch_id);
 
     res.status(200).json({
       success: true,
@@ -72,9 +77,10 @@ exports.labourReports = async (req, res, next) => {
 };
 exports.labourPayment = async (req, res, next) => {
   try {
+    const { tenant_id, branch_id } = req;
     const details = req.body;
     //console.log(details)
-    const data = await labourService.labourPayment(details);
+    const data = await labourService.labourPayment(details,tenant_id, branch_id);
 
     res.status(200).json({
       success: true,
@@ -86,9 +92,10 @@ exports.labourPayment = async (req, res, next) => {
 };
 exports.labourPaymentUpdate = async (req, res, next) => {
   try {
+    const { tenant_id, branch_id } = req;
     const details = req.body;
     //console.log(details)
-    const data = await labourService.labourPaymentUpdate(details);
+    const data = await labourService.labourPaymentUpdate(details,tenant_id, branch_id);
 
     res.status(200).json({
       success: true,
@@ -100,9 +107,10 @@ exports.labourPaymentUpdate = async (req, res, next) => {
 };
 exports.allLabourPaymentUpdate = async (req, res, next) => {
   try {
+    const { tenant_id, branch_id } = req;
     const details = req.body;
     //console.log(details)
-    const data = await labourService.allLabourPaymentUpdate(details);
+    const data = await labourService.allLabourPaymentUpdate(details,tenant_id, branch_id);
 
     res.status(200).json({
       success: true,
@@ -114,9 +122,10 @@ exports.allLabourPaymentUpdate = async (req, res, next) => {
 };
 exports.allLabourPayment = async (req, res, next) => {
   try {
+    const { tenant_id, branch_id } = req;
     const details = req.body;
     //console.log(details)
-    const data = await labourService.allLabourPayment(details);
+    const data = await labourService.allLabourPayment(details,tenant_id, branch_id);
 
     res.status(200).json({
       success: true,
@@ -128,7 +137,8 @@ exports.allLabourPayment = async (req, res, next) => {
 };
 exports.fetchContractorPay = async (req, res, next) => {
   try {
-    const data = await labourService.fetchContractorPay();
+    const { tenant_id, branch_id } = req;
+    const data = await labourService.fetchContractorPay(tenant_id, branch_id);
 
     res.status(200).json({
       success: true,
@@ -140,8 +150,9 @@ exports.fetchContractorPay = async (req, res, next) => {
 };
 exports.contractorReport = async (req, res, next) => {
   try {
+    const { tenant_id, branch_id } = req;
     const details = req.body;
-    const data = await labourService.contractorReport(details);
+    const data = await labourService.contractorReport(details,tenant_id, branch_id);
 
     res.status(200).json({
       success: true,
@@ -153,8 +164,9 @@ exports.contractorReport = async (req, res, next) => {
 };
 exports.contractorDelete = async (req, res, next) => {
   try {
+    const { tenant_id, branch_id } = req;
     const details = req.body;
-    const data = await labourService.contractorDelete(details);
+    const data = await labourService.contractorDelete(details,tenant_id, branch_id);
 
     res.status(200).json({
       success: true,
@@ -166,8 +178,9 @@ exports.contractorDelete = async (req, res, next) => {
 };
 exports.supplierDelete = async (req, res, next) => {
   try {
+    const { tenant_id, branch_id } = req;
     const details = req.body;
-    const data = await labourService.supplierDelete(details);
+    const data = await labourService.supplierDelete(details,tenant_id, branch_id);
 
     res.status(200).json({
       success: true,

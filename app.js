@@ -3,20 +3,20 @@ const fs = require("fs");
 const path = require("path");
 const { globalErrorHandler } = require("./utils/ErrorHandler");
 
-const projectDetailsRouter=require('./Routes/ProjectRoute')
-const materialRouter=require('./Routes/MaterialRoute')
-const masterRouter=require('./Routes/MasterRoute')
-const orderRouter=require('./Routes/OrderRoute')
-const labourRouter=require('./Routes/LabourRoute')
-const paymentRouter=require('./Routes/PaymentRoute')
-const projectRouter=require('./Routes/ProjectRoute')
-const userRouter=require('./Routes/UserRoute')
-const tenantRouter=require('./Routes/TenantRoute')
-const branchRouter=require('./Routes/BranchRoute')
+const projectDetailsRouter = require("./Routes/ProjectRoute");
+const materialRouter = require("./Routes/MaterialRoute");
+const masterRouter = require("./Routes/MasterRoute");
+const orderRouter = require("./Routes/OrderRoute");
+const labourRouter = require("./Routes/LabourRoute");
+const paymentRouter = require("./Routes/PaymentRoute");
+const projectRouter = require("./Routes/ProjectRoute");
+const userRouter = require("./Routes/UserRoute");
+const tenantRouter = require("./Routes/TenantRoute");
+const branchRouter = require("./Routes/BranchRoute");
 
-const authMiddleware=require('./Middleware/AuthMiddleware')
-const contextMiddleware=require('./Middleware/ContextMiddleware')
-const branchAccessMiddleware=require('./Middleware/BranchAccessMiddleware')
+const authMiddleware = require("./Middleware/AuthMiddleware");
+const contextMiddleware = require("./Middleware/ContextMiddleware");
+const branchAccessMiddleware = require("./Middleware/BranchAccessMiddleware");
 
 const app = express();
 
@@ -28,20 +28,17 @@ const cors = require("cors");
 app.use(
   cors({
     origin: [
-      "http://localhost:5173",        // Vite
-      "http://localhost:3000",        // CRA
-      "https://yourdomain.com"        // Production frontend
+      "http://localhost:5173", // Vite
+      "http://localhost:3000", // CRA
+      "https://yourdomain.com", // Production frontend
     ],
     methods: ["GET", "POST", "PUT", "DELETE"],
-    credentials: true
+    credentials: true,
   })
 );
 
 // 👇 VERY IMPORTANT
-app.use(
-  "/uploads",
-  express.static(path.join(__dirname, "..", "UPLOADS"))
-);
+app.use("/uploads", express.static(path.join(__dirname, "..", "UPLOADS")));
 
 // ✅ Health check
 app.get("/", (req, res) => {
@@ -73,10 +70,14 @@ app.use(`/api/labour`, labourRouter);
 app.use(`/api/payment`, paymentRouter);
 app.use(`/api/project`, projectRouter);
 app.use(`/api/user`, userRouter);
-app.use(`/api/tenant`,authMiddleware, tenantRouter);
-app.use(`/api/branch`,authMiddleware,contextMiddleware,branchAccessMiddleware, branchRouter);
-
-
+app.use(`/api/tenant`, authMiddleware, tenantRouter);
+app.use(
+  `/api/branch`,
+  authMiddleware,
+  contextMiddleware,
+  branchAccessMiddleware,
+  branchRouter
+);
 
 // ✅ Global error handler
 app.use(globalErrorHandler);

@@ -2,9 +2,10 @@ const paymentService = require("../Service/PaymentService");
 
 exports.newPayment = async (req, res, next) => {
   try {
+const { tenant_id, branch_id } = req;
     const details = req.body;
     //console.log(details)
-    const data = await paymentService.newPayment(details);
+    const data = await paymentService.newPayment(details,tenant_id, branch_id);
 
     res.status(200).json({
       success: true,
@@ -16,9 +17,10 @@ exports.newPayment = async (req, res, next) => {
 };
 exports.fetchPaymentUpdate = async (req, res, next) => {
   try {
+const { tenant_id, branch_id } = req;
     const details = req.body;
     //console.log(details)
-    const data = await paymentService.fetchPaymentUpdate(details);
+    const data = await paymentService.fetchPaymentUpdate(details,tenant_id, branch_id);
 
     res.status(200).json({
       success: true,
@@ -30,9 +32,10 @@ exports.fetchPaymentUpdate = async (req, res, next) => {
 };
 exports.updatePaymentDetails = async (req, res, next) => {
   try {
+const { tenant_id, branch_id } = req;
     const details = req.body;
     //console.log(details)
-    const data = await paymentService.updatePaymentDetails(details);
+    const data = await paymentService.updatePaymentDetails(details,tenant_id, branch_id);
 
     res.status(200).json({
       success: true,
@@ -44,9 +47,10 @@ exports.updatePaymentDetails = async (req, res, next) => {
 };
 exports.projectPaymentDelete = async (req, res, next) => {
   try {
+const { tenant_id, branch_id } = req;
     const details = req.body;
     //console.log(details)
-    const data = await paymentService.projectPaymentDelete(details);
+    const data = await paymentService.projectPaymentDelete(details,tenant_id, branch_id);
 
     res.status(200).json({
       success: true,
@@ -58,9 +62,10 @@ exports.projectPaymentDelete = async (req, res, next) => {
 };
 exports.clientPaymentReport = async (req, res, next) => {
   try {
+const { tenant_id, branch_id } = req;
     const details = req.body;
     //console.log(details)
-    const data = await paymentService.clientPaymentReport(details);
+    const data = await paymentService.clientPaymentReport(details,tenant_id, branch_id);
 
     res.status(200).json({
       success: true,
@@ -72,9 +77,10 @@ exports.clientPaymentReport = async (req, res, next) => {
 };
 exports.materialPaymentsUpdate = async (req, res, next) => {
   try {
+const { tenant_id, branch_id } = req;
     const details = req.body;
     //console.log(details)
-    const data = await paymentService.materialPaymentsUpdate(details);
+    const data = await paymentService.materialPaymentsUpdate(details,tenant_id, branch_id);
 
     res.status(200).json({
       success: true,
@@ -86,9 +92,10 @@ exports.materialPaymentsUpdate = async (req, res, next) => {
 };
 exports.allMaterialPaymentUpdate = async (req, res, next) => {
   try {
+const { tenant_id, branch_id } = req;
     const details = req.body;
     //console.log(details)
-    const data = await paymentService.allMaterialPaymentUpdate(details);
+    const data = await paymentService.allMaterialPaymentUpdate(details,tenant_id, branch_id);
 
     res.status(200).json({
       success: true,
@@ -100,9 +107,10 @@ exports.allMaterialPaymentUpdate = async (req, res, next) => {
 };
 exports.deleteMaterialPayments = async (req, res, next) => {
   try {
+const { tenant_id, branch_id } = req;
     const details = req.body;
     //console.log(details)
-    const data = await paymentService.deleteMaterialPayments(details);
+    const data = await paymentService.deleteMaterialPayments(details,tenant_id, branch_id);
 
     res.status(200).json({
       success: true,
@@ -114,9 +122,10 @@ exports.deleteMaterialPayments = async (req, res, next) => {
 };
 exports.materialsPaymentView = async (req, res, next) => {
   try {
+const { tenant_id, branch_id } = req;
     const details = req.body;
     //console.log(details)
-    const data = await paymentService.materialsPaymentView(details);
+    const data = await paymentService.materialsPaymentView(details,tenant_id, branch_id);
 
     res.status(200).json({
       success: true,
@@ -128,9 +137,10 @@ exports.materialsPaymentView = async (req, res, next) => {
 };
 exports.allMaterialPayment = async (req, res, next) => {
   try {
+const { tenant_id, branch_id } = req;
     const details = req.body;
     //console.log(details)
-    const data = await paymentService.allMaterialPayment(details);
+    const data = await paymentService.allMaterialPayment(details,tenant_id, branch_id);
 
     res.status(200).json({
       success: true,
@@ -142,9 +152,10 @@ exports.allMaterialPayment = async (req, res, next) => {
 };
 exports.fetchMaterialBalance = async (req, res, next) => {
   try {
+const { tenant_id, branch_id } = req;
     const details = req.body;
     //console.log(details)
-    const data = await paymentService.fetchMaterialBalance(details);
+    const data = await paymentService.fetchMaterialBalance(details,tenant_id, branch_id);
 
     res.status(200).json({
       success: true,
@@ -156,9 +167,10 @@ exports.fetchMaterialBalance = async (req, res, next) => {
 };
 exports.fetchMaterialPay = async (req, res, next) => {
   try {
-    const details = req.body;
+const { tenant_id, branch_id } = req;
+    // const details = req.body;
     //console.log(details)
-    const data = await paymentService.fetchMaterialPay(details);
+    const data = await paymentService.fetchMaterialPay(tenant_id, branch_id);
 
     res.status(200).json({
       success: true,

@@ -2,9 +2,10 @@ const materialService = require("../Service/MaterialService");
 
 exports.materialList = async (req, res, next) => {
   try {
+const { tenant_id, branch_id } = req;
     const details = req.body;
     //console.log(details)
-    const data = await materialService.materialList(details);
+    const data = await materialService.materialList(details,tenant_id, branch_id);
 
     res.status(200).json({
       success: true,
@@ -16,9 +17,10 @@ exports.materialList = async (req, res, next) => {
 };
 exports.materialUsed = async (req, res, next) => {
   try {
+const { tenant_id, branch_id } = req;
     const details = req.body;
     //console.log(details)
-    const data = await materialService.materialUsed(details);
+    const data = await materialService.materialUsed(details,tenant_id, branch_id);
 
     res.status(200).json({
       success: true,
@@ -30,9 +32,10 @@ exports.materialUsed = async (req, res, next) => {
 };
 exports.editMaterialUsed = async (req, res, next) => {
   try {
+const { tenant_id, branch_id } = req;
     const details = req.body;
     //console.log(details)
-    const data = await materialService.EditMaterialUsed(details);
+    const data = await materialService.EditMaterialUsed(details,tenant_id, branch_id);
 
     res.status(200).json({
       success: true,
@@ -44,9 +47,10 @@ exports.editMaterialUsed = async (req, res, next) => {
 };
 exports.measurementDetails = async (req, res, next) => {
   try {
+const { tenant_id, branch_id } = req;
     const details = req.body;
     //console.log(details)
-    const data = await materialService.measurementDetails(details);
+    const data = await materialService.measurementDetails(details,tenant_id, branch_id);
 
     res.status(200).json({
       success: true,
@@ -58,9 +62,10 @@ exports.measurementDetails = async (req, res, next) => {
 };
 exports.updateMaterial = async (req, res, next) => {
   try {
+const { tenant_id, branch_id } = req;
     const details = req.body;
     //console.log(details)
-    const data = await materialService.updateMaterial(details);
+    const data = await materialService.updateMaterial(details,tenant_id, branch_id);
 
     res.status(200).json({
       success: true,
@@ -72,9 +77,10 @@ exports.updateMaterial = async (req, res, next) => {
 };
 exports.fetchMaterialUpdate = async (req, res, next) => {
   try {
+const { tenant_id, branch_id } = req;
     const details = req.body;
     //console.log(details)
-    const data = await materialService.fetchMaterialUpdate(details);
+    const data = await materialService.fetchMaterialUpdate(details,tenant_id, branch_id);
 
     res.status(200).json({
       success: true,
@@ -86,9 +92,10 @@ exports.fetchMaterialUpdate = async (req, res, next) => {
 };
 exports.fetchMaterialUsed = async (req, res, next) => {
   try {
+const { tenant_id, branch_id } = req;
     const details = req.body;
     //console.log(details)
-    const data = await materialService.fetchMaterialUsed(details);
+    const data = await materialService.fetchMaterialUsed(details,tenant_id, branch_id);
 
     res.status(200).json({
       success: true,
@@ -100,9 +107,10 @@ exports.fetchMaterialUsed = async (req, res, next) => {
 };
 exports.fetchMaterial = async (req, res, next) => {
   try {
+const { tenant_id, branch_id } = req;
     const details = req.body;
     //console.log(details)
-    const data = await materialService.fetchMaterial(details);
+    const data = await materialService.fetchMaterial(details,tenant_id, branch_id);
 
     res.status(200).json({
       success: true,
@@ -114,9 +122,10 @@ exports.fetchMaterial = async (req, res, next) => {
 };
 exports.materialDelete = async (req, res, next) => {
   try {
+const { tenant_id, branch_id } = req;
     const details = req.body;
     //console.log(details)
-    const data = await materialService.materialDelete(details);
+    const data = await materialService.materialDelete(details,tenant_id, branch_id);
 
     res.status(200).json({
       success: true,
@@ -128,9 +137,10 @@ exports.materialDelete = async (req, res, next) => {
 };
 exports.materialPaymentReports = async (req, res, next) => {
   try {
+const { tenant_id, branch_id } = req;
     const details = req.body;
     //console.log(details)
-    const data = await materialService.materialPaymentReports(details);
+    const data = await materialService.materialPaymentReports(details,tenant_id, branch_id);
 
     res.status(200).json({
       success: true,
@@ -142,9 +152,10 @@ exports.materialPaymentReports = async (req, res, next) => {
 };
 exports.stockList = async (req, res, next) => {
   try {
+const { tenant_id, branch_id } = req;
     const details = req.body;
     //console.log(details)
-    const data = await materialService.stockList(details);
+    const data = await materialService.stockList(details,tenant_id, branch_id);
 
     res.status(200).json({
       success: true,
@@ -156,9 +167,10 @@ exports.stockList = async (req, res, next) => {
 };
 exports.measurementDelete = async (req, res, next) => {
   try {
+const { tenant_id, branch_id } = req;
     const details = req.body;
     //console.log(details)
-    const data = await materialService.measurementDelete(details);
+    const data = await materialService.measurementDelete(details,tenant_id, branch_id);
 
     res.status(200).json({
       success: true,
@@ -170,9 +182,10 @@ exports.measurementDelete = async (req, res, next) => {
 };
 exports.measurementReports = async (req, res, next) => {
   try {
+const { tenant_id, branch_id } = req;
     const details = req.body;
     //console.log(details)
-    const data = await materialService.measurementReports(details);
+    const data = await materialService.measurementReports(details,tenant_id, branch_id);
 
     res.status(200).json({
       success: true,
@@ -184,9 +197,10 @@ exports.measurementReports = async (req, res, next) => {
 };
 exports.overAllReports = async (req, res, next) => {
   try {
+const { tenant_id, branch_id } = req;
     const details = req.body;
     //console.log(details)
-    const data = await materialService.overAllReports(details);
+    const data = await materialService.overAllReports(details,tenant_id, branch_id);
 
     res.status(200).json({
       success: true,
@@ -198,9 +212,10 @@ exports.overAllReports = async (req, res, next) => {
 };
 exports.reports = async (req, res, next) => {
   try {
+const { tenant_id, branch_id } = req;
     const details = req.body;
     //console.log(details)
-    const data = await materialService.reports(details);
+    const data = await materialService.reports(details,tenant_id, branch_id);
 
     res.status(200).json({
       success: true,
@@ -212,9 +227,10 @@ exports.reports = async (req, res, next) => {
 };
 exports.deleteMaterial = async (req, res, next) => {
   try {
+const { tenant_id, branch_id } = req;
     const details = req.params;
     //console.log(details)
-    const data = await materialService.deleteMaterial(details);
+    const data = await materialService.deleteMaterial(details,tenant_id, branch_id);
 
     res.status(200).json({
       success: true,

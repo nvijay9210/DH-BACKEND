@@ -5,7 +5,8 @@ const projectService = require("../Service/ProjectService");
 ========================================= */
 exports.createProject = async (req, res, next) => {
   try {
-    const result = await projectService.createProject(req.body);
+    const { tenant_id, branch_id } = req;
+    const result = await projectService.createProject(req.body,tenant_id,branch_id);
 
     return res.status(201).json({
       success: true,
@@ -24,10 +25,12 @@ exports.createProject = async (req, res, next) => {
 ========================================= */
 exports.updateProject = async (req, res, next) => {
   try {
+    const { tenant_id, branch_id } = req;
     const projectId = req.params.id;
 
     const result = await projectService.updateProject({
       ...req.body,
+      tenant_id,branch_id,
       Project_id: projectId,
     });
 
@@ -52,7 +55,8 @@ exports.updateProject = async (req, res, next) => {
 ========================================= */
 exports.getProjectList = async (req, res, next) => {
   try {
-    const data = await projectService.getProjectList();
+    const { tenant_id, branch_id } = req;
+    const data = await projectService.getProjectList( tenant_id,branch_id,);
 
     return res.status(200).json({
       success: true,
@@ -69,7 +73,8 @@ exports.getProjectList = async (req, res, next) => {
 ========================================= */
 exports.getProjectTotalCost = async (req, res, next) => {
   try {
-    const data = await projectService.getProjectTotalCost();
+    const { tenant_id, branch_id } = req;
+    const data = await projectService.getProjectTotalCost( tenant_id,branch_id,);
 
     return res.status(200).json({
       success: true,
@@ -85,7 +90,8 @@ exports.getProjectTotalCost = async (req, res, next) => {
 ========================================= */
 exports.getProjectSpended = async (req, res, next) => {
   try {
-    const data = await projectService.getProjectSpended();
+    const { tenant_id, branch_id } = req;
+    const data = await projectService.getProjectSpended( tenant_id,branch_id,);
 
     return res.status(200).json({
       success: true,
@@ -101,7 +107,8 @@ exports.getProjectSpended = async (req, res, next) => {
 ========================================= */
 exports.getIndividualProjectSpended = async (req, res, next) => {
   try {
-    const data = await projectService.getIndividualProjectSpended();
+    const { tenant_id, branch_id } = req;
+    const data = await projectService.getIndividualProjectSpended( tenant_id,branch_id,);
 
     return res.status(200).json({
       success: true,
@@ -118,7 +125,8 @@ exports.getIndividualProjectSpended = async (req, res, next) => {
 ========================================= */
 exports.getIndividualProjectTotal = async (req, res, next) => {
   try {
-    const data = await projectService.getIndividualProjectTotal();
+    const { tenant_id, branch_id } = req;
+    const data = await projectService.getIndividualProjectTotal( tenant_id,branch_id,);
 
     return res.status(200).json({
       success: true,
@@ -135,9 +143,10 @@ exports.getIndividualProjectTotal = async (req, res, next) => {
 ========================================= */
 exports.getProjectById = async (req, res, next) => {
   try {
+    const { tenant_id, branch_id } = req;
     const projectId = req.params.id; // ✅ use params
 
-    const data = await projectService.getProjectById(projectId);
+    const data = await projectService.getProjectById(projectId, tenant_id,branch_id,);
 
     if (!data) {
       return res.status(404).json({
@@ -160,9 +169,10 @@ exports.getProjectById = async (req, res, next) => {
 ========================================= */
 exports.deleteProjectPayment = async (req, res, next) => {
   try {
+    const { tenant_id, branch_id } = req;
     const paymentId = req.params.paymentId;
 
-    const result = await projectService.deleteProjectPayment(paymentId);
+    const result = await projectService.deleteProjectPayment(paymentId, tenant_id,branch_id,);
 
     if (result.affectedRows === 0) {
       return res.status(404).json({
@@ -182,9 +192,10 @@ exports.deleteProjectPayment = async (req, res, next) => {
 
 exports.projectDetailsController = async (req, res, next) => {
   try {
+    const { tenant_id, branch_id } = req;
     const details = req.body;
     //console.log(details)
-    const data = await projectService.projectDetailsService(details);
+    const data = await projectService.projectDetailsService(details, tenant_id,branch_id,);
 
     res.status(200).json({
       success: true,
@@ -197,7 +208,8 @@ exports.projectDetailsController = async (req, res, next) => {
 
 exports.projectList = async (req, res, next) => {
   try {
-    const data = await projectService.projectList();
+    const { tenant_id, branch_id } = req;
+    const data = await projectService.projectList( tenant_id,branch_id,);
 
     res.status(200).json({
       success: true,
@@ -211,7 +223,8 @@ exports.projectList = async (req, res, next) => {
 
 exports.ProjectTotalCost = async (req, res, next) => {
   try {
-    const data = await projectService.ProjectTotalCost();
+    const { tenant_id, branch_id } = req;
+    const data = await projectService.ProjectTotalCost( tenant_id,branch_id,);
 
     res.status(200).json({
       success: true,
@@ -224,7 +237,8 @@ exports.ProjectTotalCost = async (req, res, next) => {
 };
 exports.ProjectSpended = async (req, res, next) => {
   try {
-    const data = await projectService.ProjectSpended();
+    const { tenant_id, branch_id } = req;
+    const data = await projectService.ProjectSpended( tenant_id,branch_id);
 
     res.status(200).json({
       success: true,
@@ -238,22 +252,8 @@ exports.ProjectSpended = async (req, res, next) => {
 
 exports.IndividualProjectSpended = async (req, res, next) => {
   try {
-    const data = await projectService.IndividualProjectSpended();
-
-    // console.log("Controller Data:", data);
-
-    return res.status(200).json({
-      success: true,
-      data,
-    });
-  } catch (err) {
-    next(err);
-  }
-};
-
-exports.IndividualProjectSpended = async (req, res, next) => {
-  try {
-    const data = await projectService.IndividualProjectSpended();
+    const { tenant_id, branch_id } = req;
+    const data = await projectService.IndividualProjectSpended( tenant_id,branch_id);
 
     // console.log("Controller Data:", data);
 
@@ -267,7 +267,8 @@ exports.IndividualProjectSpended = async (req, res, next) => {
 };
 exports.IndividualProjectTotal = async (req, res, next) => {
   try {
-    const data = await projectService.IndividualProjectTotal();
+    const { tenant_id, branch_id } = req;
+    const data = await projectService.IndividualProjectTotal(tenant_id,branch_id);
 
     // console.log("Controller Data:", data);
 
@@ -281,7 +282,8 @@ exports.IndividualProjectTotal = async (req, res, next) => {
 };
 exports.FetchProjectEdit = async (req, res, next) => {
   try {
-    const data = await projectService.FetchProjectEdit(req.body);
+    const { tenant_id, branch_id } = req;
+    const data = await projectService.FetchProjectEdit(req.body,tenant_id,branch_id);
 
     // console.log("Controller Data:", data);
 
@@ -295,8 +297,9 @@ exports.FetchProjectEdit = async (req, res, next) => {
 };
 exports.EditProject_Details = async (req, res, next) => {
   try {
+    const { tenant_id, branch_id } = req;
     const details = req.body;
-    const data = await projectService.EditProject_Details(details);
+    const data = await projectService.EditProject_Details(details,tenant_id,branch_id);
 
     // console.log("Controller Data:", data);
 

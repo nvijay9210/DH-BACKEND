@@ -4,191 +4,321 @@ const { deleteFile } = require("../utils/UploadFile");
 /* ===============================
    Create Project
 =================================*/
-exports.createProject = async (data) => {
-  const query = `
-    INSERT INTO project_list 
-    (Project_name, Project_type, Project_cost, Margin,
-     Project_Estimation_Cost, Project_start_date,
-     Estimated_end_date, Site_location,
-     Project_status, Contractor, Site_supervisor,
-     Photo, Created_by, CREATED_DATETIME)
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())
-  `;
+exports.createProject = async (data, tenant_id, branch_id) => {
+  let conn;
+  try {
+    conn = await pool.getConnection();
 
-  const result = await pool.query(query, [
-    data.Project_name,
-    data.Project_type,
-    data.Project_cost,
-    data.Margin,
-    data.Project_Estimation_Cost,
-    data.Project_start_date,
-    data.Estimated_end_date,
-    data.Site_location,
-    data.ProjectStatus,
-    data.Contractor,
-    data.Site_supervisor,
-    data.Photo || null,
-    data.Username,
-  ]);
+    const query = `
+      INSERT INTO project_list 
+      (tenant_id, branch_id,
+       Project_name, Project_type, Project_cost, Margin,
+       Project_Estimation_Cost, Project_start_date,
+       Estimated_end_date, Site_location,
+       Project_status, Contractor, Site_supervisor,
+       Photo, Created_by, CREATED_DATETIME)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())
+    `;
 
-  return result;
+    const result = await conn.query(query, [
+      tenant_id,
+      branch_id,
+      data.Project_name,
+      data.Project_type,
+      data.Project_cost,
+      data.Margin,
+      data.Project_Estimation_Cost,
+      data.Project_start_date,
+      data.Estimated_end_date,
+      data.Site_location,
+      data.ProjectStatus,
+      data.Contractor,
+      data.Site_supervisor,
+      data.Photo || null,
+      data.Username,
+    ]);
+
+    return result;
+  } catch (error) {
+    console.error("❌ createProject Error:", error);
+    throw error;
+  } finally {
+    if (conn) conn.release();
+  }
 };
 
 /* ===============================
    Update Project
 =================================*/
-exports.updateProject = async (data) => {
-  const query = `
-    UPDATE project_list 
-    SET Project_name=?,
-        Project_type=?,
-        Project_cost=?,
-        Margin=?,
-        Project_Estimation_Cost=?,
-        Project_start_date=?,
-        Estimated_end_date=?,
-        Site_location=?,
-        Contractor=?,
-        Site_supervisor=?,
-        Photo=?,
-        Project_status=?
-    WHERE Project_id=?
-  `;
+exports.updateProject = async (data, tenant_id, branch_id) => {
+  let conn;
+  try {
+    conn = await pool.getConnection();
 
-  return await pool.query(query, [
-    data.Project_name,
-    data.Project_type,
-    data.Project_cost,
-    data.Margin,
-    data.Project_Estimation_Cost,
-    data.Project_start_date,
-    data.Estimated_end_date,
-    data.Site_location,
-    data.Contractor,
-    data.Site_supervisor,
-    data.Photo,
-    data.Project_status,
-    data.Project_id,
-  ]);
+    const result = await conn.query(
+      `UPDATE project_list 
+       SET Project_name=?, Project_type=?, Project_cost=?, Margin=?,
+           Project_Estimation_Cost=?, Project_start_date=?,
+           Estimated_end_date=?, Site_location=?, Contractor=?,
+           Site_supervisor=?, Photo=?, Project_status=?
+       WHERE Project_id=? AND tenant_id=? AND branch_id=?`,
+      [
+        data.Project_name,
+        data.Project_type,
+        data.Project_cost,
+        data.Margin,
+        data.Project_Estimation_Cost,
+        data.Project_start_date,
+        data.Estimated_end_date,
+        data.Site_location,
+        data.Contractor,
+        data.Site_supervisor,
+        data.Photo,
+        data.Project_status,
+        data.Project_id,
+        tenant_id,
+        branch_id,
+      ]
+    );
+
+    return result;
+  } catch (error) {
+    console.error("❌ updateProject Error:", error);
+    throw error;
+  } finally {
+    if (conn) conn.release();
+  }
 };
 
 /* ===============================
    Get Project List
 =================================*/
-exports.getProjectList = async () => {
-  return await pool.query(`
-    SELECT Project_name, Project_id, Photo,
-           Project_Estimation_Cost, Project_status
-    FROM project_list
-    ORDER BY Project_id DESC
-  `);
+exports.getProjectList = async (tenant_id, branch_id) => {
+  let conn;
+  try {
+    conn = await pool.getConnection();
+
+    const rows = await conn.query(
+      `
+      SELECT Project_name, Project_id, Photo,
+             Project_Estimation_Cost, Project_status
+      FROM project_list
+      WHERE tenant_id = ? AND branch_id = ?
+      ORDER BY Project_id DESC
+    `,
+      [tenant_id, branch_id]
+    );
+
+    return rows;
+  } catch (error) {
+    console.error("❌ getProjectList Error:", error);
+    throw error;
+  } finally {
+    if (conn) conn.release();
+  }
 };
 
 /* ===============================
    Project Total Cost
 =================================*/
-exports.getProjectTotalCost = async () => {
-  const rows = await pool.query(`
-    SELECT IFNULL(SUM(amount),0) as TotalAmount 
-    FROM payment_details 
-    WHERE project_id NOT IN 
-    (SELECT project_id FROM project_list WHERE project_status='Completed')
-  `);
+exports.getProjectTotalCost = async (tenant_id, branch_id) => {
+  let conn;
+  try {
+    conn = await pool.getConnection();
 
-  return rows[0];
+    const rows = await conn.query(
+      `
+      SELECT IFNULL(SUM(amount),0) as TotalAmount 
+      FROM payment_details 
+      WHERE tenant_id = ? AND branch_id = ?
+      AND project_id NOT IN (
+        SELECT project_id FROM project_list 
+        WHERE project_status='Completed' AND tenant_id = ? AND branch_id = ?
+      )
+    `,
+      [tenant_id, branch_id, tenant_id, branch_id]
+    );
+
+    return rows[0];
+  } catch (error) {
+    console.error("❌ getProjectTotalCost Error:", error);
+    throw error;
+  } finally {
+    if (conn) conn.release();
+  }
 };
 
 /* ===============================
    Project Spended (Optimized)
 =================================*/
-exports.getProjectSpended = async () => {
-  const rows = await pool.query(`
-    SELECT 
-      (SELECT IFNULL(SUM(paid),0) FROM labour_worked_details) AS Labour,
-      (SELECT IFNULL(SUM(paid),0) FROM order_details) AS Orders
-  `);
+exports.getProjectSpended = async (tenant_id, branch_id) => {
+  let conn;
+  try {
+    conn = await pool.getConnection();
 
-  return {
-    AmountSpended: Number(rows[0].Labour) + Number(rows[0].Orders),
-  };
+    const rows = await conn.query(
+      `
+      SELECT 
+        (SELECT IFNULL(SUM(lwd.paid),0) 
+         FROM labour_worked_details lwd
+         INNER JOIN project_list p ON lwd.Project_id = p.Project_id
+         WHERE p.tenant_id = ? AND p.branch_id = ?
+         AND p.project_status != 'Completed'
+        ) AS Labour,
+        (SELECT IFNULL(SUM(od.paid),0) 
+         FROM order_details od
+         INNER JOIN project_list p ON od.Project_id = p.Project_id
+         WHERE p.tenant_id = ? AND p.branch_id = ?
+         AND p.project_status != 'Completed'
+        ) AS Orders
+    `,
+      [tenant_id, branch_id, tenant_id, branch_id]
+    );
+
+    return {
+      AmountSpended: Number(rows[0].Labour) + Number(rows[0].Orders),
+    };
+  } catch (error) {
+    console.error("❌ getProjectSpended Error:", error);
+    throw error;
+  } finally {
+    if (conn) conn.release();
+  }
 };
 
 /* ===============================
    Individual Project Spended (Optimized)
 =================================*/
-exports.getIndividualProjectSpended = async () => {
-  const rows = await pool.query(`
-    SELECT 
-      p.Project_id,
-      IFNULL(l.Labour,0) as Labour_Spended,
-      IFNULL(o.Orders,0) as Material_Spended,
-      (IFNULL(l.Labour,0) + IFNULL(o.Orders,0)) as AmountSpended
-    FROM project_list p
-    LEFT JOIN (
-        SELECT Project_id, SUM(Paid) as Labour
-        FROM labour_worked_details
-        GROUP BY Project_id
-    ) l ON p.Project_id = l.Project_id
-    LEFT JOIN (
-        SELECT Project_id, SUM(Paid) as Orders
-        FROM order_details
-        GROUP BY Project_id
-    ) o ON p.Project_id = o.Project_id
-  `);
+exports.getIndividualProjectSpended = async (tenant_id, branch_id) => {
+  let conn;
+  try {
+    conn = await pool.getConnection();
 
-  return rows;
+    const rows = await conn.query(
+      `
+      SELECT 
+        p.Project_id,
+        IFNULL(l.Labour,0) as Labour_Spended,
+        IFNULL(o.Orders,0) as Material_Spended,
+        (IFNULL(l.Labour,0) + IFNULL(o.Orders,0)) as AmountSpended
+      FROM project_list p
+      LEFT JOIN (
+          SELECT Project_id, SUM(Paid) as Labour
+          FROM labour_worked_details
+          GROUP BY Project_id
+      ) l ON p.Project_id = l.Project_id
+      LEFT JOIN (
+          SELECT Project_id, SUM(Paid) as Orders
+          FROM order_details
+          GROUP BY Project_id
+      ) o ON p.Project_id = o.Project_id
+      WHERE p.tenant_id = ? AND p.branch_id = ?
+    `,
+      [tenant_id, branch_id]
+    );
+
+    return rows;
+  } catch (error) {
+    console.error("❌ getIndividualProjectSpended Error:", error);
+    throw error;
+  } finally {
+    if (conn) conn.release();
+  }
 };
 
 /* ===============================
    Individual Project Total (Optimized)
 =================================*/
-exports.getIndividualProjectTotal = async () => {
-  const rows = await pool.query(`
-    SELECT 
-      p.Project_id,
-      IFNULL(SUM(pd.Amount),0) as Amount
-    FROM project_list p
-    LEFT JOIN payment_details pd 
-      ON p.Project_id = pd.Project_id
-    GROUP BY p.Project_id
-  `);
+exports.getIndividualProjectTotal = async (tenant_id, branch_id) => {
+  let conn;
+  try {
+    conn = await pool.getConnection();
 
-  return rows;
+    const rows = await conn.query(
+      `
+      SELECT 
+        p.Project_id,
+        IFNULL(SUM(pd.Amount),0) as Amount
+      FROM project_list p
+      LEFT JOIN payment_details pd 
+        ON p.Project_id = pd.Project_id AND pd.tenant_id = ? AND pd.branch_id = ?
+      WHERE p.tenant_id = ? AND p.branch_id = ?
+      GROUP BY p.Project_id
+    `,
+      [tenant_id, branch_id, tenant_id, branch_id]
+    );
+
+    return rows;
+  } catch (error) {
+    console.error("❌ getIndividualProjectTotal Error:", error);
+    throw error;
+  } finally {
+    if (conn) conn.release();
+  }
 };
 
 /* ===============================
    Get Project By ID
 =================================*/
-exports.getProjectById = async (id) => {
-  const rows = await pool.query(
-    `SELECT * FROM project_list WHERE Project_id=?`,
-    [id]
-  );
-  return rows[0];
+exports.getProjectById = async (id, tenant_id, branch_id) => {
+  let conn;
+  try {
+    conn = await pool.getConnection();
+
+    const rows = await conn.query(
+      `SELECT * FROM project_list 
+       WHERE Project_id = ? AND tenant_id = ? AND branch_id = ?`,
+      [id, tenant_id, branch_id]
+    );
+
+    return rows[0];
+  } catch (error) {
+    console.error("❌ getProjectById Error:", error);
+    throw error;
+  } finally {
+    if (conn) conn.release();
+  }
 };
 
 /* ===============================
    Delete Project Payment
 =================================*/
-exports.deleteProjectPayment = async (paymentId) => {
-  return await pool.query(`DELETE FROM payment_details WHERE Payment_id=?`, [
-    paymentId,
-  ]);
+exports.deleteProjectPayment = async (paymentId, tenant_id, branch_id) => {
+  let conn;
+  try {
+    conn = await pool.getConnection();
+
+    const result = await conn.query(
+      `DELETE FROM payment_details 
+       WHERE Payment_id = ? AND tenant_id = ? AND branch_id = ?`,
+      [paymentId, tenant_id, branch_id]
+    );
+
+    return result;
+  } catch (error) {
+    console.error("❌ deleteProjectPayment Error:", error);
+    throw error;
+  } finally {
+    if (conn) conn.release();
+  }
 };
 
-exports.projectDetailsService = async (details) => {
-  const date = new Date();
-
-  const convert = (str) => {
-    var date = new Date(str),
-      mnth = ("0" + (date.getMonth() + 1)).slice(-2),
-      day = ("0" + date.getDate()).slice(-2);
-    return [date.getFullYear(), mnth, day].join("-");
-  };
-
-  const formattedDate = convert(date);
-  //console.log(req.body);
+/* ===============================
+   Project Details Service (Insert)
+=================================*/
+exports.projectDetailsService = async (details, tenant_id, branch_id) => {
+  let conn;
   try {
+    conn = await pool.getConnection();
+
+    const convert = (str) => {
+      if (!str) return null;
+      const date = new Date(str);
+      const mnth = ("0" + (date.getMonth() + 1)).slice(-2);
+      const day = ("0" + date.getDate()).slice(-2);
+      return [date.getFullYear(), mnth, day].join("-");
+    };
+
     const {
       Project_name,
       Project_type,
@@ -205,9 +335,16 @@ exports.projectDetailsService = async (details) => {
       photo,
     } = details;
 
-    await pool.query(
-      "INSERT INTO project_list (Project_name, Project_type, Project_cost, Margin, Project_Estimation_Cost, Project_start_date, Estimated_end_date, Site_location,Project_Status, Contractor, Site_supervisor, Photo,Created_by,CREATED_DATETIME) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+    await conn.query(
+      `INSERT INTO project_list 
+       (tenant_id, branch_id, Project_name, Project_type, Project_cost, Margin, 
+        Project_Estimation_Cost, Project_start_date, Estimated_end_date, 
+        Site_location, Project_Status, Contractor, Site_supervisor, 
+        Photo, Created_by, CREATED_DATETIME) 
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())`,
       [
+        tenant_id,
+        branch_id,
         Project_name,
         Project_type,
         Project_cost,
@@ -221,126 +358,188 @@ exports.projectDetailsService = async (details) => {
         Site_supervisor,
         photo,
         Username,
-        formattedDate,
       ]
     );
 
-    console.log("Data inserted successfully");
+    console.log("✅ Data inserted successfully");
     return "Data inserted successfully";
   } catch (error) {
-    console.error("Error:", error);
+    console.error("❌ projectDetailsService Error:", error);
+    throw error;
+  } finally {
+    if (conn) conn.release();
   }
 };
 
-exports.projectList = async () => {
+/* ===============================
+   Project List (Legacy)
+=================================*/
+exports.projectList = async (tenant_id, branch_id) => {
+  let conn;
   try {
-    const rows = await pool.query(
-      "SELECT Project_name, Project_id, Photo,Project_Estimation_Cost,Project_status FROM project_list ORDER BY Project_id DESC"
+    conn = await pool.getConnection();
+    console.log(tenant_id, branch_id);
+
+    const rows = await conn.query(
+      "SELECT Project_name, Project_id, Photo, Project_Estimation_Cost, Project_status FROM project_list WHERE tenant_id = ? AND branch_id = ? ORDER BY Project_id DESC",
+      [tenant_id, branch_id]
     );
-    // const rows1 = await pool.query("SELECT Sum(Project_Estimation_Cost) FROM project_list");
+
     return rows;
   } catch (err) {
-    console.log("Connection Failed", err);
+    console.error("❌ projectList Error:", err);
+    throw err;
+  } finally {
+    if (conn) conn.release();
   }
 };
 
-exports.ProjectTotalCost = async () => {
+/* ===============================
+   Project Total Cost (Legacy)
+=================================*/
+exports.ProjectTotalCost = async (tenant_id, branch_id) => {
+  let conn;
   try {
-    const rows1 = await pool.query(
-      "SELECT SUM(amount) as TotalAmount FROM payment_details WHERE project_id NOT IN   (SELECT project_id FROM project_list WHERE project_status='Completed') "
+    conn = await pool.getConnection();
+
+    const rows = await conn.query(
+      "SELECT IFNULL(SUM(amount),0) as TotalAmount FROM payment_details WHERE tenant_id = ? AND branch_id = ? AND project_id NOT IN (SELECT project_id FROM project_list WHERE project_status='Completed' AND tenant_id = ? AND branch_id = ?)",
+      [tenant_id, branch_id, tenant_id, branch_id]
     );
-    return rows1[0];
+
+    return rows[0];
   } catch (err) {
-    console.log("Connection Failed", err);
+    console.error("❌ ProjectTotalCost Error:", err);
+    throw err;
+  } finally {
+    if (conn) conn.release();
   }
 };
 
-exports.ProjectSpended = async () => {
+/* ===============================
+   Project Spended (Legacy)
+=================================*/
+exports.ProjectSpended = async (tenant_id, branch_id) => {
+  let conn;
   try {
-    //const row1 = await pool.query('SELECT SUM(Amount) as Mesure FROM daily_process_details where Status = "Paid"');
-    const row2 = await pool.query(
-      "SELECT SUM(paid) as Labour FROM labour_worked_details WHERE project_id NOT IN   (SELECT project_id FROM project_list WHERE project_status='Completed')"
+    conn = await pool.getConnection();
+
+    const row2 = await conn.query(
+      "SELECT IFNULL(SUM(lwd.paid),0) as Labour FROM labour_worked_details lwd INNER JOIN project_list p ON lwd.Project_id = p.Project_id WHERE p.tenant_id = ? AND p.branch_id = ? AND p.project_status != 'Completed'",
+      [tenant_id, branch_id]
     );
-    const row3 = await pool.query(
-      "SELECT SUM(paid) as Orders FROM order_details WHERE project_id NOT IN   (SELECT project_id FROM project_list WHERE project_status='Completed')"
+
+    const row3 = await conn.query(
+      "SELECT IFNULL(SUM(od.paid),0) as Orders FROM order_details od INNER JOIN project_list p ON od.Project_id = p.Project_id WHERE p.tenant_id = ? AND p.branch_id = ? AND p.project_status != 'Completed'",
+      [tenant_id, branch_id]
     );
+
     const AmountSpended = Number(row2[0].Labour) + Number(row3[0].Orders);
     return AmountSpended;
   } catch (err) {
-    console.log("Connection Failed", err);
+    console.error("❌ ProjectSpended Error:", err);
+    throw err;
+  } finally {
+    if (conn) conn.release();
   }
 };
 
-exports.IndividualProjectSpended = async () => {
-  const row = await pool.query("SELECT Project_id FROM project_list");
+/* ===============================
+   Individual Project Spended (Legacy)
+=================================*/
+exports.IndividualProjectSpended = async (tenant_id, branch_id) => {
+  let conn;
+  try {
+    conn = await pool.getConnection();
 
-  const lists = [];
-
-  const promises = row.map(async (items) => {
-    const row3 = await pool.query(
-      "SELECT SUM(Amount) as Orders FROM payment_details WHERE Project_id = ?",
-      [items.Project_id]
+    const row = await conn.query(
+      "SELECT Project_id FROM project_list WHERE tenant_id = ? AND branch_id = ?",
+      [tenant_id, branch_id]
     );
 
-    const Amount = Number(row3[0].Orders || 0);
-
-    lists.push({
-      Project_id: items.Project_id,
-      Amount,
-    });
-  });
-
-  await Promise.all(promises);
-
-  return lists;
-};
-
-exports.IndividualProjectTotal = async () => {
-  try {
-    const row = await pool.query("SELECT Project_id FROM project_list");
     const lists = [];
+    const promises = row.map(async (items) => {
+      const row3= await conn.query(
+        "SELECT IFNULL(SUM(Amount),0) as Orders FROM payment_details WHERE Project_id = ? AND tenant_id = ? AND branch_id = ?",
+        [items.Project_id, tenant_id, branch_id]
+      );
+      const Amount = Number(row3[0].Orders || 0);
+      lists.push({ Project_id: items.Project_id, Amount });
+    });
 
-    async function fetchData(row) {
-      const promises = row.map(async (items) => {
-        const row3 = await pool.query(
-          "SELECT SUM(Amount) as Orders FROM payment_details WHERE Project_id = ?",
-          [items.Project_id]
-        );
-
-        const Amount = Number(row3[0].Orders || 0);
-
-        lists.push({
-          Project_id: items.Project_id,
-          Amount,
-        });
-      });
-
-      await Promise.all(promises);
-      return lists;
-    }
-
-    return fetchData(row); // ✅ VERY IMPORTANT
+    await Promise.all(promises);
+    return lists;
   } catch (err) {
-    console.log("Connection Failed", err);
-    throw err; // also good practice
+    console.error("❌ IndividualProjectSpended Error:", err);
+    throw err;
+  } finally {
+    if (conn) conn.release();
   }
 };
-exports.FetchProjectEdit = async (details) => {
+
+/* ===============================
+   Individual Project Total (Legacy)
+=================================*/
+exports.IndividualProjectTotal = async (tenant_id, branch_id) => {
+  let conn;
   try {
-    const Project = await pool
-      .query("select * from project_list where Project_id = ? ;", [
-        details.pro_id,
-      ])
-      .catch((err) => console.log(err));
+    conn = await pool.getConnection();
+
+    const row = await conn.query(
+      "SELECT Project_id FROM project_list WHERE tenant_id = ? AND branch_id = ?",
+      [tenant_id, branch_id]
+    );
+
+    const lists = [];
+    const promises = row.map(async (items) => {
+      const row3 = await conn.query(
+        "SELECT IFNULL(SUM(Amount),0) as Orders FROM payment_details WHERE Project_id = ? AND tenant_id = ? AND branch_id = ?",
+        [items.Project_id, tenant_id, branch_id]
+      );
+      const Amount = Number(row3[0].Orders || 0);
+      lists.push({ Project_id: items.Project_id, Amount });
+    });
+
+    await Promise.all(promises);
+    return lists;
+  } catch (err) {
+    console.error("❌ IndividualProjectTotal Error:", err);
+    throw err;
+  } finally {
+    if (conn) conn.release();
+  }
+};
+
+/* ===============================
+   Fetch Project Edit
+=================================*/
+exports.FetchProjectEdit = async (details, tenant_id, branch_id) => {
+  let conn;
+  try {
+    conn = await pool.getConnection();
+
+    const Project = await conn.query(
+      "SELECT * FROM project_list WHERE Project_id = ? AND tenant_id = ? AND branch_id = ?",
+      [details.pro_id, tenant_id, branch_id]
+    );
+
     return Project[0];
   } catch (err) {
-    console.log("Connection Failed", err);
-    throw err; // also good practice
+    console.error("❌ FetchProjectEdit Error:", err);
+    throw err;
+  } finally {
+    if (conn) conn.release();
   }
 };
 
-exports.EditProject_Details = async (details) => {
+/* ===============================
+   Edit Project Details
+=================================*/
+exports.EditProject_Details = async (details, tenant_id, branch_id) => {
+  let conn;
   try {
+    conn = await pool.getConnection();
+
     const {
       Project_name,
       Project_type,
@@ -357,28 +556,24 @@ exports.EditProject_Details = async (details) => {
       Project_id,
     } = details;
 
-    // ==========================
-    // 📌 Get Existing Photo
-    // ==========================
-    const [rows] = await pool.query(
-      "SELECT Photo FROM project_list WHERE Project_id = ?",
-      [Project_id]
+    // 📌 Get Existing Photo (with tenant/branch filter)
+    const rows = await conn.query(
+      "SELECT Photo FROM project_list WHERE Project_id = ? AND tenant_id = ? AND branch_id = ?",
+      [Project_id, tenant_id, branch_id]
     );
 
-    console.log('roes:',rows)
+    if (!rows || rows.length === 0) {
+      throw new Error("Project not found or access denied");
+    }
 
-    const oldPhoto = rows?.Photo || null;
+    const oldPhoto = rows.Photo || null;
 
-    // ==========================
     // 🗑 Delete old photo if changed
-    // ==========================
     if (oldPhoto && photo && oldPhoto !== photo) {
       await deleteFile(oldPhoto);
     }
 
-    // ==========================
     // 📅 Convert Dates
-    // ==========================
     const convert = (str) => {
       if (!str) return null;
       const date = new Date(str);
@@ -390,24 +585,14 @@ exports.EditProject_Details = async (details) => {
     const Startdate = convert(Project_start_date);
     const Enddate = convert(Estimated_end_date);
 
-    // ==========================
     // 💾 Update DB
-    // ==========================
-    await pool.query(
+    const result = await conn.query(
       `UPDATE project_list SET 
-        Project_name = ?, 
-        Project_type = ?, 
-        Project_cost = ?, 
-        Margin = ?, 
-        Project_Estimation_Cost = ?, 
-        Project_start_date = ?, 
-        Estimated_end_date = ?, 
-        Site_location = ?, 
-        Contractor = ?, 
-        Site_supervisor = ?, 
-        Photo = ?, 
-        Project_status = ? 
-      WHERE Project_id = ?`,
+        Project_name = ?, Project_type = ?, Project_cost = ?, Margin = ?, 
+        Project_Estimation_Cost = ?, Project_start_date = ?, 
+        Estimated_end_date = ?, Site_location = ?, Contractor = ?, 
+        Site_supervisor = ?, Photo = ?, Project_status = ? 
+      WHERE Project_id = ? AND tenant_id = ? AND branch_id = ?`,
       [
         Project_name,
         Project_type,
@@ -422,14 +607,16 @@ exports.EditProject_Details = async (details) => {
         photo,
         Project_status,
         Project_id,
+        tenant_id,
+        branch_id,
       ]
     );
 
     return "Data Updated successfully";
-
   } catch (error) {
-    console.error("Error:", error);
+    console.error("❌ EditProject_Details Error:", error);
     throw error;
+  } finally {
+    if (conn) conn.release();
   }
 };
-

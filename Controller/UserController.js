@@ -17,6 +17,7 @@ exports.login = async (req, res, next) => {
 };
 exports.logout = async (req, res, next) => {
   try {
+const { tenant_id, branch_id } = req;
     const details = req.body;
 
     const data = await userService.logout(details);
@@ -31,9 +32,10 @@ exports.logout = async (req, res, next) => {
 };
 exports.userDetails = async (req, res, next) => {
   try {
-    // const details=req.body
+const { tenant_id, branch_id } = req;
+    const role=req.user.role
     // //console.log(details)
-    const data = await userService.userDetails();
+    const data = await userService.userDetails(tenant_id, branch_id,role);
 
     res.status(200).json({
       success: true,
@@ -45,9 +47,10 @@ exports.userDetails = async (req, res, next) => {
 };
 exports.userList = async (req, res, next) => {
   try {
-    // const details=req.body
-    // //console.log(details)
-    const data = await userService.userList();
+const { tenant_id, branch_id } = req;
+    const role=req.user.role
+    // console.log(role)
+    const data = await userService.userList(tenant_id, branch_id,role);
 
     res.status(200).json({
       success: true,
@@ -59,9 +62,10 @@ exports.userList = async (req, res, next) => {
 };
 exports.fullUserList = async (req, res, next) => {
   try {
+const { tenant_id, branch_id } = req;
     // const details=req.body
     // //console.log(details)
-    const data = await userService.fullUserList();
+    const data = await userService.fullUserList(tenant_id, branch_id);
 
     res.status(200).json({
       success: true,
@@ -73,9 +77,10 @@ exports.fullUserList = async (req, res, next) => {
 };
 exports.userAccess = async (req, res, next) => {
   try {
+const { tenant_id, branch_id } = req;
     const Details = req.body;
     // //console.log(details)
-    const data = await userService.userAccess(Details);
+    const data = await userService.userAccess(Details,tenant_id, branch_id);
 
     res.status(200).json({
       success: true,
@@ -87,9 +92,10 @@ exports.userAccess = async (req, res, next) => {
 };
 exports.adminPassChange = async (req, res, next) => {
   try {
+const { tenant_id, branch_id } = req;
     const Details = req.body;
     // //console.log(details)
-    const data = await userService.adminPassChange(Details);
+    const data = await userService.adminPassChange(Details,tenant_id, branch_id);
 
     res.status(200).json({
       success: true,
@@ -101,10 +107,9 @@ exports.adminPassChange = async (req, res, next) => {
 };
 exports.newUser = async (req, res, next) => {
   try {
+const { tenant_id, branch_id } = req;
     const Details = req.body;
     const username = req.user.username;
-    const tenant_id = req.tenant_id || Details.tenant_id;
-    const branch_id = req.branch_id || Details.tenant_id;
     //console.log(details)
     const data = await userService.newUser(
       Details,
