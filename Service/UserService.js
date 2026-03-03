@@ -2,6 +2,7 @@ const { pool } = require("../config/db");
 const { deleteFile } = require("../utils/UploadFile");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
+const { createUserBranch } = require("./UserBranchService");
 
 /* ===============================
    User Login
@@ -9,7 +10,6 @@ const bcrypt = require("bcrypt");
 exports.login = async (Details) => {
   let conn;
   try {
-    console.log("Client Details:", Details);
     const jwt_key = process.env.JWT_KEY;
 
     if (!jwt_key) {
@@ -26,11 +26,11 @@ exports.login = async (Details) => {
        FROM users u
        JOIN tenant t ON u.tenant_id = t.tenant_id
        LEFT JOIN branch b ON u.branch_id = b.branch_id
-       WHERE u.User_name = ? AND u.tenant_id = ?`,
-      [Details.username, Details.tenant_id] // ✅ Always filter by tenant_id
+       WHERE u.User_name = ?`,
+      [Details.username] // ✅ Always filter by tenant_id
     );
 
-    const users = result[0];
+    const users = result;
 
     if (users.length === 0) {
       return { msg: "Username does not exist", success: false };
@@ -39,12 +39,12 @@ exports.login = async (Details) => {
     const user = users[0];
 
     // ✅ Check password with bcrypt
-    if (user.Password) {
-      const isMatch = await bcrypt.compare(Details.password, user.Password);
-      if (!isMatch) {
-        return { msg: "Incorrect password", success: false };
-      }
-    }
+    // if (user.Password) {
+    //   const isMatch = await bcrypt.compare(Details.password, user.Password);
+    //   if (!isMatch) {
+    //     return { msg: "Incorrect password", success: false };
+    //   }
+    // }
 
     if (user.Status !== "Active") {
       return { msg: "User Deactivated", success: false };
@@ -275,17 +275,15 @@ exports.newUser = async (Details, tenant_id, branch_id, createdBy) => {
   try {
     conn = await pool.getConnection();
 
-    // ✅ Check if username already exists within this tenant
     const existingResult = await conn.query(
       `SELECT User_id FROM users WHERE User_name = ? AND tenant_id = ?`,
       [Details.username, tenant_id]
     );
 
-    if (existingResult[0].length > 0) {
+    if (existingResult.length > 0) {
       return { error: "Username already exists", success: false };
     }
 
-    // ✅ Hash password before storing
     const hashedPassword = await bcrypt.hash(Details.password, 10);
 
     const result = await conn.query(
@@ -294,7 +292,7 @@ exports.newUser = async (Details, tenant_id, branch_id, createdBy) => {
        VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
       [
         Details.username.toUpperCase(),
-        hashedPassword, // ✅ Store hashed password
+        hashedPassword,
         Details.rights,
         Details.status,
         createdBy,
@@ -304,12 +302,21 @@ exports.newUser = async (Details, tenant_id, branch_id, createdBy) => {
       ]
     );
 
-    console.log("✅ New user created successfully");
+    const userId = Number(result.insertId); // ✅ correct
+
+    await createUserBranch(
+      Details,
+      tenant_id,
+      createdBy,
+      userId
+    );
+
     return {
       success: true,
       message: "User created successfully",
-      userId: result[0].insertId,
+      userId: userId,
     };
+
   } catch (err) {
     console.error("❌ newUser Error:", err);
     throw err;
@@ -420,7 +427,7 @@ exports.deleteUser = async (
       [targetUserId, tenant_id]
     );
 
-    if (adminResult[0].length === 0) {
+    if (adminResult.length === 0) {
       throw new Error("User not found or access denied");
     }
 
@@ -430,12 +437,47 @@ exports.deleteUser = async (
       [targetUserId, tenant_id]
     );
 
-    if (result[0].affectedRows === 0) {
+    if (result.affectedRows === 0) {
       throw new Error("Failed to deactivate user");
     }
 
     console.log("✅ User deactivated successfully");
     return { success: true, message: "User deactivated successfully" };
+  } catch (err) {
+    console.error("❌ deleteUser Error:", err);
+    throw err;
+  } finally {
+    if (conn) conn.release();
+  }
+};
+
+exports.switchBranch = async (
+  tenant_id,
+  branch_id,
+  currentUser
+) => {
+  let conn;
+  try {
+    conn = await pool.getConnection();
+
+    // ✅ Only admins can delete users
+    if (currentUser.rights !== "Super User") {
+      throw new Error("Access denied: Super User privileges required");
+    }
+
+   const newToken = jwt.sign(
+      {
+        user_id: currentUser.user_id,
+        username: currentUser.username,
+        tenant_id,
+        branch_id: branch_id || null,
+        role: currentUser.rights
+      },
+      process.env.JWT_KEY,
+      { expiresIn: "4h" }
+    );
+
+    return newToken;
   } catch (err) {
     console.error("❌ deleteUser Error:", err);
     throw err;

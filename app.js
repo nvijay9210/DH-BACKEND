@@ -3,7 +3,6 @@ const fs = require("fs");
 const path = require("path");
 const { globalErrorHandler } = require("./utils/ErrorHandler");
 
-const projectDetailsRouter = require("./Routes/ProjectRoute");
 const materialRouter = require("./Routes/MaterialRoute");
 const masterRouter = require("./Routes/MasterRoute");
 const orderRouter = require("./Routes/OrderRoute");
@@ -13,10 +12,11 @@ const projectRouter = require("./Routes/ProjectRoute");
 const userRouter = require("./Routes/UserRoute");
 const tenantRouter = require("./Routes/TenantRoute");
 const branchRouter = require("./Routes/BranchRoute");
+const userBranchRouter = require("./Routes/UserBranchRoute");
 
 const authMiddleware = require("./Middleware/AuthMiddleware");
 const contextMiddleware = require("./Middleware/ContextMiddleware");
-const branchAccessMiddleware = require("./Middleware/BranchAccessMiddleware");
+// const branchAccessMiddleware = require("./Middleware/BranchAccessMiddleware");
 
 const app = express();
 
@@ -62,7 +62,6 @@ const routesPath = path.join(__dirname, "routes");
 //   });
 // }
 
-app.use(`/api/project`, projectDetailsRouter);
 app.use(`/api/material`, materialRouter);
 app.use(`/api/master`, masterRouter);
 app.use(`/api/order`, orderRouter);
@@ -71,13 +70,8 @@ app.use(`/api/payment`, paymentRouter);
 app.use(`/api/project`, projectRouter);
 app.use(`/api/user`, userRouter);
 app.use(`/api/tenant`, authMiddleware, tenantRouter);
-app.use(
-  `/api/branch`,
-  authMiddleware,
-  contextMiddleware,
-  branchAccessMiddleware,
-  branchRouter
-);
+app.use(`/api/branch`, authMiddleware, branchRouter);
+app.use(`/api/userbranch`, authMiddleware, userBranchRouter);
 
 // ✅ Global error handler
 app.use(globalErrorHandler);
