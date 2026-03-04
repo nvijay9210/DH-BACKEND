@@ -10,14 +10,14 @@ const authMiddleware = (req, res, next) => {
   const token = authHeader.split(" ")[1];
 
   try {
-    // console.log("token:", token, process.env.JWT_KEY);
     const decoded = jwt.verify(token, process.env.JWT_KEY);
-    // console.log("decoded:", decoded);
 
     req.tenant_id = decoded.tenant_id;
     req.branch_id = decoded.branch_id;
+    req.user_id = decoded.user_id;
 
-    req.user = decoded; // attach full user payload
+    req.user = decoded;
+
     next();
   } catch (err) {
     return res.status(403).json({ message: "Invalid or expired token" });

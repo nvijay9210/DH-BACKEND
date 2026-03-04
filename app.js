@@ -1,7 +1,7 @@
 const express = require("express");
 const fs = require("fs");
 const path = require("path");
-const { globalErrorHandler } = require("./utils/ErrorHandler");
+const errorHandler = require("./utils/ErrorHandler");
 
 const materialRouter = require("./Routes/MaterialRoute");
 const masterRouter = require("./Routes/MasterRoute");
@@ -24,6 +24,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 const cors = require("cors");
+const { AppError } = require("./Logics/AppError");
 
 app.use(
   cors({
@@ -74,6 +75,6 @@ app.use(`/api/branch`, authMiddleware, branchRouter);
 app.use(`/api/userbranch`, authMiddleware, userBranchRouter);
 
 // ✅ Global error handler
-app.use(globalErrorHandler);
+app.use(errorHandler);
 
 module.exports = app;

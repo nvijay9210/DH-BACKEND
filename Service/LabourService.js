@@ -1,5 +1,5 @@
 const { pool } = require("../config/db");
-const { deleteFile } = require("../utils/UploadFile");
+const { AppError } = require("../Logics/AppError");
 
 /* ===============================
    Labour Details - Insert Multiple
@@ -8,55 +8,34 @@ exports.labourDetails = async (Order, tenant_id, branch_id) => {
   let conn;
   try {
     if (!Order || Order.length === 0) {
-      throw new Error("No details found in the request");
+      throw new AppError("No labour details provided", 400);
     }
-
     conn = await pool.getConnection();
-    
     const insertQuery = `
-      INSERT INTO labour_worked_details 
-      (tenant_id, branch_id, Project_id, Project_name, Date, Contractor, 
-       Labour_types, No_Of_Persons, Salary, Ratio, Total, Site_supervisor, 
-       Payment_Date, Paid, Balance, Status, CREATED_BY, CREATED_DATETIME) 
+      INSERT INTO labour_worked_details
+      (tenant_id, branch_id, Project_id, Project_name, Date, Contractor,
+      Labour_types, No_Of_Persons, Salary, Ratio, Total, Site_supervisor,
+      Payment_Date, Paid, Balance, Status, CREATED_BY, CREATED_DATETIME)
       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `;
-
     const promises = Order.map(async (details) => {
       const {
         Project_id, Project_name, Date, Contractor, Labour_types,
         No_Of_Persons, Salary, Ratio, Total, Site_supervisor,
         Paid, Balance, Status, Payment_Date, username, currentDate,
       } = details;
-
       await conn.query(insertQuery, [
-        tenant_id,
-        branch_id,
-        Project_id,
-        Project_name,
-        Date,
-        Contractor,
-        Labour_types,
-        No_Of_Persons,
-        Salary,
-        Ratio,
-        Total,
-        Site_supervisor,
-        Payment_Date,
-        Paid,
-        Balance,
-        Status,
-        username,
-        currentDate,
+        tenant_id, branch_id, Project_id, Project_name, Date, Contractor,
+        Labour_types, No_Of_Persons, Salary, Ratio, Total, Site_supervisor,
+        Payment_Date, Paid, Balance, Status, username, currentDate,
       ]);
     });
-
     await Promise.all(promises);
     console.log("✅ Details saved to the database");
     return { success: true, message: "Details saved successfully" };
-    
   } catch (error) {
     console.error("❌ labourDetails Error:", error);
-    throw error;
+    throw new AppError("Failed to save labour details", 500, error);
   } finally {
     if (conn) conn.release();
   }
@@ -69,22 +48,18 @@ exports.updateLabour = async (details, tenant_id, branch_id) => {
   let conn;
   try {
     const { username, currentDate, LabourUpdate } = details;
-    
     if (!LabourUpdate || LabourUpdate.length === 0) {
-      throw new Error("No labour updates provided");
+      throw new AppError("No labour updates provided", 400);
     }
-
     conn = await pool.getConnection();
-    
     const updateQuery = `
-      UPDATE labour_worked_details 
-      SET Project_id = ?, Project_name = ?, DATE = ?, Contractor = ?, 
-          Labour_types = ?, No_Of_Persons = ?, Salary = ?, Ratio = ?, 
-          Total = ?, Site_supervisor = ?, Payment_Date = ?, Paid = ?, 
-          Balance = ?, Status = ?, LAST_UPDATED_BY = ?, LAST_UPDATED_DATETIME = ? 
+      UPDATE labour_worked_details
+      SET Project_id = ?, Project_name = ?, DATE = ?, Contractor = ?,
+      Labour_types = ?, No_Of_Persons = ?, Salary = ?, Ratio = ?,
+      Total = ?, Site_supervisor = ?, Payment_Date = ?, Paid = ?,
+      Balance = ?, Status = ?, LAST_UPDATED_BY = ?, LAST_UPDATED_DATETIME = ?
       WHERE Labour_id = ? AND tenant_id = ? AND branch_id = ?
     `;
-
     const convert = (str) => {
       if (!str) return null;
       const date = new Date(str);
@@ -92,7 +67,6 @@ exports.updateLabour = async (details, tenant_id, branch_id) => {
       const day = ("0" + date.getDate()).slice(-2);
       return [date.getFullYear(), mnth, day].join("-");
     };
-
     const promises = LabourUpdate.map(async (order) => {
       const date = convert(order.DATE);
       const {
@@ -100,88 +74,62 @@ exports.updateLabour = async (details, tenant_id, branch_id) => {
         No_Of_Persons, Salary, Ratio, Total, Site_supervisor,
         Payment_Date, Paid, Balance, Status, Labour_id,
       } = order;
-
       await conn.query(updateQuery, [
-        Project_id,
-        Project_name,
-        date,
-        Contractor,
-        Labour_types,
-        No_Of_Persons,
-        Salary,
-        Ratio,
-        Total,
-        Site_supervisor,
-        Payment_Date,
-        Paid,
-        Balance,
-        Status,
-        username,
-        currentDate,
-        Labour_id,
-        tenant_id,
-        branch_id,
+        Project_id, Project_name, date, Contractor, Labour_types,
+        No_Of_Persons, Salary, Ratio, Total, Site_supervisor,
+        Payment_Date, Paid, Balance, Status, username, currentDate,
+        Labour_id, tenant_id, branch_id,
       ]);
     });
-
     await Promise.all(promises);
     console.log("✅ Labour records updated successfully");
     return { success: true, message: "Labour records updated successfully" };
-    
   } catch (error) {
     console.error("❌ updateLabour Error:", error);
-    throw error;
+    throw new AppError("Failed to update labour records", 500, error);
   } finally {
     if (conn) conn.release();
   }
 };
 
 /* ===============================
-   Fetch Labour Update (Delete by ID)
+   Delete Labour Record by ID
 =================================*/
 exports.fetchLabourUpdate = async (Details, tenant_id, branch_id) => {
   let conn;
   try {
     conn = await pool.getConnection();
-    
     const result = await conn.query(
-      `DELETE FROM labour_worked_details 
-       WHERE Project_id = ? AND Labour_id = ? AND tenant_id = ? AND branch_id = ?`,
+      `DELETE FROM labour_worked_details
+      WHERE Project_id = ? AND Labour_id = ? AND tenant_id = ? AND branch_id = ?`,
       [Details.Project_id, Details.Labour_id, tenant_id, branch_id]
     );
-    
     if (result[0].affectedRows === 0) {
-      throw new Error("Labour record not found or access denied");
+      throw new AppError("Labour record not found", 404);
     }
-    
     console.log("✅ Labour record deleted successfully");
     return { success: true, message: "Record deleted successfully" };
-    
   } catch (error) {
     console.error("❌ fetchLabourUpdate Error:", error);
-    throw error;
+    throw new AppError("Failed to delete labour record", 500, error);
   } finally {
     if (conn) conn.release();
   }
 };
 
 /* ===============================
-   Labour Delete (Fetch by Project & Date)
+   Fetch Labour by Project & Date
 =================================*/
 exports.labourDelete = async (Details, tenant_id, branch_id) => {
   let conn;
   try {
     conn = await pool.getConnection();
-    
     const result = await conn.query(
-      `SELECT * FROM labour_worked_details 
-       WHERE Project_id = ? AND Date = ? AND tenant_id = ? AND branch_id = ?`,
+      `SELECT * FROM labour_worked_details
+      WHERE Project_id = ? AND Date = ? AND tenant_id = ? AND branch_id = ?`,
       [Details.Id, Details.date, tenant_id, branch_id]
     );
-    
     const rows = result[0];
-    
-    // ✅ Convert BigInt values to strings for JSON serialization
     const convertedRows = rows.map((row) => ({
       ...row,
       Salary: row.Salary?.toString(),
@@ -189,12 +137,10 @@ exports.labourDelete = async (Details, tenant_id, branch_id) => {
       Paid: row.Paid?.toString(),
       Balance: row.Balance?.toString(),
     }));
-    
     return convertedRows;
-    
   } catch (error) {
     console.error("❌ labourDelete Error:", error);
-    throw error;
+    throw new AppError("Failed to fetch labour records", 500, error);
   } finally {
     if (conn) conn.release();
   }
@@ -207,17 +153,14 @@ exports.labourReports = async (Details, tenant_id, branch_id) => {
   let conn;
   try {
     conn = await pool.getConnection();
-    
     const result = await conn.query(
-      `SELECT * FROM labour_worked_details 
-       WHERE tenant_id = ? AND branch_id = ? AND Project_id = ? 
-         AND Date BETWEEN ? AND ?
-       ORDER BY Labour_id, Date`,
+      `SELECT * FROM labour_worked_details
+      WHERE tenant_id = ? AND branch_id = ? AND Project_id = ?
+      AND Date BETWEEN ? AND ?
+      ORDER BY Labour_id, Date`,
       [tenant_id, branch_id, Details.Id, Details.Start, Details.End]
     );
-    
     const rows = result[0];
-    
     const convertedRows = rows.map((row) => ({
       ...row,
       Salary: row.Salary?.toString(),
@@ -225,12 +168,10 @@ exports.labourReports = async (Details, tenant_id, branch_id) => {
       Paid: row.Paid?.toString(),
       Balance: row.Balance?.toString(),
     }));
-    
     return convertedRows;
-    
   } catch (error) {
     console.error("❌ labourReports Error:", error);
-    throw error;
+    throw new AppError("Failed to fetch labour reports", 500, error);
   } finally {
     if (conn) conn.release();
   }
@@ -243,30 +184,26 @@ exports.labourPayment = async (Details, tenant_id, branch_id) => {
   let conn;
   try {
     conn = await pool.getConnection();
-    
     let query, params;
-    
-    if (Details.contractor == "null" || !Details.contractor) {
+    if (!Details.contractor || Details.contractor === "null") {
       query = `
-        SELECT * FROM labour_worked_details 
-        WHERE tenant_id = ? AND branch_id = ? AND Project_id = ? 
-          AND Status != 'Paid' AND Date BETWEEN ? AND ?
+        SELECT * FROM labour_worked_details
+        WHERE tenant_id = ? AND branch_id = ? AND Project_id = ?
+        AND Status != 'Paid' AND Date BETWEEN ? AND ?
         ORDER BY Date ASC
       `;
       params = [tenant_id, branch_id, Details.Id, Details.Start, Details.End];
     } else {
       query = `
-        SELECT * FROM labour_worked_details 
-        WHERE tenant_id = ? AND branch_id = ? AND Project_id = ? 
-          AND Contractor = ? AND Status != 'Paid' AND Date BETWEEN ? AND ?
+        SELECT * FROM labour_worked_details
+        WHERE tenant_id = ? AND branch_id = ? AND Project_id = ?
+        AND Contractor = ? AND Status != 'Paid' AND Date BETWEEN ? AND ?
         ORDER BY Date ASC
       `;
       params = [tenant_id, branch_id, Details.Id, Details.contractor, Details.Start, Details.End];
     }
-    
     const result = await conn.query(query, params);
     const rows = result[0];
-    
     const convertedRows = rows.map((row) => ({
       ...row,
       Salary: row.Salary?.toString(),
@@ -274,12 +211,10 @@ exports.labourPayment = async (Details, tenant_id, branch_id) => {
       Paid: row.Paid?.toString(),
       Balance: row.Balance?.toString(),
     }));
-    
     return convertedRows;
-    
   } catch (error) {
     console.error("❌ labourPayment Error:", error);
-    throw error;
+    throw new AppError("Failed to fetch unpaid labour records", 500, error);
   } finally {
     if (conn) conn.release();
   }
@@ -292,40 +227,33 @@ exports.labourPaymentUpdate = async (Details, tenant_id, branch_id) => {
   let conn;
   try {
     conn = await pool.getConnection();
-    
     let query, params;
-    
-    if (Details.contractor == "null" || !Details.contractor) {
+    if (!Details.contractor || Details.contractor === "null") {
       query = `
-        UPDATE labour_worked_details 
+        UPDATE labour_worked_details
         SET Paid = Total, Status = 'Paid', Balance = 0, Payment_Date = ?
-        WHERE tenant_id = ? AND branch_id = ? AND Project_id = ? 
-          AND Status != 'Paid' AND Date BETWEEN ? AND ?
-        ORDER BY Date
+        WHERE tenant_id = ? AND branch_id = ? AND Project_id = ?
+        AND Status != 'Paid' AND Date BETWEEN ? AND ?
       `;
       params = [Details.Payment_Date, tenant_id, branch_id, Details.Id, Details.Start, Details.End];
     } else {
       query = `
-        UPDATE labour_worked_details 
+        UPDATE labour_worked_details
         SET Paid = Total, Status = 'Paid', Balance = 0, Payment_Date = ?
-        WHERE tenant_id = ? AND branch_id = ? AND Project_id = ? 
-          AND Contractor = ? AND Status != 'Paid' AND Date BETWEEN ? AND ?
-        ORDER BY Date
+        WHERE tenant_id = ? AND branch_id = ? AND Project_id = ?
+        AND Contractor = ? AND Status != 'Paid' AND Date BETWEEN ? AND ?
       `;
       params = [Details.Payment_Date, tenant_id, branch_id, Details.Id, Details.contractor, Details.Start, Details.End];
     }
-    
     const result = await conn.query(query, params);
-    
-    return { 
-      success: true, 
+    return {
+      success: true,
       message: `${result[0].affectedRows} records updated successfully`,
-      affectedRows: result[0].affectedRows 
+      affectedRows: result[0].affectedRows
     };
-    
   } catch (error) {
     console.error("❌ labourPaymentUpdate Error:", error);
-    throw error;
+    throw new AppError("Failed to update payment status", 500, error);
   } finally {
     if (conn) conn.release();
   }
@@ -338,40 +266,33 @@ exports.allLabourPaymentUpdate = async (Details, tenant_id, branch_id) => {
   let conn;
   try {
     conn = await pool.getConnection();
-    
     let query, params;
-    
-    if (Details.contractor == "null" || !Details.contractor) {
+    if (!Details.contractor || Details.contractor === "null") {
       query = `
-        UPDATE labour_worked_details 
+        UPDATE labour_worked_details
         SET Paid = Total, Status = 'Paid', Balance = 0, Payment_Date = ?
-        WHERE tenant_id = ? AND branch_id = ? AND Status != 'Paid' 
-          AND Date BETWEEN ? AND ?
-        ORDER BY Date
+        WHERE tenant_id = ? AND branch_id = ? AND Status != 'Paid'
+        AND Date BETWEEN ? AND ?
       `;
       params = [Details.Payment_Date, tenant_id, branch_id, Details.Start, Details.End];
     } else {
       query = `
-        UPDATE labour_worked_details 
+        UPDATE labour_worked_details
         SET Paid = Total, Status = 'Paid', Balance = 0, Payment_Date = ?
-        WHERE tenant_id = ? AND branch_id = ? AND Contractor = ? 
-          AND Status != 'Paid' AND Date BETWEEN ? AND ?
-        ORDER BY Date
+        WHERE tenant_id = ? AND branch_id = ? AND Contractor = ?
+        AND Status != 'Paid' AND Date BETWEEN ? AND ?
       `;
       params = [Details.Payment_Date, tenant_id, branch_id, Details.contractor, Details.Start, Details.End];
     }
-    
     const result = await conn.query(query, params);
-    
-    return { 
-      success: true, 
+    return {
+      success: true,
       message: `${result[0].affectedRows} records updated successfully`,
-      affectedRows: result[0].affectedRows 
+      affectedRows: result[0].affectedRows
     };
-    
   } catch (error) {
     console.error("❌ allLabourPaymentUpdate Error:", error);
-    throw error;
+    throw new AppError("Failed to update payment status", 500, error);
   } finally {
     if (conn) conn.release();
   }
@@ -384,30 +305,26 @@ exports.allLabourPayment = async (Details, tenant_id, branch_id) => {
   let conn;
   try {
     conn = await pool.getConnection();
-    
     let query, params;
-    
-    if (Details.contractor == "null" || !Details.contractor) {
+    if (!Details.contractor || Details.contractor === "null") {
       query = `
-        SELECT * FROM labour_worked_details 
-        WHERE tenant_id = ? AND branch_id = ? AND Status != 'Paid' 
-          AND Date BETWEEN ? AND ?
+        SELECT * FROM labour_worked_details
+        WHERE tenant_id = ? AND branch_id = ? AND Status != 'Paid'
+        AND Date BETWEEN ? AND ?
         ORDER BY Date
       `;
       params = [tenant_id, branch_id, Details.Start, Details.End];
     } else {
       query = `
-        SELECT * FROM labour_worked_details 
-        WHERE tenant_id = ? AND branch_id = ? AND Contractor = ? 
-          AND Status != 'Paid' AND Date BETWEEN ? AND ?
+        SELECT * FROM labour_worked_details
+        WHERE tenant_id = ? AND branch_id = ? AND Contractor = ?
+        AND Status != 'Paid' AND Date BETWEEN ? AND ?
         ORDER BY Date
       `;
       params = [tenant_id, branch_id, Details.contractor, Details.Start, Details.End];
     }
-    
     const result = await conn.query(query, params);
     const rows = result[0];
-    
     const convertedRows = rows.map((row) => ({
       ...row,
       Salary: row.Salary?.toString(),
@@ -415,12 +332,10 @@ exports.allLabourPayment = async (Details, tenant_id, branch_id) => {
       Paid: row.Paid?.toString(),
       Balance: row.Balance?.toString(),
     }));
-    
     return convertedRows;
-    
   } catch (error) {
     console.error("❌ allLabourPayment Error:", error);
-    throw error;
+    throw new AppError("Failed to fetch unpaid records", 500, error);
   } finally {
     if (conn) conn.release();
   }
@@ -433,20 +348,17 @@ exports.fetchContractorPay = async (tenant_id, branch_id) => {
   let conn;
   try {
     conn = await pool.getConnection();
-    
     const result = await conn.query(
-      `SELECT Contractor, SUM(Balance) as TotalBalance 
-       FROM labour_worked_details 
-       WHERE tenant_id = ? AND branch_id = ? AND Status != 'Paid'
-       GROUP BY Contractor`,
+      `SELECT Contractor, SUM(Balance) as TotalBalance
+      FROM labour_worked_details
+      WHERE tenant_id = ? AND branch_id = ? AND Status != 'Paid'
+      GROUP BY Contractor`,
       [tenant_id, branch_id]
     );
-    
     return result[0];
-    
   } catch (error) {
     console.error("❌ fetchContractorPay Error:", error);
-    throw error;
+    throw new AppError("Failed to fetch contractor summary", 500, error);
   } finally {
     if (conn) conn.release();
   }
@@ -459,30 +371,26 @@ exports.contractorReport = async (Details, tenant_id, branch_id) => {
   let conn;
   try {
     conn = await pool.getConnection();
-    
     let query, params;
-    
-    if (Details.contractor == "null" || !Details.contractor) {
+    if (!Details.contractor || Details.contractor === "null") {
       query = `
-        SELECT * FROM labour_worked_details 
-        WHERE tenant_id = ? AND branch_id = ? AND Project_id = ? 
-          AND Date BETWEEN ? AND ?
+        SELECT * FROM labour_worked_details
+        WHERE tenant_id = ? AND branch_id = ? AND Project_id = ?
+        AND Date BETWEEN ? AND ?
         ORDER BY Date
       `;
       params = [tenant_id, branch_id, Details.Id, Details.Start, Details.End];
     } else {
       query = `
-        SELECT * FROM labour_worked_details 
-        WHERE tenant_id = ? AND branch_id = ? AND Project_id = ? 
-          AND Contractor = ? AND Date BETWEEN ? AND ?
+        SELECT * FROM labour_worked_details
+        WHERE tenant_id = ? AND branch_id = ? AND Project_id = ?
+        AND Contractor = ? AND Date BETWEEN ? AND ?
         ORDER BY Date
       `;
       params = [tenant_id, branch_id, Details.Id, Details.contractor, Details.Start, Details.End];
     }
-    
     const result = await conn.query(query, params);
     const rows = result[0];
-    
     const convertedRows = rows.map((row) => ({
       ...row,
       Salary: row.Salary?.toString(),
@@ -490,69 +398,61 @@ exports.contractorReport = async (Details, tenant_id, branch_id) => {
       Paid: row.Paid?.toString(),
       Balance: row.Balance?.toString(),
     }));
-    
     return convertedRows;
-    
   } catch (error) {
     console.error("❌ contractorReport Error:", error);
-    throw error;
+    throw new AppError("Failed to fetch contractor report", 500, error);
   } finally {
     if (conn) conn.release();
   }
 };
 
 /* ===============================
-   Contractor Delete (Master Table)
+   Delete Contractor (Master Table)
 =================================*/
 exports.contractorDelete = async (Details, tenant_id, branch_id) => {
   let conn;
   try {
     conn = await pool.getConnection();
-    
     const result = await conn.query(
-      `DELETE FROM mas_labour_details 
-       WHERE id = ? AND tenant_id = ? AND branch_id = ?`,
+      `DELETE FROM mas_labour_details
+      WHERE id = ? AND tenant_id = ? AND branch_id = ?`,
       [Number(Details.id), tenant_id, branch_id]
     );
-    
     if (result[0].affectedRows === 0) {
-      throw new Error("Contractor not found or access denied");
+      throw new AppError("Contractor not found", 404);
     }
-    
     return { success: true, message: "Contractor deleted successfully" };
-    
   } catch (error) {
     console.error("❌ contractorDelete Error:", error);
-    throw error;
+    throw new AppError("Failed to delete contractor", 500, error);
   } finally {
     if (conn) conn.release();
   }
 };
 
 /* ===============================
-   Supplier Delete (Master Table)
+   Delete Supplier (Master Table)
 =================================*/
 exports.supplierDelete = async (Details, tenant_id, branch_id) => {
   let conn;
   try {
     conn = await pool.getConnection();
-    
     const result = await conn.query(
-      `DELETE FROM mas_material_list 
-       WHERE id = ? AND tenant_id = ? AND branch_id = ?`,
+      `DELETE FROM mas_material_list
+      WHERE id = ? AND tenant_id = ? AND branch_id = ?`,
       [Number(Details.id), tenant_id, branch_id]
     );
-    
     if (result[0].affectedRows === 0) {
-      throw new Error("Supplier not found or access denied");
+      throw new AppError("Supplier not found", 404);
     }
-    
     return { success: true, message: "Supplier deleted successfully" };
-    
   } catch (error) {
     console.error("❌ supplierDelete Error:", error);
-    throw error;
+    throw new AppError("Failed to delete supplier", 500, error);
   } finally {
     if (conn) conn.release();
   }
 };
+
+module.exports = exports;
