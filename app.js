@@ -25,6 +25,7 @@ app.use(express.urlencoded({ extended: true }));
 
 const cors = require("cors");
 const { AppError } = require("./Logics/AppError");
+const cookieParser = require("cookie-parser");
 
 app.use(
   cors({
@@ -37,6 +38,7 @@ app.use(
     credentials: true,
   })
 );
+app.use(cookieParser());
 
 // 👇 VERY IMPORTANT
 app.use("/uploads", express.static(path.join(__dirname, "..", "UPLOADS")));
@@ -64,7 +66,7 @@ const routesPath = path.join(__dirname, "routes");
 // }
 
 app.use(`/api/material`, materialRouter);
-app.use(`/api/master`, masterRouter);
+app.use(`/api/master`,authMiddleware, masterRouter);
 app.use(`/api/order`, orderRouter);
 app.use(`/api/labour`, labourRouter);
 app.use(`/api/payment`, paymentRouter);

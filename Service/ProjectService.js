@@ -360,7 +360,7 @@ exports.projectList = async (tenant_id, branch_id) => {
       "SELECT Project_name, Project_id, Photo, Project_Estimation_Cost, Project_status FROM project_list WHERE tenant_id = ? AND branch_id = ? ORDER BY Project_id DESC",
       [tenant_id, branch_id]
     );
-    return result[0];
+    return result;
   } catch (err) {
     console.error("❌ projectList Error:", err);
     throw err instanceof AppError
@@ -422,7 +422,7 @@ exports.IndividualProjectSpended = async (tenant_id, branch_id) => {
       [tenant_id, branch_id]
     );
     const lists = [];
-    for (const items of row[0]) {
+    for (const items of row) {
       const row3 = await conn.query(
         "SELECT IFNULL(SUM(Amount),0) as Orders FROM payment_details WHERE Project_id = ? AND tenant_id = ? AND branch_id = ?",
         [items.Project_id, tenant_id, branch_id]
@@ -453,7 +453,7 @@ exports.IndividualProjectTotal = async (tenant_id, branch_id) => {
       [tenant_id, branch_id]
     );
     const lists = [];
-    for (const items of row[0]) {
+    for (const items of row) {
       const row3 = await conn.query(
         "SELECT IFNULL(SUM(Amount),0) as Orders FROM payment_details WHERE Project_id = ? AND tenant_id = ? AND branch_id = ?",
         [items.Project_id, tenant_id, branch_id]

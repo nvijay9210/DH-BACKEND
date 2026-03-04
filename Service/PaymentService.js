@@ -52,7 +52,7 @@ exports.fetchPaymentUpdate = async (details, tenant_id, branch_id) => {
       WHERE tenant_id = ? AND branch_id = ? AND Payment_date = ? AND Project_id = ?`,
       [tenant_id, branch_id, details.date, details.Id]
     );
-    return result[0];
+    return result;
   } catch (err) {
     console.error("❌ fetchPaymentUpdate Error:", err);
     throw err instanceof AppError
@@ -161,7 +161,7 @@ exports.clientPaymentReport = async (Details, tenant_id, branch_id) => {
       ORDER BY payment_date`,
       [tenant_id, branch_id, Details.Id, Details.Start, Details.End]
     );
-    return result[0];
+    return result;
   } catch (error) {
     console.error("❌ clientPaymentReport Error:", error);
     throw new AppError("Failed to fetch payment reports", 500, error);
@@ -184,7 +184,7 @@ exports.materialPaymentsUpdate = async (Details, tenant_id, branch_id) => {
       ORDER BY payment_date`,
       [tenant_id, branch_id, Details.Id, Details.Start, Details.End]
     );
-    return result[0];
+    return result;
   } catch (error) {
     console.error("❌ materialPaymentsUpdate Error:", error);
     throw new AppError("Failed to fetch payment records", 500, error);
@@ -221,7 +221,7 @@ exports.allMaterialPaymentUpdate = async (Details, tenant_id, branch_id) => {
         ORDER BY CREATED_DATETIME`,
         [tenant_id, branch_id, Supplier, Start, End]
       );
-      const orders = selectResult[0];
+      const orders = selectResult;
       for (const item of orders) {
         if (remainingAmount <= 0) break;
         const itemBalance = Number(item.Balance);
@@ -432,7 +432,7 @@ exports.allMaterialPayment = async (Details, tenant_id, branch_id) => {
       ];
     }
     const result = await conn.query(query, params);
-    const rows = result[0];
+    const rows = result;
     const convertedRows = rows.map((row) => ({
       ...row,
       Paid: row.Paid?.toString(),
@@ -479,7 +479,7 @@ exports.fetchMaterialBalance = async (Details, tenant_id, branch_id) => {
       ];
     }
     const result = await conn.query(query, params);
-    const rows = result[0];
+    const rows = result;
     const convertedRows = rows.map((row) => ({
       ...row,
       Paid: row.Paid?.toString(),
@@ -509,7 +509,7 @@ exports.fetchMaterialPay = async (tenant_id, branch_id) => {
       GROUP BY supplier_name`,
       [tenant_id, branch_id]
     );
-    return result[0];
+    return result;
   } catch (err) {
     console.error("❌ fetchMaterialPay Error:", err);
     throw err instanceof AppError

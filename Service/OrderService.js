@@ -315,7 +315,7 @@ exports.fetchOrderUpdate = async (Details, tenant_id, branch_id) => {
       ORDER BY Order_date`,
       [tenant_id, branch_id, Details.Id, Details.start_date, Details.end_date]
     );
-    return result[0];
+    return result;
   } catch (err) {
     console.error("❌ fetchOrderUpdate Error:", err);
     throw err instanceof AppError

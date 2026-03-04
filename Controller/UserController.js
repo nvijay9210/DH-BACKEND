@@ -4,11 +4,19 @@ const userService = require("../Service/UserService");
 exports.login = async (req, res) => {
   const data = await userService.login(req.body);
   
-  res.cookie("token", data?.token, {
-    httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
-    maxAge: 24 * 60 * 60 * 1000,
-  });
+  // res.cookie("token", data?.token, {
+  //   httpOnly: true,
+  //   sameSite: process.env.NODE_ENV === "production"?"none":"lax",
+  //   secure: process.env.NODE_ENV !== "production",
+  //   maxAge: 24 * 60 * 60 * 1000,
+  // });
+
+  res.cookie("token", data.token, {
+  httpOnly: true,
+  sameSite: "lax",
+  secure: false,
+  maxAge: 24 * 60 * 60 * 1000,
+});
   
   res.status(200).json({ success: true, data });
 };

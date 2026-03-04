@@ -104,7 +104,7 @@ exports.fetchMaterial = async (tenant_id, branch_id) => {
       "SELECT * FROM mas_material_list WHERE tenant_id = ? AND branch_id = ?",
       [tenant_id, branch_id]
     );
-    return result[0];
+    return result;
   } catch (err) {
     console.error("❌ fetchMaterial Error:", err);
     throw err instanceof AppError
@@ -122,7 +122,7 @@ exports.fetchLabour = async (tenant_id, branch_id) => {
       "SELECT * FROM mas_labour_Details WHERE tenant_id = ? AND branch_id = ?",
       [tenant_id, branch_id]
     );
-    return result[0];
+    return result;
   } catch (err) {
     console.error("❌ fetchLabour Error:", err);
     throw err instanceof AppError
@@ -140,7 +140,7 @@ exports.fetchContractor = async (tenant_id, branch_id) => {
       "SELECT DISTINCT Contractor FROM mas_labour_Details WHERE tenant_id = ? AND branch_id = ? AND Contractor IS NOT NULL",
       [tenant_id, branch_id]
     );
-    return result[0];
+    return result;
   } catch (err) {
     console.error("❌ fetchContractor Error:", err);
     throw err instanceof AppError
@@ -158,7 +158,7 @@ exports.fetchSupplier = async (tenant_id, branch_id) => {
       "SELECT * FROM mas_material_list WHERE tenant_id = ? AND branch_id = ? AND Supplier_Name IS NOT NULL",
       [tenant_id, branch_id]
     );
-    return result[0];
+    return result;
   } catch (err) {
     console.error("❌ fetchSupplier Error:", err);
     throw err instanceof AppError

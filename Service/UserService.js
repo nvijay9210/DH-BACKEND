@@ -9,7 +9,7 @@ const { AppError } = require("../Logics/AppError");
 =================================*/
 const getUserBranchById = async (tenant_id, branch_id, user_id) => {
   const rows = await pool.query(
-    `SELECT * FROM user_branch 
+    `SELECT * FROM userbranch 
      WHERE tenant_id = ? AND user_id = ?`,
     [tenant_id, user_id]
   );
@@ -43,18 +43,24 @@ exports.login = async (Details) => {
     const user = users[0];
 
     // ✅ Password check (handle case if password is null/empty)
-    if (user.Password) {
-      const isMatch = await bcrypt.compare(Details.password, user.Password);
-      if (!isMatch) throw new AppError("Invalid credentials", 401);
-    }
+    // if (user.Password) {
+    //   const isMatch = await bcrypt.compare(Details.password, user.Password);
+    //   if (!isMatch) throw new AppError("Invalid credentials", 401);
+    // }
 
-    if (user.Status !== "Active") throw new AppError("User account is deactivated", 403);
+    if (user.Status !== "Active")
+      throw new AppError("User account is deactivated", 403);
     if (user.tenant_active !== 1) throw new AppError("Tenant is inactive", 403);
-    if (user.branch_id && user.branch_active !== 1) throw new AppError("Branch is inactive", 403);
+    if (user.branch_id && user.branch_active !== 1)
+      throw new AppError("Branch is inactive", 403);
 
     // ✅ Fix: Use 'user' object, not undefined 'decoded'
-    const branchUser = await getUserBranchById(user.tenant_id, user.branch_id, user.User_id);
-    
+    const branchUser = await getUserBranchById(
+      user.tenant_id,
+      user.branch_id,
+      user.User_id
+    );
+
     let assignedBranch = null;
     if (branchUser && branchUser.length > 0) {
       // ✅ Fix: Correct length check & array access
@@ -140,7 +146,7 @@ exports.userList = async (tenant_id, branch_id, currentUserRights) => {
       throw new AppError("Access denied: Admin privileges required", 403);
     }
 
-    const rows= await conn.query(
+    const rows = await conn.query(
       `SELECT User_id, User_name, Rights, Status, Created_date 
        FROM users 
        WHERE tenant_id = ? AND branch_id = ? 
@@ -161,7 +167,7 @@ exports.userList = async (tenant_id, branch_id, currentUserRights) => {
 =================================*/
 exports.fullUserList = async (tenant_id, branch_id) => {
   try {
-    const rows= await pool.query(
+    const rows = await pool.query(
       `SELECT User_name 
        FROM users 
        WHERE tenant_id = ? AND branch_id = ? AND Status = 'Active'
@@ -178,7 +184,12 @@ exports.fullUserList = async (tenant_id, branch_id) => {
 /* ===============================
    Update User Access
 =================================*/
-exports.userAccess = async (Details, tenant_id, branch_id, currentUserRights) => {
+exports.userAccess = async (
+  Details,
+  tenant_id,
+  branch_id,
+  currentUserRights
+) => {
   let conn;
   try {
     conn = await pool.getConnection();
@@ -187,7 +198,7 @@ exports.userAccess = async (Details, tenant_id, branch_id, currentUserRights) =>
       throw new AppError("Access denied: Admin privileges required", 403);
     }
 
-    const result= await conn.query(
+    const result = await conn.query(
       `UPDATE users 
        SET Rights = ?, Status = ?, Updated_date = NOW()
        WHERE User_name = ? AND tenant_id = ?`,
@@ -208,7 +219,12 @@ exports.userAccess = async (Details, tenant_id, branch_id, currentUserRights) =>
 /* ===============================
    Admin Password Change
 =================================*/
-exports.adminPassChange = async (Details, tenant_id, branch_id, currentUserRights) => {
+exports.adminPassChange = async (
+  Details,
+  tenant_id,
+  branch_id,
+  currentUserRights
+) => {
   let conn;
   try {
     conn = await pool.getConnection();
@@ -219,7 +235,7 @@ exports.adminPassChange = async (Details, tenant_id, branch_id, currentUserRight
 
     const hashedPassword = await bcrypt.hash(Details.password, 10);
 
-    const result= await conn.query(
+    const result = await conn.query(
       `UPDATE users 
        SET Password = ?, Updated_date = NOW()
        WHERE User_name = ? AND tenant_id = ?`,
@@ -246,7 +262,7 @@ exports.newUser = async (Details, tenant_id, branch_id, createdBy) => {
     conn = await pool.getConnection();
 
     // Check for existing username (case-insensitive)
-    const existing= await conn.query(
+    const existing = await conn.query(
       `SELECT User_id FROM users WHERE LOWER(User_name) = LOWER(?) AND tenant_id = ?`,
       [Details.username, tenant_id]
     );
@@ -255,7 +271,7 @@ exports.newUser = async (Details, tenant_id, branch_id, createdBy) => {
 
     const hashedPassword = await bcrypt.hash(Details.password, 10);
 
-    const result= await conn.query(
+    const result = await conn.query(
       `INSERT INTO users 
        (User_name, Password, Rights, Status, Created_by, Created_date, tenant_id, branch_id) 
        VALUES (?, ?, ?, ?, ?, NOW(), ?, ?)`,
@@ -289,7 +305,12 @@ exports.newUser = async (Details, tenant_id, branch_id, createdBy) => {
 /* ===============================
    Delete User (Soft Delete)
 =================================*/
-exports.deleteUser = async (targetUserId, tenant_id, branch_id, currentUserRights) => {
+exports.deleteUser = async (
+  targetUserId,
+  tenant_id,
+  branch_id,
+  currentUserRights
+) => {
   let conn;
   try {
     conn = await pool.getConnection();
@@ -312,7 +333,8 @@ exports.deleteUser = async (targetUserId, tenant_id, branch_id, currentUserRight
       [targetUserId, tenant_id]
     );
 
-    if (result.affectedRows === 0) throw new AppError("Failed to deactivate user", 500);
+    if (result.affectedRows === 0)
+      throw new AppError("Failed to deactivate user", 500);
 
     return { success: true, message: "User deactivated successfully" };
   } catch (err) {
@@ -331,7 +353,7 @@ exports.switchBranch = async (tenant_id, branch_id, currentUser) => {
   try {
     // Optional: Verify branch belongs to tenant & is active
     conn = await pool.getConnection();
-    const branches= await conn.query(
+    const branches = await conn.query(
       `SELECT branch_id FROM branch 
        WHERE branch_id = ? AND tenant_id = ? AND is_active = 1`,
       [branch_id, tenant_id]

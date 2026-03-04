@@ -20,14 +20,42 @@ exports.labourDetails = async (Order, tenant_id, branch_id) => {
     `;
     const promises = Order.map(async (details) => {
       const {
-        Project_id, Project_name, Date, Contractor, Labour_types,
-        No_Of_Persons, Salary, Ratio, Total, Site_supervisor,
-        Paid, Balance, Status, Payment_Date, username, currentDate,
+        Project_id,
+        Project_name,
+        Date,
+        Contractor,
+        Labour_types,
+        No_Of_Persons,
+        Salary,
+        Ratio,
+        Total,
+        Site_supervisor,
+        Paid,
+        Balance,
+        Status,
+        Payment_Date,
+        username,
+        currentDate,
       } = details;
       await conn.query(insertQuery, [
-        tenant_id, branch_id, Project_id, Project_name, Date, Contractor,
-        Labour_types, No_Of_Persons, Salary, Ratio, Total, Site_supervisor,
-        Payment_Date, Paid, Balance, Status, username, currentDate,
+        tenant_id,
+        branch_id,
+        Project_id,
+        Project_name,
+        Date,
+        Contractor,
+        Labour_types,
+        No_Of_Persons,
+        Salary,
+        Ratio,
+        Total,
+        Site_supervisor,
+        Payment_Date,
+        Paid,
+        Balance,
+        Status,
+        username,
+        currentDate,
       ]);
     });
     await Promise.all(promises);
@@ -70,15 +98,41 @@ exports.updateLabour = async (details, tenant_id, branch_id) => {
     const promises = LabourUpdate.map(async (order) => {
       const date = convert(order.DATE);
       const {
-        Project_id, Project_name, Contractor, Labour_types,
-        No_Of_Persons, Salary, Ratio, Total, Site_supervisor,
-        Payment_Date, Paid, Balance, Status, Labour_id,
+        Project_id,
+        Project_name,
+        Contractor,
+        Labour_types,
+        No_Of_Persons,
+        Salary,
+        Ratio,
+        Total,
+        Site_supervisor,
+        Payment_Date,
+        Paid,
+        Balance,
+        Status,
+        Labour_id,
       } = order;
       await conn.query(updateQuery, [
-        Project_id, Project_name, date, Contractor, Labour_types,
-        No_Of_Persons, Salary, Ratio, Total, Site_supervisor,
-        Payment_Date, Paid, Balance, Status, username, currentDate,
-        Labour_id, tenant_id, branch_id,
+        Project_id,
+        Project_name,
+        date,
+        Contractor,
+        Labour_types,
+        No_Of_Persons,
+        Salary,
+        Ratio,
+        Total,
+        Site_supervisor,
+        Payment_Date,
+        Paid,
+        Balance,
+        Status,
+        username,
+        currentDate,
+        Labour_id,
+        tenant_id,
+        branch_id,
       ]);
     });
     await Promise.all(promises);
@@ -104,7 +158,7 @@ exports.fetchLabourUpdate = async (Details, tenant_id, branch_id) => {
       WHERE Project_id = ? AND Labour_id = ? AND tenant_id = ? AND branch_id = ?`,
       [Details.Project_id, Details.Labour_id, tenant_id, branch_id]
     );
-    if (result[0].affectedRows === 0) {
+    if (result.affectedRows === 0) {
       throw new AppError("Labour record not found", 404);
     }
     console.log("✅ Labour record deleted successfully");
@@ -129,7 +183,7 @@ exports.labourDelete = async (Details, tenant_id, branch_id) => {
       WHERE Project_id = ? AND Date = ? AND tenant_id = ? AND branch_id = ?`,
       [Details.Id, Details.date, tenant_id, branch_id]
     );
-    const rows = result[0];
+    const rows = result;
     const convertedRows = rows.map((row) => ({
       ...row,
       Salary: row.Salary?.toString(),
@@ -200,7 +254,14 @@ exports.labourPayment = async (Details, tenant_id, branch_id) => {
         AND Contractor = ? AND Status != 'Paid' AND Date BETWEEN ? AND ?
         ORDER BY Date ASC
       `;
-      params = [tenant_id, branch_id, Details.Id, Details.contractor, Details.Start, Details.End];
+      params = [
+        tenant_id,
+        branch_id,
+        Details.Id,
+        Details.contractor,
+        Details.Start,
+        Details.End,
+      ];
     }
     const result = await conn.query(query, params);
     const rows = result[0];
@@ -235,7 +296,14 @@ exports.labourPaymentUpdate = async (Details, tenant_id, branch_id) => {
         WHERE tenant_id = ? AND branch_id = ? AND Project_id = ?
         AND Status != 'Paid' AND Date BETWEEN ? AND ?
       `;
-      params = [Details.Payment_Date, tenant_id, branch_id, Details.Id, Details.Start, Details.End];
+      params = [
+        Details.Payment_Date,
+        tenant_id,
+        branch_id,
+        Details.Id,
+        Details.Start,
+        Details.End,
+      ];
     } else {
       query = `
         UPDATE labour_worked_details
@@ -243,13 +311,21 @@ exports.labourPaymentUpdate = async (Details, tenant_id, branch_id) => {
         WHERE tenant_id = ? AND branch_id = ? AND Project_id = ?
         AND Contractor = ? AND Status != 'Paid' AND Date BETWEEN ? AND ?
       `;
-      params = [Details.Payment_Date, tenant_id, branch_id, Details.Id, Details.contractor, Details.Start, Details.End];
+      params = [
+        Details.Payment_Date,
+        tenant_id,
+        branch_id,
+        Details.Id,
+        Details.contractor,
+        Details.Start,
+        Details.End,
+      ];
     }
     const result = await conn.query(query, params);
     return {
       success: true,
       message: `${result[0].affectedRows} records updated successfully`,
-      affectedRows: result[0].affectedRows
+      affectedRows: result[0].affectedRows,
     };
   } catch (error) {
     console.error("❌ labourPaymentUpdate Error:", error);
@@ -274,7 +350,13 @@ exports.allLabourPaymentUpdate = async (Details, tenant_id, branch_id) => {
         WHERE tenant_id = ? AND branch_id = ? AND Status != 'Paid'
         AND Date BETWEEN ? AND ?
       `;
-      params = [Details.Payment_Date, tenant_id, branch_id, Details.Start, Details.End];
+      params = [
+        Details.Payment_Date,
+        tenant_id,
+        branch_id,
+        Details.Start,
+        Details.End,
+      ];
     } else {
       query = `
         UPDATE labour_worked_details
@@ -282,13 +364,20 @@ exports.allLabourPaymentUpdate = async (Details, tenant_id, branch_id) => {
         WHERE tenant_id = ? AND branch_id = ? AND Contractor = ?
         AND Status != 'Paid' AND Date BETWEEN ? AND ?
       `;
-      params = [Details.Payment_Date, tenant_id, branch_id, Details.contractor, Details.Start, Details.End];
+      params = [
+        Details.Payment_Date,
+        tenant_id,
+        branch_id,
+        Details.contractor,
+        Details.Start,
+        Details.End,
+      ];
     }
     const result = await conn.query(query, params);
     return {
       success: true,
       message: `${result[0].affectedRows} records updated successfully`,
-      affectedRows: result[0].affectedRows
+      affectedRows: result[0].affectedRows,
     };
   } catch (error) {
     console.error("❌ allLabourPaymentUpdate Error:", error);
@@ -321,7 +410,13 @@ exports.allLabourPayment = async (Details, tenant_id, branch_id) => {
         AND Status != 'Paid' AND Date BETWEEN ? AND ?
         ORDER BY Date
       `;
-      params = [tenant_id, branch_id, Details.contractor, Details.Start, Details.End];
+      params = [
+        tenant_id,
+        branch_id,
+        Details.contractor,
+        Details.Start,
+        Details.End,
+      ];
     }
     const result = await conn.query(query, params);
     const rows = result[0];
@@ -355,7 +450,7 @@ exports.fetchContractorPay = async (tenant_id, branch_id) => {
       GROUP BY Contractor`,
       [tenant_id, branch_id]
     );
-    return result[0];
+    return result;
   } catch (error) {
     console.error("❌ fetchContractorPay Error:", error);
     throw new AppError("Failed to fetch contractor summary", 500, error);
@@ -387,7 +482,14 @@ exports.contractorReport = async (Details, tenant_id, branch_id) => {
         AND Contractor = ? AND Date BETWEEN ? AND ?
         ORDER BY Date
       `;
-      params = [tenant_id, branch_id, Details.Id, Details.contractor, Details.Start, Details.End];
+      params = [
+        tenant_id,
+        branch_id,
+        Details.Id,
+        Details.contractor,
+        Details.Start,
+        Details.End,
+      ];
     }
     const result = await conn.query(query, params);
     const rows = result[0];
