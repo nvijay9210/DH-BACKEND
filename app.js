@@ -13,6 +13,7 @@ const userRouter = require("./Routes/UserRoute");
 const tenantRouter = require("./Routes/TenantRoute");
 const branchRouter = require("./Routes/BranchRoute");
 const userBranchRouter = require("./Routes/UserBranchRoute");
+const ssoAuth=require('./Keycloak/SSOAuth');
 
 const authMiddleware = require("./Middleware/AuthMiddleware");
 const contextMiddleware = require("./Middleware/ContextMiddleware");
@@ -64,6 +65,8 @@ const routesPath = path.join(__dirname, "routes");
 //     }
 //   });
 // }
+
+app.use(`/api/keycloak`, ssoAuth);
 
 app.use(`/api/material`, materialRouter);
 app.use(`/api/master`,authMiddleware, masterRouter);

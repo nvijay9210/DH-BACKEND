@@ -31,7 +31,7 @@ exports.login = async (Details) => {
       `SELECT u.*, 
           t.is_active AS tenant_active,
           b.is_active AS branch_active
-       FROM users u
+       FROM user u
        JOIN tenant t ON u.tenant_id = t.tenant_id
        LEFT JOIN branch b ON u.branch_id = b.branch_id
        WHERE u.User_name = ?`,
@@ -120,7 +120,7 @@ exports.userDetails = async (tenant_id, branch_id, currentUserRights) => {
 
     const rows = await conn.query(
       `SELECT User_id, User_name, Rights, Status, Created_by, Created_date, tenant_id, branch_id 
-       FROM users 
+       FROM user 
        WHERE tenant_id = ? AND branch_id = ?
        ORDER BY User_name`,
       [tenant_id, branch_id]
@@ -148,7 +148,7 @@ exports.userList = async (tenant_id, branch_id, currentUserRights) => {
 
     const rows = await conn.query(
       `SELECT User_id, User_name, Rights, Status, Created_date 
-       FROM users 
+       FROM user 
        WHERE tenant_id = ? AND branch_id = ? 
        ORDER BY User_name`,
       [tenant_id, branch_id]
@@ -169,7 +169,7 @@ exports.fullUserList = async (tenant_id, branch_id) => {
   try {
     const rows = await pool.query(
       `SELECT User_name 
-       FROM users 
+       FROM user 
        WHERE tenant_id = ? AND branch_id = ? AND Status = 'Active'
        ORDER BY User_name`,
       [tenant_id, branch_id]
@@ -263,7 +263,7 @@ exports.newUser = async (Details, tenant_id, branch_id, createdBy) => {
 
     // Check for existing username (case-insensitive)
     const existing = await conn.query(
-      `SELECT User_id FROM users WHERE LOWER(User_name) = LOWER(?) AND tenant_id = ?`,
+      `SELECT User_id FROM user WHERE LOWER(User_name) = LOWER(?) AND tenant_id = ?`,
       [Details.username, tenant_id]
     );
 
@@ -321,7 +321,7 @@ exports.deleteUser = async (
 
     // Verify user exists in tenant
     const existing = await conn.query(
-      `SELECT User_id FROM users WHERE User_id = ? AND tenant_id = ?`,
+      `SELECT User_id FROM user WHERE User_id = ? AND tenant_id = ?`,
       [targetUserId, tenant_id]
     );
 
