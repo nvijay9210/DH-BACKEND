@@ -13,7 +13,7 @@ const userRouter = require("./Routes/UserRoute");
 const tenantRouter = require("./Routes/TenantRoute");
 const branchRouter = require("./Routes/BranchRoute");
 const userBranchRouter = require("./Routes/UserBranchRoute");
-const ssoAuth=require('./Keycloak/SSOAuth');
+const ssoAuth = require("./Keycloak/SSOAuth");
 
 const authMiddleware = require("./Middleware/AuthMiddleware");
 const contextMiddleware = require("./Middleware/ContextMiddleware");
@@ -42,42 +42,53 @@ app.use(
 app.use(cookieParser());
 
 // 👇 VERY IMPORTANT
-app.use("/uploads", express.static(path.join(__dirname, "..", "UPLOADS")));
+// Create a middleware to serve protected files
+const serveProtectedFile = (req, res, next) => {
+  const filePath = path.join(__dirname, "..", "UPLOADS", req.params[0]);
+
+  // Check if file exists
+  if (!fs.existsSync(filePath)) {
+    return res.status(404).json({ message: "File not found" });
+  }
+
+  // If token is valid (set by validateToken middleware), serve the file
+  if (req.user_id) {
+    res.sendFile(filePath);
+  } else {
+    return res.status(401).json({ message: "Unauthorized" });
+  }
+};
+
+// Apply validation + file serving
+app.get("/uploads/*", ssoAuth.validateToken, serveProtectedFile);
+// Remove the old public static line
 
 // ✅ Health check
 app.get("/", (req, res) => {
   res.send("Backend running successfully 🚀");
 });
 
-// ✅ Auto-load routers
-const routesPath = path.join(__dirname, "routes");
+// app.js - AFTER imports, BEFORE app.use()
 
-// if (fs.existsSync(routesPath)) {
-//   fs.readdirSync(routesPath).forEach((file) => {
-//     if (file.endsWith("Router.js")) {
+// ✅ Helper to apply validateToken + optional authMiddleware
+const withAuth = (router, includeContext = false) => {
+  return includeContext
+    ? [ssoAuth.validateToken, authMiddleware, router]
+    : [ssoAuth.validateToken, router];
+};
 
-//       // Remove "Router.js"
-//       const routeName = file.replace("Router.js", "").toLowerCase();
+app.use(`/api/keycloak`, ssoAuth.router);
 
-//       const routeFile = path.join(routesPath, file);
-
-//       app.use(`/api/${routeName}`, require(routeFile));
-//     }
-//   });
-// }
-
-app.use(`/api/keycloak`, ssoAuth);
-
-app.use(`/api/material`, materialRouter);
-app.use(`/api/master`,authMiddleware, masterRouter);
-app.use(`/api/order`, orderRouter);
-app.use(`/api/labour`, labourRouter);
-app.use(`/api/payment`, paymentRouter);
-app.use(`/api/project`, projectRouter);
-app.use(`/api/user`, userRouter);
-app.use(`/api/tenant`, authMiddleware, tenantRouter);
-app.use(`/api/branch`, authMiddleware, branchRouter);
-app.use(`/api/userbranch`, authMiddleware, userBranchRouter);
+app.use(`/api/material`, ssoAuth.validateToken, materialRouter);
+app.use(`/api/master`, ssoAuth.validateToken, masterRouter);
+app.use(`/api/order`, ssoAuth.validateToken, orderRouter);
+app.use(`/api/labour`, ssoAuth.validateToken, labourRouter);
+app.use(`/api/payment`, ssoAuth.validateToken, paymentRouter);
+app.use(`/api/project`, ssoAuth.validateToken, projectRouter);
+app.use(`/api/user`, ssoAuth.validateToken, userRouter);
+app.use(`/api/tenant`, ssoAuth.validateToken, tenantRouter);
+app.use(`/api/branch`, ssoAuth.validateToken, branchRouter);
+app.use(`/api/userbranch`, ssoAuth.validateToken, userBranchRouter);
 
 // ✅ Global error handler
 app.use(errorHandler);
