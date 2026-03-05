@@ -1050,7 +1050,6 @@ router.post("/login", async (req, res) => {
       sessionId: userContext.session_id, // ← Access from userContext
       role: userContext.role,
     });
-    console.log('usercontext:',userContext)
     return res.status(200).json(userContext);
   } catch (err) {
     debug.error("Route", "Login failed", err);
