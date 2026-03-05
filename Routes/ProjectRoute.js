@@ -9,6 +9,7 @@ const {
 } = require("../Validation/ProjectValidation");
 const { asyncHandler } = require("../utils/Async");
 const { dynamicUpload } = require("../utils/UploadFile");
+const authMiddleware = require("../Middleware/AuthMiddleware");
 
 /* =========================================
    Project CRUD
@@ -18,26 +19,26 @@ const { dynamicUpload } = require("../utils/UploadFile");
 // router.post(
 //   "/projects",
 // //   validate(validateCreateProject),
-//   asyncHandler(projectController.createProject)
+//   authMiddleware, asyncHandler(projectController.createProject)
 // );
 
 // // Update Project
 // router.put(
 //   "/projects/:id",
 // //   validate(validateUpdateProject),
-//   asyncHandler(projectController.updateProject)
+//   authMiddleware, asyncHandler(projectController.updateProject)
 // );
 
 // // Get All Projects
 // router.get(
 //   "/projects",
-//   asyncHandler(projectController.getProjectList)
+//   authMiddleware, asyncHandler(projectController.getProjectList)
 // );
 
 // // Get Project By ID
 // router.get(
 //   "/projects/:id",
-//   asyncHandler(projectController.getProjectById)
+//   authMiddleware, asyncHandler(projectController.getProjectById)
 // );
 
 // /* =========================================
@@ -46,22 +47,22 @@ const { dynamicUpload } = require("../utils/UploadFile");
 
 // router.get(
 //   "/projects/summary/total-cost",
-//   asyncHandler(projectController.getProjectTotalCost)
+//   authMiddleware, asyncHandler(projectController.getProjectTotalCost)
 // );
 
 // router.get(
 //   "/projects/summary/spended",
-//   asyncHandler(projectController.getProjectSpended)
+//   authMiddleware, asyncHandler(projectController.getProjectSpended)
 // );
 
 // router.get(
 //   "/projects/summary/individual-spended",
-//   asyncHandler(projectController.getIndividualProjectSpended)
+//   authMiddleware, asyncHandler(projectController.getIndividualProjectSpended)
 // );
 
 // router.get(
 //   "/projects/summary/individual-total",
-//   asyncHandler(projectController.getIndividualProjectTotal)
+//   authMiddleware, asyncHandler(projectController.getIndividualProjectTotal)
 // );
 
 // /* =========================================
@@ -70,7 +71,7 @@ const { dynamicUpload } = require("../utils/UploadFile");
 
 // router.delete(
 //   "/projects/payment/:paymentId",
-//   asyncHandler(projectController.deleteProjectPayment)
+//   authMiddleware, asyncHandler(projectController.deleteProjectPayment)
 // );
 
 router.post(
@@ -80,24 +81,37 @@ router.post(
     fields: [{ name: "photo", type: "photo", maxCount: 10 }],
   }),
   //   validate(validateCreateProject),
+  authMiddleware,
   asyncHandler(projectController.projectDetailsController)
 );
-router.get("/Project_List", asyncHandler(projectController.projectList));
+router.get(
+  "/Project_List",
+  authMiddleware,
+  asyncHandler(projectController.projectList)
+);
 router.get(
   "/ProjectTotalCost",
+  authMiddleware,
   asyncHandler(projectController.ProjectTotalCost)
 );
-router.get("/ProjectSpended", asyncHandler(projectController.ProjectSpended));
+router.get(
+  "/ProjectSpended",
+  authMiddleware,
+  asyncHandler(projectController.ProjectSpended)
+);
 router.get(
   "/IndividualProjectSpended",
+  authMiddleware,
   asyncHandler(projectController.IndividualProjectSpended)
 );
 router.get(
   "/IndividualProjectTotal",
+  authMiddleware,
   asyncHandler(projectController.IndividualProjectTotal)
 );
 router.post(
   "/FetchProjectEdit",
+  authMiddleware,
   asyncHandler(projectController.FetchProjectEdit)
 );
 router.put(
@@ -106,6 +120,7 @@ router.put(
     folder: "Project",
     fields: [{ name: "photo", type: "photo", maxCount: 10 }],
   }),
+  authMiddleware,
   asyncHandler(projectController.EditProject_Details)
 );
 

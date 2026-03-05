@@ -1,123 +1,77 @@
+// Controller/UserController.js
 const userService = require("../Service/UserService");
 
-exports.login = async (req, res, next) => {
-  try {
-    const details = req.body;
+exports.login = async (req, res) => {
+  const data = await userService.login(req.body);
+  
+  // res.cookie("token", data?.token, {
+  //   httpOnly: true,
+  //   sameSite: process.env.NODE_ENV === "production"?"none":"lax",
+  //   secure: process.env.NODE_ENV !== "production",
+  //   maxAge: 24 * 60 * 60 * 1000,
+  // });
 
-    const data = await userService.login(details);
-    res.cookie("token", data?.token);
-
-    res.status(200).json({
-      success: true,
-      data,
-    });
-  } catch (err) {
-    next(err);
-  }
+  res.cookie("token", data.token, {
+  httpOnly: true,
+  sameSite: "lax",
+  secure: false,
+  maxAge: 24 * 60 * 60 * 1000,
+});
+  
+  res.status(200).json({ success: true, data });
 };
-exports.logout = async (req, res, next) => {
-  try {
-    const details = req.body;
 
-    const data = await userService.logout(details);
-
-    res.status(200).json({
-      success: true,
-      data,
-    });
-  } catch (err) {
-    next(err);
-  }
+exports.logout = async (req, res) => {
+  res.clearCookie("token");
+  await userService.logout(req.body);
+  res.status(200).json({ success: true, msg: "Logout successful" });
 };
-exports.userDetails = async (req, res, next) => {
-  try {
-    // const details=req.body
-    // //console.log(details)
-    const data = await userService.userDetails();
 
-    res.status(200).json({
-      success: true,
-      data,
-    });
-  } catch (err) {
-    next(err);
-  }
+exports.userDetails = async (req, res) => {
+  const { tenant_id, branch_id } = req;
+  const role = req.user?.role;
+  
+  const data = await userService.userDetails(tenant_id, branch_id, role);
+  res.status(200).json({ success: true, data });
 };
-exports.userList = async (req, res, next) => {
-  try {
-    // const details=req.body
-    // //console.log(details)
-    const data = await userService.userList();
 
-    res.status(200).json({
-      success: true,
-      data,
-    });
-  } catch (err) {
-    next(err);
-  }
+exports.userAccess = async (req, res) => {
+  const { tenant_id, branch_id } = req;
+  const role = req.user?.role;
+  
+  const data = await userService.userAccess(req.body, tenant_id, branch_id, role);
+  res.status(200).json({ success: true, data });
 };
-exports.fullUserList = async (req, res, next) => {
-  try {
-    // const details=req.body
-    // //console.log(details)
-    const data = await userService.fullUserList();
 
-    res.status(200).json({
-      success: true,
-      data,
-    });
-  } catch (err) {
-    next(err);
-  }
+exports.newUser = async (req, res) => {
+  const { tenant_id, branch_id } = req;
+  const createdBy = req.user?.username;
+  
+  const data = await userService.newUser(req.body, tenant_id, branch_id, createdBy);
+  res.status(200).json({ success: true, data });
 };
-exports.userAccess = async (req, res, next) => {
-  try {
-    const Details = req.body;
-    // //console.log(details)
-    const data = await userService.userAccess(Details);
 
-    res.status(200).json({
-      success: true,
-      data,
-    });
-  } catch (err) {
-    next(err);
-  }
+exports.deleteUser = async (req, res) => {
+  const { tenant_id, branch_id } = req;
+  const role = req.user?.role;
+  const userId = req.params.user_id;
+  
+  const data = await userService.deleteUser(userId, tenant_id, branch_id, role);
+  res.status(200).json({ success: true, data });
 };
-exports.adminPassChange = async (req, res, next) => {
-  try {
-    const Details = req.body;
-    // //console.log(details)
-    const data = await userService.adminPassChange(Details);
 
-    res.status(200).json({
-      success: true,
-      data,
-    });
-  } catch (err) {
-    next(err);
-  }
-};
-exports.newUser = async (req, res, next) => {
-  try {
-    const Details = req.body;
-    const username = req.user.username;
-    const tenant_id = req.tenant_id || Details.tenant_id;
-    const branch_id = req.branch_id || Details.tenant_id;
-    //console.log(details)
-    const data = await userService.newUser(
-      Details,
-      tenant_id,
-      branch_id,
-      username
-    );
-
-    res.status(200).json({
-      success: true,
-      data,
-    });
-  } catch (err) {
-    next(err);
-  }
+exports.switchBranch = async (req, res) => {
+  const { tenant_id } = req;
+  const { branch_id } = req.body;
+  const user = req.user;
+  
+  const newToken = await userService.switchBranch(tenant_id, branch_id, user);
+  
+  res.cookie("token", newToken, {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    maxAge: 4 * 60 * 60 * 1000,
+  });
+  
+  res.status(200).json({ success: true, msg: "Branch Switched Successfully" });
 };

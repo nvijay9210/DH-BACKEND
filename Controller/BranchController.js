@@ -3,113 +3,101 @@ const branchService = require("../Service/BranchService");
 /* =========================================
    Create Branch
 ========================================= */
-exports.createBranch = async (req, res, next) => {
-  try {
-    const result = await branchService.createBranch(
-      req.body,
-      req.tenant_id,
-      req.user.username
-    );
+exports.createBranch = async (req, res) => {
+  const result = await branchService.createBranch(
+    req.body,
+    req.tenant_id,
+    req.user.username
+  );
 
-    res.status(201).json({
-      success: true,
-      message: "Branch created successfully",
-      data: {
-        branchId: result.insertId,
-      },
-    });
-  } catch (err) {
-    next(err);
-  }
+  res.status(201).json({
+    success: true,
+    message: "Branch created successfully",
+    data: {
+      branchId: result.insertId,
+    },
+  });
 };
 
 /* =========================================
    Update Branch
 ========================================= */
-exports.updateBranch = async (req, res, next) => {
-  try {
-    const branch_id = req.params.id;
-    const tenant_id = req.tenant_id;
-    const details = req.body;
-    const username = req.user.username;
+exports.updateBranch = async (req, res) => {
+  const branch_id = req.params.branch_id;
+  const tenant_id = req.tenant_id;
+  const details = req.body;
+  const username = req.user.username;
 
-    const result = await branchService.updateBranch({
-      branch_id,
-      tenant_id,
-      details,
-      username,
+  const result = await branchService.updateBranch({
+    branch_id,
+    tenant_id,
+    details,
+    username,
+  });
+
+  // ✅ Service should throw AppError if not found, but keeping fallback
+  if (result.affectedRows === 0) {
+    return res.status(404).json({
+      success: false,
+      message: "Branch not found",
     });
-
-    if (result.affectedRows === 0) {
-      res.status(404).json({
-        success: false,
-        message: "Branch not found",
-      });
-    }
-
-    res.status(200).json({
-      success: true,
-      message: "Branch updated successfully",
-    });
-  } catch (err) {
-    next(err);
   }
+
+  res.status(200).json({
+    success: true,
+    message: "Branch updated successfully",
+  });
 };
 
 /* =========================================
    Get Branch List
 ========================================= */
-exports.getBranches = async (req, res, next) => {
-  try {
-    const data = await branchService.getBranches();
+exports.getBranches = async (req, res) => {
+  const tenant_id = req.tenant_id;
+  
+  const data = await branchService.getBranches(tenant_id);
 
-    res.status(200).json({
-      success: true,
-      count: data.length,
-      data,
-    });
-  } catch (err) {
-    next(err);
-  }
+  res.status(200).json({
+    success: true,
+    count: data.length,
+    data,
+  });
 };
 
 /* =========================================
-   Get Total Cost
+   Get Branch By ID
 ========================================= */
-exports.getBranchById = async (req, res, next) => {
-  const branch_id = req.params.id;
+exports.getBranchById = async (req, res) => {
+  const branch_id = req.params.branch_id;
   const tenant_id = req.tenant_id;
-  try {
-    const data = await branchService.getBranchById(branch_id, tenant_id);
+  
+  const data = await branchService.getBranchById(branch_id, tenant_id);
 
-    res.status(200).json({
-      success: true,
-      data,
-    });
-  } catch (err) {
-    next(err);
-  }
+  res.status(200).json({
+    success: true,
+    data,
+  });
 };
 
-exports.deleteBranch = async (req, res, next) => {
-  try {
-    const branch_id = req.params.id;
-    const tenant_id = req.tenant_id;
+/* =========================================
+   Delete Branch
+========================================= */
+exports.deleteBranch = async (req, res) => {
+  const branch_id = req.params.branch_id;
+  const tenant_id = req.tenant_id;
 
-    const result = await branchService.deleteBranch(branch_id, tenant_id);
+  const result = await branchService.deleteBranch(branch_id, tenant_id);
 
-    if (result.affectedRows === 0) {
-      res.status(404).json({
-        success: false,
-        message: "Branch not found",
-      });
-    }
-
-    res.status(200).json({
-      success: true,
-      message: "Branch deleted successfully",
+  // ✅ Service should throw AppError if not found, but keeping fallback
+  if (result.affectedRows === 0) {
+    return res.status(404).json({
+      success: false,
+      message: "Branch not found",
     });
-  } catch (err) {
-    next(err);
   }
+
+  res.status(200).json({
+    success: true,
+    message: "Branch deleted successfully",
+  });
 };
