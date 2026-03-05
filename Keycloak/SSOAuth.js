@@ -21,7 +21,7 @@ router.use(cookieParser());
 // 🐛 DEBUG CONFIGURATION
 // ============================================================================
 const DEBUG =
-  process.env.DEBUG_AUTH === "true" || process.env.NODE_ENV !== "production";
+  process.env.DEBUG_AUTH === "true";
 
 const debug = {
   log: (module, message, data = null) => {

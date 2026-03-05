@@ -151,23 +151,26 @@ exports.updateLabour = async (details, tenant_id, branch_id) => {
 =================================*/
 exports.fetchLabourUpdate = async (Details, tenant_id, branch_id) => {
   let conn;
- try {
-   conn = await pool.getConnection();
-        const labour = await conn.query("SELECT * FROM labour_worked_details WHERE Project_id = ? AND Date = ? AND tenant_id=? AND branch_id=?;", [Details.Id, Details.date,tenant_id,branch_id]);
-        // Convert BigInt values to strings or numbers
-        const labourWithConvertedBigInt = labour.map(row => {
-            return {
-                ...row,
-                Salary: row.Salary.toString(), // Convert Salary to string
-                Total: row.Total.toString(), // Convert Total to string
-            };
-        });
-        // console.log(labourWithConvertedBigInt);
-        return labourWithConvertedBigInt;
-    } catch (error) {
-        console.error(error);
-        throw new AppError("Failed to update labour records", 500, error);
-    } finally {
+  try {
+    conn = await pool.getConnection();
+    const labour = await conn.query(
+      "SELECT * FROM labour_worked_details WHERE Project_id = ? AND Date = ? AND tenant_id=? AND branch_id=?;",
+      [Details.Id, Details.date, tenant_id, branch_id]
+    );
+    // Convert BigInt values to strings or numbers
+    const labourWithConvertedBigInt = labour.map((row) => {
+      return {
+        ...row,
+        Salary: row.Salary.toString(), // Convert Salary to string
+        Total: row.Total.toString(), // Convert Total to string
+      };
+    });
+    // console.log(labourWithConvertedBigInt);
+    return labourWithConvertedBigInt;
+  } catch (error) {
+    console.error(error);
+    throw new AppError("Failed to update labour records", 500, error);
+  } finally {
     if (conn) conn.release();
   }
 };
