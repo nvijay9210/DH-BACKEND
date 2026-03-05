@@ -484,7 +484,7 @@ exports.FetchProjectEdit = async (details, tenant_id, branch_id) => {
     if (!result[0] || result[0].length === 0) {
       throw new AppError("Project not found", 404);
     }
-    return result[0][0];
+    return result[0];
   } catch (err) {
     console.error("❌ FetchProjectEdit Error:", err);
     throw err instanceof AppError
