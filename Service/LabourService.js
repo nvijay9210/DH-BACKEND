@@ -153,19 +153,23 @@ exports.fetchLabourUpdate = async (Details, tenant_id, branch_id) => {
   let conn;
   try {
     conn = await pool.getConnection();
-    const result = await conn.query(
-      `DELETE FROM labour_worked_details
-      WHERE Project_id = ? AND Labour_id = ? AND tenant_id = ? AND branch_id = ?`,
-      [Details.Project_id, Details.Labour_id, tenant_id, branch_id]
+    const labour = await conn.query(
+      "SELECT * FROM labour_worked_details WHERE Project_id = ? AND Date = ? AND tenant_id=? AND branch_id=?;",
+      [Details.Id, Details.date, tenant_id, branch_id]
     );
-    if (result.affectedRows === 0) {
-      throw new AppError("Labour record not found", 404);
-    }
-    console.log("✅ Labour record deleted successfully");
-    return { success: true, message: "Record deleted successfully" };
+    // Convert BigInt values to strings or numbers
+    const labourWithConvertedBigInt = labour.map((row) => {
+      return {
+        ...row,
+        Salary: row.Salary.toString(), // Convert Salary to string
+        Total: row.Total.toString(), // Convert Total to string
+      };
+    });
+    // console.log(labourWithConvertedBigInt);
+    return labourWithConvertedBigInt;
   } catch (error) {
-    console.error("❌ fetchLabourUpdate Error:", error);
-    throw new AppError("Failed to delete labour record", 500, error);
+    console.error(error);
+    throw new AppError("Failed to update labour records", 500, error);
   } finally {
     if (conn) conn.release();
   }
