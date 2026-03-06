@@ -4,16 +4,17 @@ const { AppError } = require("../Logics/AppError");
 /* ===============================
    Labour Type - Create
 =================================*/
-exports.labourList = async (Labour_Details) => {
+exports.labourList = async (Labour_Details,tenant_id, branch_id) => {
   try {
     await pool.query(
-      "INSERT INTO mas_labour_Details (Labour_Details, Created_by, created_datetime, Salary, Ratio) VALUES (?, ?, ?, ?, ?)",
+      "INSERT INTO mas_labour_Details (Labour_Details, Created_by, created_datetime, Salary, Ratio,tenant_id, branch_id) VALUES (?, ?, ?, ?, ?,?, ?)",
       [
         Labour_Details.Labour_Details,
         Labour_Details.username,
         Labour_Details.createdDate,
         Number(Labour_Details.Salary),
         Number(Labour_Details.Ratio),
+        tenant_id,branch_id
       ]
     );
     console.log("✅ Labour type saved to database");
@@ -32,11 +33,11 @@ exports.labourList = async (Labour_Details) => {
 /* ===============================
    Material - Create
 =================================*/
-exports.materialList = async (Material) => {
+exports.materialList = async (Material,tenant_id, branch_id) => {
   try {
     await pool.query(
-      "INSERT INTO mas_material_list (Material_name, Created_by, created_datetime) VALUES (?, ?, ?)",
-      [Material.Material_name, Material.username, Material.createdDate]
+      "INSERT INTO mas_material_list (Material_name, Created_by, created_datetime,tenant_id, branch_id) VALUES (?, ?, ?,?, ?)",
+      [Material.Material_name, Material.username, Material.createdDate,tenant_id,branch_id]
     );
     console.log("✅ Material saved to database");
     return { success: true, message: "Material saved successfully" };
@@ -54,11 +55,11 @@ exports.materialList = async (Material) => {
 /* ===============================
    Contractor - Create
 =================================*/
-exports.contractorList = async (Data) => {
+exports.contractorList = async (Data,tenant_id, branch_id) => {
   try {
     await pool.query(
-      "INSERT INTO mas_labour_Details (Contractor, Created_By, created_datetime) VALUES (?, ?, ?)",
-      [Data.Contractor, Data.username, Data.createdDate]
+      "INSERT INTO mas_labour_Details (Contractor, Created_By, created_datetime,tenant_id, branch_id) VALUES (?, ?, ?,?, ?)",
+      [Data.Contractor, Data.username, Data.createdDate,tenant_id,branch_id]
     );
     console.log("✅ Contractor saved to database");
     return { success: true, message: "Contractor saved successfully" };
@@ -76,11 +77,11 @@ exports.contractorList = async (Data) => {
 /* ===============================
    Supplier - Create
 =================================*/
-exports.supplierList = async (Data) => {
+exports.supplierList = async (Data,tenant_id, branch_id) => {
   try {
     await pool.query(
-      "INSERT INTO mas_material_list (Supplier_Name, Supplier_Contact, Created_By, created_datetime) VALUES (?, ?, ?, ?)",
-      [Data.SupplierName, Data.SupplierContact, Data.username, Data.createdDate]
+      "INSERT INTO mas_material_list (Supplier_Name, Supplier_Contact, Created_By, created_datetime,tenant_id, branch_id) VALUES (?, ?, ?, ?,?, ?)",
+      [Data.SupplierName, Data.SupplierContact, Data.username, Data.createdDate, tenant_id, branch_id]
     );
     console.log("✅ Supplier saved to database");
     return { success: true, message: "Supplier saved successfully" };

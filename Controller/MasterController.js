@@ -2,25 +2,29 @@ const masterService = require("../Service/MasterService");
 
 exports.labourList = async (req, res) => {
   const details = req.body;
-  const data = await masterService.labourList(details);
+  const { tenant_id, branch_id } = req;
+  const data = await masterService.labourList(details,tenant_id, branch_id);
   res.status(200).json({ success: true, data });
 };
 
 exports.materialList = async (req, res) => {
   const details = req.body;
-  const data = await masterService.materialList(details);
+  const { tenant_id, branch_id } = req;
+  const data = await masterService.materialList(details,tenant_id, branch_id);
   res.status(200).json({ success: true, data });
 };
 
 exports.contractorList = async (req, res) => {
   const details = req.body;
-  const data = await masterService.contractorList(details);
+  const { tenant_id, branch_id } = req;
+  const data = await masterService.contractorList(details,tenant_id, branch_id);
   res.status(200).json({ success: true, data });
 };
 
 exports.supplierList = async (req, res) => {
   const details = req.body;
-  const data = await masterService.supplierList(details);
+  const { tenant_id, branch_id } = req;
+  const data = await masterService.supplierList(details,tenant_id, branch_id);
   res.status(200).json({ success: true, data });
 };
 
@@ -49,8 +53,12 @@ exports.fetchSupplier = async (req, res) => {
 };
 
 exports.labourTypeDelete = async (req, res) => {
-  const { tenant_id, branch_id } = req;
   const details = req.body;
-  const data = await masterService.labourTypeDelete(details, tenant_id, branch_id);
+  const { tenant_id, branch_id } = req;
+  const data = await masterService.labourTypeDelete(
+    details,
+    tenant_id,
+    branch_id
+  );
   res.status(200).json({ success: true, data });
 };
