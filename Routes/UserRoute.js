@@ -7,19 +7,19 @@ const { validateIds } = require("../Middleware/ContextMiddleware");
 
 // Authentication
 router.post("/Login", asyncHandler(userController.login));
-router.get("/logout", authMiddleware, asyncHandler(userController.logout));
+router.get("/logout",  asyncHandler(userController.logout));
 
 // User Management
-router.get("/UserDetails", authMiddleware, asyncHandler(userController.userDetails));
-router.get("/UserList", authMiddleware, asyncHandler(userController.userList));
-router.get("/FullUserList", authMiddleware, asyncHandler(userController.fullUserList));
+router.get("/UserDetails",  asyncHandler(userController.userDetails));
+router.get("/UserList",  asyncHandler(userController.userList));
+router.get("/FullUserList",  asyncHandler(userController.fullUserList));
 
-router.put("/UserAccess", authMiddleware, asyncHandler(userController.userAccess));
-router.put("/AdminPassChange", authMiddleware, asyncHandler(userController.adminPassChange));
+router.put("/UserAccess",  asyncHandler(userController.userAccess));
+router.put("/AdminPassChange",  asyncHandler(userController.adminPassChange));
 
-router.post("/NewUser", authMiddleware, asyncHandler(userController.newUser));
-router.post("/SwitchBranch", authMiddleware, asyncHandler(userController.switchBranch)); // ✅ Added missing route
+router.post("/NewUser",  asyncHandler(userController.newUser));
+router.post("/SwitchBranch",  asyncHandler(userController.switchBranch)); // ✅ Added missing route
 
-router.delete("/:user_id", authMiddleware, validateIds, asyncHandler(userController.deleteUser));
+router.delete("/:user_id",  validateIds, asyncHandler(userController.deleteUser));
 
 module.exports = router;

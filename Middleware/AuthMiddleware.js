@@ -12,9 +12,13 @@ const authMiddleware = (req, res, next) => {
   }
 
   // 2️⃣ Check Cookie
-  if (!token && req.cookies && req.cookies.token) {
-    token = req.cookies.token;
-  }
+  // if (!token && req.cookies && req.cookies.token) {
+  //   token = req.cookies.token;
+  // }
+
+  if (!token && req.cookies?.access_token) {
+  token = req.cookies.access_token;
+}
 
   // 3️⃣ If token missing
   if (!token) {
@@ -23,7 +27,7 @@ const authMiddleware = (req, res, next) => {
   }
 
   try {
-    const decoded = jwt.verify(token, process.env.JWT_KEY);
+    const decoded = jwt.verify(token, process.env.KEYCLOAK_REALM_PUBLIC_KEY);
 
     req.user = decoded;
     req.tenant_id = decoded.tenant_id;

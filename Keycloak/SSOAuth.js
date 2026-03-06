@@ -20,8 +20,7 @@ router.use(cookieParser());
 // ============================================================================
 // 🐛 DEBUG CONFIGURATION
 // ============================================================================
-const DEBUG =
-  process.env.DEBUG_AUTH === "true";
+const DEBUG = process.env.DEBUG_AUTH === "true";
 
 const debug = {
   log: (module, message, data = null) => {
@@ -133,8 +132,9 @@ async function getUserByKeycloakId(keycloakId) {
  */
 async function getBranchByTenantIdAndUserId(tenantId, userId) {
   debug.log("BranchService", "Fetching user branches", { tenantId, userId });
+  const conn = await pool.getConnection();
   try {
-    const rows = await pool.query(
+    const rows = await conn.query(
       `
       SELECT 
         b.branch_id,
@@ -151,7 +151,7 @@ async function getBranchByTenantIdAndUserId(tenantId, userId) {
       INNER JOIN user_branch ub ON ub.branch_id = b.branch_id
       WHERE b.tenant_id = ? 
         AND ub.user_id = ?
-        AND b.is_active='Active'
+        AND b.is_active=1
       ORDER BY b.branch_name ASC
       `,
       [tenantId, userId]
@@ -161,6 +161,8 @@ async function getBranchByTenantIdAndUserId(tenantId, userId) {
   } catch (error) {
     debug.error("BranchService", "Failed to fetch branches", error);
     throw new Error(`Failed to fetch branches: ${error.message}`);
+  } finally {
+    if (conn) conn.release();
   }
 }
 
@@ -169,8 +171,9 @@ async function getBranchByTenantIdAndUserId(tenantId, userId) {
  */
 async function getAllBranchByTenantId(tenantId) {
   debug.log("BranchService", "Fetching all tenant branches", { tenantId });
+  const conn = await pool.getConnection();
   try {
-    const rows = await pool.query(
+    const rows = await conn.query(
       `
       SELECT 
         branch_id,
@@ -185,7 +188,7 @@ async function getAllBranchByTenantId(tenantId) {
         created_at
       FROM branch
       WHERE tenant_id = ? 
-        AND is_active='Active'
+        AND is_active=1
       ORDER BY branch_name ASC
       `,
       [tenantId]
@@ -197,6 +200,8 @@ async function getAllBranchByTenantId(tenantId) {
   } catch (error) {
     debug.error("BranchService", "Failed to fetch all branches", error);
     throw new Error(`Failed to fetch tenant branches: ${error.message}`);
+  } finally {
+    if (conn) conn.release();
   }
 }
 
@@ -341,7 +346,7 @@ const keycloakRefresh = async (refreshToken, realm, clientId) => {
         grant_type: "refresh_token",
         refresh_token: refreshToken,
         client_id: clientId,
-        client_secret: getClientCredential(clientId),
+        // client_secret: getClientCredential(clientId),
       }),
       { headers: { "Content-Type": "application/x-www-form-urlencoded" } }
     );
@@ -418,7 +423,7 @@ const UserService = {
         userId: user[0].user_id,
         role: user[0].Rights,
       });
-    
+
       return user[0];
     } catch (error) {
       debug.error("UserService", "Token verification failed", error);
@@ -477,6 +482,7 @@ const SessionService = {
       userId: userContext.user_id,
       tenantId: userContext.tenant_id,
       role: userContext.role,
+      branchId: userContext.branch_id,
     });
 
     const session_id = randomUUID();
@@ -493,6 +499,8 @@ const SessionService = {
       { name: "clientId", maxAge: CONFIG.COOKIES.EXPIRY.REFRESH },
       { name: "realm", maxAge: CONFIG.COOKIES.EXPIRY.REFRESH },
       { name: "user_id", maxAge: CONFIG.COOKIES.EXPIRY.REFRESH },
+      { name: "tenant_id", maxAge: CONFIG.COOKIES.EXPIRY.REFRESH },
+      { name: "branch_id", maxAge: CONFIG.COOKIES.EXPIRY.REFRESH },
     ];
 
     cookiesSet.forEach((cookie) => {
@@ -508,7 +516,13 @@ const SessionService = {
           ? clientId
           : cookie.name === "realm"
           ? realm
-          : userContext.user_id,
+          : cookie.name === "user_id"
+          ? userContext.user_id
+          : cookie.name === "tenant_id"
+          ? userContext.tenant_id // 👈 tenant_id from context
+          : cookie.name === "branch_id"
+          ? userContext.default_branch_id // 👈 or userContext.branch_id if preferred
+          : null, // fallback
         cookie.name === "access_token"
           ? { ...CONFIG.COOKIES.OPTIONS, maxAge: CONFIG.COOKIES.EXPIRY.ACCESS }
           : cookieOpts
@@ -524,11 +538,12 @@ const SessionService = {
     const sessionData = {
       user_id: userContext.user_id,
       tenant_id: userContext.tenant_id,
+      branch_id: userContext.default_branch_id,
       role: userContext.role,
       clientId,
       realm,
-      access_token: tokens.access_token?.substring(0, 20) + "...",
-      refresh_token: tokens.refresh_token?.substring(0, 20) + "...",
+      access_token: tokens.access_token,
+      refresh_token: tokens.refresh_token,
     };
 
     await redis.set(
@@ -839,7 +854,7 @@ const attemptRefresh = async (req, res, next) => {
     req.user_id = session.user_id;
 
     debug.log("Middleware", "✅ Token refreshed successfully");
-    return next();
+    next();
   } catch (err) {
     debug.error("Middleware", "Refresh failed", err);
     return next(new AppError("Session expired. Please login again.", 401));
@@ -857,13 +872,13 @@ const validateToken = async (req, res, next) => {
     const session_id = req.cookies?.session_id || req.headers["session-id"];
     if (!session_id) {
       debug.error("Middleware", "No session identifier found");
-      return next(new AppError(MESSAGES.UNAUTHORIZED, 401));
+      return next(new AppError(MESSAGES.UNAUTHORIZED, 401)); // ✅ Return HERE is correct (error case)
     }
 
     const session = await SessionService.get(session_id);
     if (!session) {
       debug.error("Middleware", "Session not found in Redis");
-      return next(new AppError(MESSAGES.UNAUTHORIZED, 401));
+      return next(new AppError(MESSAGES.UNAUTHORIZED, 401)); // ✅ Return HERE is correct (error case)
     }
 
     let token = session.access_token || req.cookies?.access_token;
@@ -874,23 +889,39 @@ const validateToken = async (req, res, next) => {
 
     if (!token) {
       debug.error("Middleware", "No access token found");
-      return next(new AppError("Token missing", 401));
+      return next(new AppError("Token missing", 401)); // ✅ Return HERE is correct (error case)
     }
 
     try {
       debug.log("Middleware", "Verifying JWT signature");
+
       req.tokenData = jwt.verify(token, CONFIG.KEYCLOAK.PUBLIC_KEY, {
         algorithms: ["RS256"],
       });
+
       req.session = session;
-      req.user_id = session.user_id;
-      debug.log("Middleware", "✅ Token valid, proceeding");
-      return next();
+      req.user = req.tokenData; // Full decoded token
+      req.user_id = session.user_id; // Internal DB user_id from Redis session
+      req.tenant_id = session.tenant_id; // From session
+      req.branch_id = session.branch_id || null; // Optional: set default if needed
+
+      req.role = session.role;
+      debug.log("Middleware", "✅ Token valid, user context attached");
+      debug.log(
+        "Middleware",
+        "✅ Token valid, proceeding to next middleware..."
+      );
+
+      // ❌ REMOVE 'return' here. Just call next().
+      next();
+
+      // Optional: Add a log after next() to prove the function finished
+      debug.log("Middleware", "✅ validateToken function completed");
     } catch (err) {
       debug.log("Middleware", `JWT verify error: ${err.name}`);
       if (err.name === "TokenExpiredError") {
         debug.log("Middleware", "Token expired, attempting refresh");
-        return attemptRefresh(req, res, next);
+        return attemptRefresh(req, res, next); // ✅ Return here is okay because attemptRefresh handles the flow
       }
       debug.error("Middleware", "Invalid token", err);
       return next(new AppError("Invalid token", 401));
@@ -1011,7 +1042,7 @@ router.post("/login", async (req, res) => {
 
     debug.log("Route", "Keycloak login successful, verifying in DB");
     const dbUser = await UserService.verifyTokenInDB(tokens.access_token);
-    debug.log("Route", "DB User verified",dbUser, {
+    debug.log("Route", "DB User verified", dbUser, {
       userId: dbUser.user_id,
       status: dbUser.Status,
       role: dbUser.Rights,
@@ -1050,7 +1081,6 @@ router.post("/login", async (req, res) => {
       sessionId: userContext.session_id, // ← Access from userContext
       role: userContext.role,
     });
-    console.log('usercontext:',userContext)
     return res.status(200).json(userContext);
   } catch (err) {
     debug.error("Route", "Login failed", err);
@@ -1368,4 +1398,4 @@ debug.info(
   `Routes registered: /me, /login, /logout, /refresh-token, /forgettenpassword, /reset-password, /register, /tokensave`
 );
 
-module.exports = router;
+module.exports = { router, validateToken };
