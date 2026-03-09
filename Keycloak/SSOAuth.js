@@ -148,7 +148,7 @@ async function getBranchByTenantIdAndUserId(tenantId, userId) {
         b.is_active,
         b.created_at
       FROM branch b
-      INNER JOIN user_branch ub ON ub.branch_id = b.branch_id
+      INNER JOIN userbranch ub ON ub.branch_id = b.branch_id
       WHERE b.tenant_id = ? 
         AND ub.user_id = ?
         AND b.is_active=1
@@ -968,7 +968,7 @@ router.get("/me", validateToken, async (req, res) => {
             [user.tenant_id]
           )
         : await conn.query(
-            `SELECT b.branch_id, b.branch_name, b.branch_code FROM user_branch ub JOIN branch b ON b.branch_id = ub.branch_id WHERE ub.user_id = ?`,
+            `SELECT b.branch_id, b.branch_name, b.branch_code FROM userbranch ub JOIN branch b ON b.branch_id = ub.branch_id WHERE ub.user_id = ?`,
             [user_id]
           );
 

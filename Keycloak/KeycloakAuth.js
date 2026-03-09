@@ -126,7 +126,7 @@ router.get("/me", validateToken, async (req, res) => {
           b.branch_id,
           b.branch_name,
           b.branch_code
-        FROM user_branch ub
+        FROM userbranch ub
         JOIN branch b ON b.branch_id = ub.branch_id
         WHERE ub.user_id = ?
         ORDER BY b.branch_id

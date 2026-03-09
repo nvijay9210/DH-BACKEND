@@ -7,7 +7,7 @@ const { AppError } = require("../Logics/AppError");
 exports.labourList = async (Labour_Details,tenant_id, branch_id) => {
   try {
     await pool.query(
-      "INSERT INTO mas_labour_Details (Labour_Details, Created_by, created_datetime, Salary, Ratio,tenant_id, branch_id) VALUES (?, ?, ?, ?, ?,?, ?)",
+      "INSERT INTO mas_labour_Details (Labour_Details, Created_by, created_datetime, Salary, Ratio,tenant_id, branch_id  (?, ?, ?, ?, ?,?, ?)",
       [
         Labour_Details.Labour_Details,
         Labour_Details.username,
