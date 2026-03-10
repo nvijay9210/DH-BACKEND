@@ -85,7 +85,7 @@ app.use(`/api/order`, ssoAuth.validateToken, orderRouter);
 app.use(`/api/labour`, ssoAuth.validateToken, labourRouter);
 app.use(`/api/payment`, ssoAuth.validateToken, paymentRouter);
 app.use(`/api/project`, ssoAuth.validateToken, projectRouter);
-app.use(`/api/user`, ssoAuth.validateToken, userRouter);
+app.use(`/api/user`, userRouter);
 app.use(`/api/tenant`, ssoAuth.validateToken, tenantRouter);
 app.use(`/api/branch`, ssoAuth.validateToken, branchRouter);
 app.use(`/api/userbranch`, ssoAuth.validateToken, userBranchRouter);

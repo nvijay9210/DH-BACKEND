@@ -1,4 +1,5 @@
 const projectService = require("../Service/ProjectService");
+const RedisService = require("../Service/RedisService");
 
 exports.createProject = async (req, res) => {
   const { tenant_id, branch_id } = req;
@@ -7,6 +8,9 @@ exports.createProject = async (req, res) => {
     tenant_id,
     branch_id
   );
+
+  // Invalidate list caches
+  await RedisService.deleteByPattern(`project:list:*`);
 
   res.status(201).json({
     success: true,
@@ -26,6 +30,12 @@ exports.updateProject = async (req, res) => {
     Project_id: projectId,
   });
 
+  // Invalidate caches
+  await RedisService.delete(`project:${projectId}:${tenant_id}:${branch_id}`);
+  await RedisService.deleteByPattern(`project:list:*`);
+  await RedisService.deleteByPattern(`project:cost:*`);
+  await RedisService.deleteByPattern(`project:spended:*`);
+
   res.status(200).json({
     success: true,
     message: "Project updated successfully",
@@ -34,7 +44,22 @@ exports.updateProject = async (req, res) => {
 
 exports.getProjectList = async (req, res) => {
   const { tenant_id, branch_id } = req;
-  const data = await projectService.getProjectList(tenant_id, branch_id);
+  const cacheKey = `project:list:${tenant_id}:${branch_id}`;
+
+  // Check cache
+  let data = await RedisService.read(cacheKey);
+  if (data) {
+    return res.status(200).json({
+      success: true,
+      count: data.length,
+      data,
+    });
+  }
+
+  data = await projectService.getProjectList(tenant_id, branch_id);
+
+  // Cache for 1 hour
+  await RedisService.create(cacheKey, data, 3600);
 
   res.status(200).json({
     success: true,
@@ -45,24 +70,61 @@ exports.getProjectList = async (req, res) => {
 
 exports.getProjectTotalCost = async (req, res) => {
   const { tenant_id, branch_id } = req;
-  const data = await projectService.getProjectTotalCost(tenant_id, branch_id);
+  const cacheKey = `project:cost:${tenant_id}:${branch_id}`;
+
+  // Check cache
+  let data = await RedisService.read(cacheKey);
+  if (data) {
+    return res.status(200).json({ success: true, data });
+  }
+
+  data = await projectService.getProjectTotalCost(tenant_id, branch_id);
+
+  // Cache for 1 hour
+  await RedisService.create(cacheKey, data, 3600);
 
   res.status(200).json({ success: true, data });
 };
 
 exports.getProjectSpended = async (req, res) => {
   const { tenant_id, branch_id } = req;
-  const data = await projectService.getProjectSpended(tenant_id, branch_id);
+  const cacheKey = `project:spended:${tenant_id}:${branch_id}`;
+
+  // Check cache
+  let data = await RedisService.read(cacheKey);
+  if (data) {
+    return res.status(200).json({ success: true, data });
+  }
+
+  data = await projectService.getProjectSpended(tenant_id, branch_id);
+
+  // Cache for 1 hour
+  await RedisService.create(cacheKey, data, 3600);
 
   res.status(200).json({ success: true, data });
 };
 
 exports.getIndividualProjectSpended = async (req, res) => {
   const { tenant_id, branch_id } = req;
-  const data = await projectService.getIndividualProjectSpended(
+  const cacheKey = `project:individual:spended:${tenant_id}:${branch_id}`;
+
+  // Check cache
+  let data = await RedisService.read(cacheKey);
+  if (data) {
+    return res.status(200).json({
+      success: true,
+      count: data.length,
+      data,
+    });
+  }
+
+  data = await projectService.getIndividualProjectSpended(
     tenant_id,
     branch_id
   );
+
+  // Cache for 1 hour
+  await RedisService.create(cacheKey, data, 3600);
 
   res.status(200).json({
     success: true,
@@ -73,10 +135,25 @@ exports.getIndividualProjectSpended = async (req, res) => {
 
 exports.getIndividualProjectTotal = async (req, res) => {
   const { tenant_id, branch_id } = req;
-  const data = await projectService.getIndividualProjectTotal(
+  const cacheKey = `project:individual:total:${tenant_id}:${branch_id}`;
+
+  // Check cache
+  let data = await RedisService.read(cacheKey);
+  if (data) {
+    return res.status(200).json({
+      success: true,
+      count: data.length,
+      data,
+    });
+  }
+
+  data = await projectService.getIndividualProjectTotal(
     tenant_id,
     branch_id
   );
+
+  // Cache for 1 hour
+  await RedisService.create(cacheKey, data, 3600);
 
   res.status(200).json({
     success: true,
@@ -88,12 +165,22 @@ exports.getIndividualProjectTotal = async (req, res) => {
 exports.getProjectById = async (req, res) => {
   const { tenant_id, branch_id } = req;
   const projectId = req.params.id;
+  const cacheKey = `project:${projectId}:${tenant_id}:${branch_id}`;
 
-  const data = await projectService.getProjectById(
+  // Check cache
+  let data = await RedisService.read(cacheKey);
+  if (data) {
+    return res.status(200).json({ success: true, data });
+  }
+
+  data = await projectService.getProjectById(
     projectId,
     tenant_id,
     branch_id
   );
+
+  // Cache for 1 hour
+  await RedisService.create(cacheKey, data, 3600);
 
   res.status(200).json({ success: true, data });
 };

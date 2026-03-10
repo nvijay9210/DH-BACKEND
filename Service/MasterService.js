@@ -7,7 +7,7 @@ const { AppError } = require("../Logics/AppError");
 exports.labourList = async (Labour_Details,tenant_id, branch_id) => {
   try {
     await pool.query(
-      "INSERT INTO mas_labour_Details (Labour_Details, Created_by, created_datetime, Salary, Ratio,tenant_id, branch_id  (?, ?, ?, ?, ?,?, ?)",
+      "INSERT INTO mas_labour_Details (Labour_Details, Created_by, created_datetime, Salary, Ratio,tenant_id, branch_id) VALUES (?, ?, ?, ?, ?,?, ?)",
       [
         Labour_Details.Labour_Details,
         Labour_Details.username,
@@ -138,7 +138,7 @@ exports.fetchLabour = async (tenant_id, branch_id) => {
 exports.fetchContractor = async (tenant_id, branch_id) => {
   try {
     const result = await pool.query(
-      "SELECT DISTINCT Contractor FROM mas_labour_Details WHERE tenant_id = ? AND branch_id = ? AND Contractor IS NOT NULL",
+      "SELECT DISTINCT Contractor,Id FROM mas_labour_Details WHERE tenant_id = ? AND branch_id = ? AND Contractor IS NOT NULL",
       [tenant_id, branch_id]
     );
     return result;
@@ -177,7 +177,7 @@ exports.labourTypeDelete = async (Details, tenant_id, branch_id) => {
       "DELETE FROM mas_labour_details WHERE id = ? AND tenant_id = ? AND branch_id = ?",
       [Number(Details.id), tenant_id, branch_id]
     );
-    if (result[0].affectedRows === 0) {
+    if (result.affectedRows === 0) {
       throw new AppError("Labour type not found", 404);
     }
     return { success: true, message: "Labour type deleted successfully" };

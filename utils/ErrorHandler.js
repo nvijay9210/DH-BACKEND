@@ -8,11 +8,13 @@ module.exports = (err, req, res, next) => {
 
   // ✅ Handle AppError instances
   if (err instanceof AppError) {
-    return res.status(err.statusCode).json({
+    const response = {
       success: false,
       message: err.message,
+      ...(err.errors && { errors: err.errors }), // Include validation errors if present
       ...(isDevelopment && { stack: err.stack }),
-    });
+    };
+    return res.status(err.statusCode).json(response);
   }
 
   // ✅ Handle MySQL Duplicate Entry Errors

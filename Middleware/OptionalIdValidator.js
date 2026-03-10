@@ -1,7 +1,7 @@
 const { pool } = require("../config/db");
 const { AppError } = require("../Logics/AppError");
 
-const allowedTables = ["tenant", "branch", "users"]; // security
+const allowedTables = ["tenant", "branch", "user"]; // security
 
 exports.checkRecordExists = async (table, conditions) => {
   try {

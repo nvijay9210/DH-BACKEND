@@ -27,7 +27,7 @@ exports.validateIds = async (req, res, next) => {
 
     // User validation
     if (user_id) {
-      await checkRecordExists("users", {
+      await checkRecordExists("user", {
         User_id: user_id,
         ...(tenant_id && { tenant_id }),
         ...(branch_id && { branch_id }),

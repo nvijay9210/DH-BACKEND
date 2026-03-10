@@ -61,7 +61,7 @@ exports.getUserBranches = async (
     }
     let query = `SELECT ub.*, u.User_name, b.branch_name
     FROM userbranch ub
-    LEFT JOIN users u ON ub.user_id = u.User_id
+    LEFT JOIN user u ON ub.user_id = u.User_id
     LEFT JOIN branch b ON ub.branch_id = b.branch_id
     WHERE ub.tenant_id = ?`;
     let params = [tenant_id];
@@ -96,7 +96,7 @@ exports.getUserBranchById = async (tenant_id, branch_id, user_id) => {
     const result = await conn.query(
       `SELECT ub.*, u.User_name, b.branch_name
       FROM userbranch ub
-      LEFT JOIN users u ON ub.user_id = u.User_id
+      LEFT JOIN user u ON ub.user_id = u.User_id
       LEFT JOIN branch b ON ub.branch_id = b.branch_id
       WHERE ub.tenant_id = ? AND ub.branch_id = ? AND ub.user_id = ?`,
       [tenant_id, branch_id, user_id]
@@ -254,7 +254,7 @@ exports.getUsersByBranch = async (tenant_id, branch_id, currentUserRights) => {
     const result = await conn.query(
       `SELECT ub.*, u.User_name, u.Rights, u.Status, u.Created_date
       FROM userbranch ub
-      INNER JOIN users u ON ub.user_id = u.User_id
+      INNER JOIN user u ON ub.user_id = u.User_id
       WHERE ub.tenant_id = ? AND ub.branch_id = ?
       ORDER BY u.User_name`,
       [tenant_id, branch_id]
