@@ -3,13 +3,14 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const { createUserBranch } = require("./UserBranchService");
 const { AppError } = require("../Logics/AppError");
+const { validateData } = require("../Middleware/ValidationMiddleware");
 
 /* ===============================
    Helper: Get User Branch Mapping
 =================================*/
 const getUserBranchById = async (tenant_id, branch_id, user_id) => {
   const rows = await pool.query(
-    `SELECT * FROM userbranch 
+    `SELECT * FROM userbranch
      WHERE tenant_id = ? AND user_id = ?`,
     [tenant_id, user_id]
   );
@@ -20,6 +21,12 @@ const getUserBranchById = async (tenant_id, branch_id, user_id) => {
    User Login
 =================================*/
 exports.login = async (Details) => {
+  // Example: Validate login data in service
+  const validation = validateData('login', Details);
+  if (!validation.isValid) {
+    throw new AppError('Login validation failed', 400, validation.errors);
+  }
+
   let conn;
   try {
     const jwt_key = process.env.JWT_KEY;
@@ -28,14 +35,14 @@ exports.login = async (Details) => {
     conn = await pool.getConnection();
 
     const users = await conn.query(
-      `SELECT u.*, 
+      `SELECT u.*,
           t.is_active AS tenant_active,
           b.is_active AS branch_active
        FROM user u
        JOIN tenant t ON u.tenant_id = t.tenant_id
        LEFT JOIN branch b ON u.branch_id = b.branch_id
        WHERE u.User_name = ?`,
-      [Details.username]
+      [validation.value.username] // Use validated data
     );
 
     if (users.length === 0) throw new AppError("Invalid credentials", 401);
@@ -110,6 +117,7 @@ exports.logout = async () => {
    User Details (Admin Only)
 =================================*/
 exports.userDetails = async (tenant_id, branch_id, currentUserRights) => {
+  console.log("Fetching user details for tenant:", tenant_id, "branch:", branch_id, "role:", currentUserRights);
   let conn;
   try {
     conn = await pool.getConnection();
@@ -199,7 +207,7 @@ exports.userAccess = async (
     }
 
     const result = await conn.query(
-      `UPDATE users 
+      `UPDATE user 
        SET Rights = ?, Status = ?, Updated_date = NOW()
        WHERE User_name = ? AND tenant_id = ?`,
       [Details.rights, Details.status, Details.username, tenant_id]
@@ -236,7 +244,7 @@ exports.adminPassChange = async (
     const hashedPassword = await bcrypt.hash(Details.password, 10);
 
     const result = await conn.query(
-      `UPDATE users 
+      `UPDATE user 
        SET Password = ?, Updated_date = NOW()
        WHERE User_name = ? AND tenant_id = ?`,
       [hashedPassword, Details.username, tenant_id]
@@ -272,7 +280,7 @@ exports.newUser = async (Details, tenant_id, branch_id, createdBy) => {
     const hashedPassword = await bcrypt.hash(Details.password, 10);
 
     const result = await conn.query(
-      `INSERT INTO users 
+      `INSERT INTO user 
        (User_name, Password, Rights, Status, Created_by, Created_date, tenant_id, branch_id) 
        VALUES (?, ?, ?, ?, ?, NOW(), ?, ?)`,
       [
@@ -328,7 +336,7 @@ exports.deleteUser = async (
     if (existing.length === 0) throw new AppError("User not found", 404);
 
     const result = await conn.query(
-      `UPDATE users SET Status = 'Inactive', Updated_date = NOW() 
+      `UPDATE user SET Status = 'Inactive', Updated_date = NOW() 
        WHERE User_id = ? AND tenant_id = ?`,
       [targetUserId, tenant_id]
     );

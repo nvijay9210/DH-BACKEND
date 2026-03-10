@@ -5,6 +5,8 @@ const PORT = process.env.PORT || 5000;
 
 const { pool } = require("./config/db");
 
+
+
 (async () => {
   try {
     const conn = await pool.getConnection();

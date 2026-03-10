@@ -13,6 +13,7 @@ const jwt = require("jsonwebtoken");
 const Redis = require("ioredis");
 const { pool } = require("../config/db"); // DB Pool
 const { getTenantById } = require("../Service/TenantService");
+const { validateRequest } = require("../Middleware/ValidationMiddleware");
 
 const router = express.Router();
 router.use(cookieParser());
@@ -123,6 +124,51 @@ async function getUserByKeycloakId(keycloakId) {
     return rows;
   } catch (error) {
     debug.error("UserService", "Failed to fetch user", error);
+    throw new Error(`Failed to fetch user: ${error.message}`);
+  }
+}
+
+/**
+ * Fetch user by Keycloak ID with tenant and branch validation
+ */
+async function getUserByKeycloakIdWithTenant(keycloakId, tenantId, branchId) {
+  debug.log("UserService", "Fetching user by Keycloak ID with tenant/branch", {
+    keycloakId,
+    tenantId,
+    branchId,
+  });
+  try {
+    const rows = await pool.query(
+      `
+      SELECT 
+        u.user_id,
+        u.keycloak_id,
+        u.User_name as username,
+        u.Rights as role,
+        u.Status,
+        u.failed_attempt_count,
+        u.account_locked,
+        u.tenant_id
+      FROM user u
+      WHERE u.keycloak_id = ? 
+        AND u.tenant_id = ?
+        AND u.Status = 'active'
+      LIMIT 1
+      `,
+      [keycloakId, tenantId]
+    );
+    debug.log("UserService", "User fetch with tenant/branch result", {
+      found: rows?.[0] ? true : false,
+      userId: rows?.[0]?.user_id,
+      role: rows?.[0]?.role,
+    });
+    return rows?.[0] || null;
+  } catch (error) {
+    debug.error(
+      "UserService",
+      "Failed to fetch user with tenant/branch",
+      error
+    );
     throw new Error(`Failed to fetch user: ${error.message}`);
   }
 }
@@ -905,8 +951,40 @@ const validateToken = async (req, res, next) => {
       req.tenant_id = session.tenant_id; // From session
       req.branch_id = session.branch_id || null; // Optional: set default if needed
 
-      req.role = session.role;
-      debug.log("Middleware", "✅ Token valid, user context attached");
+      // 🔄 Fetch user from database with tenant_id and branch_id validation
+      const keycloakId = req.tokenData.sub; // Keycloak's unique identifier
+      debug.log("Middleware", "Fetching user from database", {
+        keycloakId,
+        tenantId: req.tenant_id,
+        branchId: req.branch_id,
+      });
+
+      const userData = await getUserByKeycloakIdWithTenant(
+        keycloakId,
+        req.tenant_id,
+        req.branch_id
+      );
+
+      if (!userData) {
+        debug.error("Middleware", "User not found in database", {
+          keycloakId,
+          tenantId: req.tenant_id,
+        });
+        return next(
+          new AppError("User not found or inactive in system", 401)
+        );
+      }
+
+      // Set req.role from database user data
+      req.role = userData.role;
+      req.userStatus = userData.Status;
+
+      debug.log("Middleware", "✅ User fetched from DB, role assigned", {
+        userId: userData.user_id,
+        role: userData.role,
+        status: userData.Status,
+      });
+
       debug.log(
         "Middleware",
         "✅ Token valid, proceeding to next middleware..."
@@ -1008,7 +1086,7 @@ router.get("/me", validateToken, async (req, res) => {
 });
 
 // --- POST /login ---
-router.post("/login", async (req, res) => {
+router.post("/login",validateRequest('login'), async (req, res) => {
   debug.log("Route", "📍 POST /login called", {
     username: req.body.username,
     host: req.body.host,
@@ -1017,6 +1095,7 @@ router.post("/login", async (req, res) => {
 
   try {
     const { username, password, host } = req.body;
+    console.log(username, password, host)
     if (!username || !password) {
       debug.error("Route", "Missing credentials");
       return res

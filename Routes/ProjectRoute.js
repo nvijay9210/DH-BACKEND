@@ -10,24 +10,25 @@ const {
 const { asyncHandler } = require("../utils/Async");
 const { dynamicUpload } = require("../utils/UploadFile");
 const authMiddleware = require("../Middleware/AuthMiddleware");
+const { validateRequest } = require("../Middleware/ValidationMiddleware");
 
 /* =========================================
    Project CRUD
 ========================================= */
 
 // Create Project
-// router.post(
-//   "/projects",
-// //   validate(validateCreateProject),
-//    asyncHandler(projectController.createProject)
-// );
+router.post(
+  "/projects",
+  validateRequest('createProject'),
+  asyncHandler(projectController.createProject)
+);
 
-// // Update Project
-// router.put(
-//   "/projects/:id",
-// //   validate(validateUpdateProject),
-//    asyncHandler(projectController.updateProject)
-// );
+// Update Project
+router.put(
+  "/projects/:id",
+  validateRequest('updateProject'),
+  asyncHandler(projectController.updateProject)
+);
 
 // // Get All Projects
 // router.get(

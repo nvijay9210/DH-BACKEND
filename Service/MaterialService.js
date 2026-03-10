@@ -474,7 +474,7 @@ exports.materialDelete = async (Details, tenant_id, branch_id) => {
       `DELETE FROM mas_material_list WHERE id = ? AND tenant_id = ? AND branch_id = ?`,
       [Number(Details.id), tenant_id, branch_id]
     );
-    if (result[0].affectedRows === 0) {
+    if (result.affectedRows === 0) {
       throw new AppError("Material not found", 404);
     }
     console.log("✅ Material deleted successfully");

@@ -1,4 +1,5 @@
 const branchService = require("../Service/BranchService");
+const RedisService = require("../Service/RedisService");
 
 /* =========================================
    Create Branch
@@ -9,6 +10,9 @@ exports.createBranch = async (req, res) => {
     req.tenant_id,
     req.user.username
   );
+
+  // Invalidate list cache
+  await RedisService.deleteByPattern(`branch:list:*`);
 
   res.status(201).json({
     success: true,
@@ -35,6 +39,10 @@ exports.updateBranch = async (req, res) => {
     username,
   });
 
+  // Invalidate cache
+  await RedisService.delete(`branch:${branch_id}:${tenant_id}`);
+  await RedisService.deleteByPattern(`branch:list:*`);
+
   // ✅ Service should throw AppError if not found, but keeping fallback
   if (result.affectedRows === 0) {
     return res.status(404).json({
@@ -54,8 +62,22 @@ exports.updateBranch = async (req, res) => {
 ========================================= */
 exports.getBranches = async (req, res) => {
   const tenant_id = req.tenant_id;
-  
-  const data = await branchService.getBranches(tenant_id);
+  const cacheKey = `branch:list:${tenant_id}`;
+
+  // Check cache
+  let data = await RedisService.read(cacheKey);
+  if (data) {
+    return res.status(200).json({
+      success: true,
+      count: data.length,
+      data,
+    });
+  }
+
+  data = await branchService.getBranches(tenant_id);
+
+  // Cache for 1 hour
+  await RedisService.create(cacheKey, data, 3600);
 
   res.status(200).json({
     success: true,
@@ -70,8 +92,21 @@ exports.getBranches = async (req, res) => {
 exports.getBranchById = async (req, res) => {
   const branch_id = req.params.branch_id;
   const tenant_id = req.tenant_id;
-  
-  const data = await branchService.getBranchById(branch_id, tenant_id);
+  const cacheKey = `branch:${branch_id}:${tenant_id}`;
+
+  // Check cache
+  let data = await RedisService.read(cacheKey);
+  if (data) {
+    return res.status(200).json({
+      success: true,
+      data,
+    });
+  }
+
+  data = await branchService.getBranchById(branch_id, tenant_id);
+
+  // Cache for 1 hour
+  await RedisService.create(cacheKey, data, 3600);
 
   res.status(200).json({
     success: true,
@@ -87,6 +122,10 @@ exports.deleteBranch = async (req, res) => {
   const tenant_id = req.tenant_id;
 
   const result = await branchService.deleteBranch(branch_id, tenant_id);
+
+  // Invalidate cache
+  await RedisService.delete(`branch:${branch_id}:${tenant_id}`);
+  await RedisService.deleteByPattern(`branch:list:*`);
 
   // ✅ Service should throw AppError if not found, but keeping fallback
   if (result.affectedRows === 0) {

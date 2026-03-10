@@ -184,8 +184,8 @@ exports.labourDelete = async (Details, tenant_id, branch_id) => {
     conn = await pool.getConnection();
     const result = await conn.query(
       `SELECT * FROM labour_worked_details
-      WHERE Project_id = ? AND Date = ? AND tenant_id = ? AND branch_id = ?`,
-      [Details.Id, Details.date, tenant_id, branch_id]
+      WHERE Project_id = ? AND tenant_id = ? AND branch_id = ?`,
+      [Details.Id, tenant_id, branch_id]
     );
     const rows = result;
     const convertedRows = rows.map((row) => ({
@@ -525,7 +525,7 @@ exports.contractorDelete = async (Details, tenant_id, branch_id) => {
       WHERE id = ? AND tenant_id = ? AND branch_id = ?`,
       [Number(Details.id), tenant_id, branch_id]
     );
-    if (result[0].affectedRows === 0) {
+    if (result.affectedRows === 0) {
       throw new AppError("Contractor not found", 404);
     }
     return { success: true, message: "Contractor deleted successfully" };
@@ -549,7 +549,7 @@ exports.supplierDelete = async (Details, tenant_id, branch_id) => {
       WHERE id = ? AND tenant_id = ? AND branch_id = ?`,
       [Number(Details.id), tenant_id, branch_id]
     );
-    if (result[0].affectedRows === 0) {
+    if (result.affectedRows === 0) {
       throw new AppError("Supplier not found", 404);
     }
     return { success: true, message: "Supplier deleted successfully" };

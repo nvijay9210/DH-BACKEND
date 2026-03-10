@@ -78,7 +78,7 @@ exports.order = async (orders, tenant_id, branch_id) => {
         tenant_id,
         branch_id,
       ]);
-      const stockRows = stockResult[0];
+      const stockRows = stockResult;
       const existingStock = stockRows?.find(
         (item) => item.Material_List === Material_Name
       );
@@ -180,7 +180,7 @@ exports.updateOrder = async (orders, tenant_id, branch_id) => {
         tenant_id,
         branch_id,
       ]);
-      const stockRows = stockResult[0];
+      const stockRows = stockResult;
       if (!stockRows || stockRows.length === 0) {
         throw new AppError(
           `Stock not found for Project ${Project_id}, Material ${Material_Name}`,
@@ -194,7 +194,7 @@ exports.updateOrder = async (orders, tenant_id, branch_id) => {
         tenant_id,
         branch_id,
       ]);
-      const orderRows = orderResult[0];
+      const orderRows = orderResult;
       if (!orderRows || orderRows.length === 0) {
         throw new AppError(`Order not found: ${Order_id}`, 404);
       }
@@ -260,7 +260,7 @@ exports.orderDelete = async (Details, tenant_id, branch_id) => {
         WHERE Project_id = ? AND Order_id = ? AND tenant_id = ? AND branch_id = ?`,
         [Details.Project_id, Details.Order_id, tenant_id, branch_id]
       );
-      if (deleteResult[0].affectedRows === 0) {
+      if (deleteResult.affectedRows === 0) {
         throw new AppError("Order not found", 404);
       }
       const quantity = Number(Details.Quantity);
@@ -269,9 +269,9 @@ exports.orderDelete = async (Details, tenant_id, branch_id) => {
         WHERE Project_id = ? AND Material_List = ? AND tenant_id = ? AND branch_id = ?`,
         [Details.Project_id, Details.Material_Name, tenant_id, branch_id]
       );
-      const stockRows = stockResult[0];
+      const stockRows = stockResult;
       if (stockRows && stockRows.length > 0) {
-        const currentStock = Number(stockRows[0].Stock_List);
+        const currentStock = Number(stockRows.Stock_List);
         const newStock = currentStock - quantity;
         await conn.query(
           `UPDATE material_stock_list
@@ -340,7 +340,7 @@ exports.orderReports = async (Details, tenant_id, branch_id) => {
       ORDER BY Order_date`,
       [tenant_id, branch_id, Details.Id, Details.Start, Details.End]
     );
-    return result[0];
+    return result;
   } catch (err) {
     console.error("❌ orderReports Error:", err);
     throw err instanceof AppError
@@ -377,11 +377,11 @@ exports.materialPaymentSelected = async (payments, tenant_id, branch_id) => {
         WHERE Order_id = ? AND tenant_id = ? AND branch_id = ?`,
         [Order_id, tenant_id, branch_id]
       );
-      const orderRows = orderResult[0];
+      const orderRows = orderResult;
       if (orderRows.length === 0) {
         throw new AppError(`Order not found: ${Order_id}`, 404);
       }
-      const { Amount, Paid, Balance } = orderRows[0];
+      const { Amount, Paid, Balance } = orderRows;
       const payAmount = Number(PayAmount);
       const balance = Number(Balance);
       if (payAmount > balance) {
