@@ -20,7 +20,7 @@ exports.labourDetails = async (req, res) => {
 exports.updateLabour = async (req, res) => {
   const { tenant_id, branch_id } = req;
   const details = req.body;
-  const username = req.user.username || "Unknown User";
+  const username = req.user.given_name || "Unknown User";
   
   const data = await labourService.updateLabour(username,details, tenant_id, branch_id);
   

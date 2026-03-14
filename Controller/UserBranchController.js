@@ -4,7 +4,7 @@ const RedisService = require("../Service/RedisService");
 exports.createUserBranch = async (req, res) => {
   const { branch_id, user_id } = req.body;
   const tenant_id = req.tenant_id;
-  const createdBy = req.user.username;
+  const createdBy = req.user.given_name;
   
   if (!branch_id || !user_id) {
     return res.status(400).json({
@@ -87,7 +87,7 @@ exports.updateUserBranch = async (req, res) => {
   const tenant_id = req.tenant_id;
   const { branch_id, user_id } = req.params;
   const currentUserRights = req.role;
-  const updatedBy = req.user.username;
+  const updatedBy = req.user.given_name;
   
   const result = await userBranchService.updateUserBranch(
     req.body,

@@ -6,11 +6,14 @@ const { AppError } = require("../Logics/AppError");
 =================================*/
 exports.labourDetails = async (Order, tenant_id, branch_id) => {
   let conn;
+
   try {
-    if (!Order || Order.length === 0) {
+    if (!Array.isArray(Order) || Order.length === 0) {
       throw new AppError("No labour details provided", 400);
     }
+
     conn = await pool.getConnection();
+
     const insertQuery = `
       INSERT INTO labour_worked_details
       (tenant_id, branch_id, Project_id, Project_name, Date, Contractor,
@@ -18,49 +21,41 @@ exports.labourDetails = async (Order, tenant_id, branch_id) => {
       Payment_Date, Paid, Balance, Status, CREATED_BY, CREATED_DATETIME)
       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `;
-    const promises = Order.map(async (details) => {
-      const {
-        Project_id,
-        Project_name,
-        Date,
-        Contractor,
-        Labour_types,
-        No_Of_Persons,
-        Salary,
-        Ratio,
-        Total,
-        Site_supervisor,
-        Paid,
-        Balance,
-        Status,
-        Payment_Date,
-        username,
-        currentDate,
-      } = details;
-      await conn.query(insertQuery, [
+
+    const promises = Order.map((details) => {
+      const values = [
         tenant_id,
         branch_id,
-        Project_id,
-        Project_name,
-        Date,
-        Contractor,
-        Labour_types,
-        No_Of_Persons,
-        Salary,
-        Ratio,
-        Total,
-        Site_supervisor,
-        Payment_Date,
-        Paid,
-        Balance,
-        Status,
-        username,
-        currentDate,
-      ]);
+        details.Project_id,
+        details.Project_name,
+        details.Date,
+        details.Contractor,
+        details.Labour_types,
+        details.No_Of_Persons,
+        details.Salary,
+        details.Ratio,
+        details.Total,
+        details.Site_supervisor,
+        details.Payment_Date,
+        details.Paid,
+        details.Balance,
+        details.Status,
+        details.username,
+        details.currentDate || new Date()
+      ];
+
+      return conn.query(insertQuery, values);
     });
+
     await Promise.all(promises);
+
     console.log("✅ Details saved to the database");
-    return { success: true, message: "Details saved successfully" };
+
+    return {
+      success: true,
+      message: "Details saved successfully"
+    };
+
   } catch (error) {
     console.error("❌ labourDetails Error:", error);
     throw new AppError("Failed to save labour details", 500, error);

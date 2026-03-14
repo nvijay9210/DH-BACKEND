@@ -238,6 +238,7 @@ exports.measurementDetails = async (
   file = null
 ) => {
   let conn;
+  console.log("Received measurement details:", material_report);
   try {
     if (!material_report || Object.keys(material_report).length === 0) {
       throw new AppError("No measurement details provided", 400);
@@ -391,7 +392,7 @@ exports.updateMaterial = async (materialUpdates, tenant_id, branch_id) => {
         tenant_id,
         branch_id,
       ]);
-      if (result[0].affectedRows === 0) {
+      if (result.affectedRows === 0) {
         throw new AppError(`Record not found: ${Dailyprocess_id}`, 404);
       }
       console.log(`✅ Daily process updated: ID ${Dailyprocess_id}`);

@@ -9,6 +9,7 @@ const validationSchemas = require('../Validation/JoiValidation');
  */
 const validateRequest = (schemaName, property = 'body') => {
   return (req, res, next) => {
+    console.log(req.body)
     try {
       // Get the validation schema from the validation object
       const validationGroup = Object.keys(validationSchemas).find(key =>

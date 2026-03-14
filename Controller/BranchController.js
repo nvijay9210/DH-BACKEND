@@ -8,7 +8,7 @@ exports.createBranch = async (req, res) => {
   const result = await branchService.createBranch(
     req.body,
     req.tenant_id,
-    req.user.username
+    req.user.given_name
   );
 
   // Invalidate list cache
@@ -30,7 +30,7 @@ exports.updateBranch = async (req, res) => {
   const branch_id = req.params.branch_id;
   const tenant_id = req.tenant_id;
   const details = req.body;
-  const username = req.user.username;
+  const username = req.user.given_name;
 
   const result = await branchService.updateBranch({
     branch_id,
