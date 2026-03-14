@@ -305,6 +305,7 @@ exports.orderDelete = async (Details, tenant_id, branch_id) => {
    Fetch Order Update (Date Range)
 =================================*/
 exports.fetchOrderUpdate = async (Details, tenant_id, branch_id) => {
+ 
   let conn;
   try {
     conn = await pool.getConnection();
@@ -315,6 +316,7 @@ exports.fetchOrderUpdate = async (Details, tenant_id, branch_id) => {
       ORDER BY Order_date`,
       [tenant_id, branch_id, Details.Id, Details.start_date, Details.end_date]
     );
+
     return result;
   } catch (err) {
     console.error("❌ fetchOrderUpdate Error:", err);

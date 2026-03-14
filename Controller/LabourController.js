@@ -4,7 +4,7 @@ const RedisService = require("../Service/RedisService");
 exports.labourDetails = async (req, res) => {
   const { tenant_id, branch_id } = req;
   const details = req.body;
-  const cacheKey = `labour:details:${details.id}:${tenant_id}:${branch_id}`;
+  const cacheKey = `labour:details:${details.Id}:${tenant_id}:${branch_id}`;
 
   let data = await RedisService.read(cacheKey);
   if (data) {
@@ -20,11 +20,12 @@ exports.labourDetails = async (req, res) => {
 exports.updateLabour = async (req, res) => {
   const { tenant_id, branch_id } = req;
   const details = req.body;
+  const username = req.user.username || "Unknown User";
   
-  const data = await labourService.updateLabour(details, tenant_id, branch_id);
+  const data = await labourService.updateLabour(username,details, tenant_id, branch_id);
   
-  if (details.id) {
-    await RedisService.delete(`labour:details:${details.id}:${tenant_id}:${branch_id}`);
+  if (details.Id) {
+    await RedisService.delete(`labour:details:${details.Id}:${tenant_id}:${branch_id}`);
     await RedisService.deleteByPattern(`labour:*:${tenant_id}:${branch_id}`);
   }
   
@@ -37,7 +38,7 @@ exports.labourDelete = async (req, res) => {
   
   const data = await labourService.labourDelete(details, tenant_id, branch_id);
   
-  if (details.id) {
+  if (details.Id) {
     await RedisService.deleteByPattern(`labour:*:${tenant_id}:${branch_id}`);
   }
   
@@ -47,7 +48,7 @@ exports.labourDelete = async (req, res) => {
 exports.fetchLabourUpdate = async (req, res) => {
   const { tenant_id, branch_id } = req;
   const details = req.body;
-  const cacheKey = `labour:update:${details.id}:${tenant_id}:${branch_id}`;
+  const cacheKey = `labour:update:${details.Id}:${tenant_id}:${branch_id}`;
 
   let data = await RedisService.read(cacheKey);
   if (data) {
@@ -79,7 +80,7 @@ exports.labourReports = async (req, res) => {
 exports.labourPayment = async (req, res) => {
   const { tenant_id, branch_id } = req;
   const details = req.body;
-  const cacheKey = `labour:payment:${details.id}:${tenant_id}:${branch_id}`;
+  const cacheKey = `labour:payment:${details.Id}:${tenant_id}:${branch_id}`;
 
   let data = await RedisService.read(cacheKey);
   if (data) {

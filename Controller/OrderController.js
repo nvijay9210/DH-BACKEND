@@ -21,8 +21,8 @@ exports.updateOrder = async (req, res) => {
   const data = await orderService.updateOrder(details, tenant_id, branch_id);
   
   // Update cache
-  if (details.id) {
-    await RedisService.update(`order:${details.id}:${tenant_id}:${branch_id}`, data, 3600);
+  if (details.Id) {
+    await RedisService.update(`order:${details.Id}:${tenant_id}:${branch_id}`, data, 3600);
     await RedisService.deleteByPattern(`order:list:*`);
   }
   
@@ -35,8 +35,8 @@ exports.orderDelete = async (req, res) => {
   const data = await orderService.orderDelete(details, tenant_id, branch_id);
   
   // Invalidate cache
-  if (details.id) {
-    await RedisService.delete(`order:${details.id}:${tenant_id}:${branch_id}`);
+  if (details.Id) {
+    await RedisService.delete(`order:${details.Id}:${tenant_id}:${branch_id}`);
     await RedisService.deleteByPattern(`order:list:*`);
   }
   
@@ -46,7 +46,7 @@ exports.orderDelete = async (req, res) => {
 exports.fetchOrderUpdate = async (req, res) => {
   const { tenant_id, branch_id } = req;
   const details = req.body;
-  const cacheKey = `order:update:${details.id}:${tenant_id}:${branch_id}`;
+  const cacheKey = `order:update:${details.start_date}:${details.end_date}:${details.Id}:${tenant_id}:${branch_id}`;
 
   // Check cache
   let data = await RedisService.read(cacheKey);
@@ -55,7 +55,6 @@ exports.fetchOrderUpdate = async (req, res) => {
   }
 
   data = await orderService.fetchOrderUpdate(details, tenant_id, branch_id);
-  
   // Cache for 30 minutes
   await RedisService.create(cacheKey, data, 1800);
   
@@ -84,7 +83,7 @@ exports.orderReports = async (req, res) => {
 exports.materialPaymentSelected = async (req, res) => {
   const { tenant_id, branch_id } = req;
   const details = req.body;
-  const cacheKey = `order:material:payment:${details.id}:${tenant_id}:${branch_id}`;
+  const cacheKey = `order:material:payment:${details.Id}:${tenant_id}:${branch_id}`;
 
   // Check cache
   let data = await RedisService.read(cacheKey);

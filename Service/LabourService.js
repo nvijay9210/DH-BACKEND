@@ -72,13 +72,13 @@ exports.labourDetails = async (Order, tenant_id, branch_id) => {
 /* ===============================
    Update Labour - Multiple Records
 =================================*/
-exports.updateLabour = async (details, tenant_id, branch_id) => {
+exports.updateLabour = async (username,details, tenant_id, branch_id) => {
   let conn;
   try {
-    const { username, currentDate, LabourUpdate } = details;
-    if (!LabourUpdate || LabourUpdate.length === 0) {
-      throw new AppError("No labour updates provided", 400);
-    }
+    // const { currentDate, LabourUpdate } = details[0];
+    // if (!LabourUpdate || LabourUpdate.length === 0) {
+    //   throw new AppError("No labour updates provided", 400);
+    // }
     conn = await pool.getConnection();
     const updateQuery = `
       UPDATE labour_worked_details
@@ -95,7 +95,7 @@ exports.updateLabour = async (details, tenant_id, branch_id) => {
       const day = ("0" + date.getDate()).slice(-2);
       return [date.getFullYear(), mnth, day].join("-");
     };
-    const promises = LabourUpdate.map(async (order) => {
+    const promises = details.map(async (order) => {
       const date = convert(order.DATE);
       const {
         Project_id,
@@ -108,6 +108,7 @@ exports.updateLabour = async (details, tenant_id, branch_id) => {
         Total,
         Site_supervisor,
         Payment_Date,
+        datetime,
         Paid,
         Balance,
         Status,
@@ -129,7 +130,7 @@ exports.updateLabour = async (details, tenant_id, branch_id) => {
         Balance,
         Status,
         username,
-        currentDate,
+        datetime,
         Labour_id,
         tenant_id,
         branch_id,
