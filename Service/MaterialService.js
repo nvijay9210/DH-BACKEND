@@ -304,7 +304,7 @@ exports.measurementDetails = async (
     return {
       success: true,
       message: "Measurement details saved successfully",
-      insertId: result[0].insertId,
+      insertId: result.insertId,
     };
   } catch (error) {
     console.error("❌ measurementDetails Error:", error);
@@ -411,7 +411,7 @@ exports.fetchMaterialUpdate = async (Details, tenant_id, branch_id) => {
       WHERE Project_id = ? AND Date = ? AND tenant_id = ? AND branch_id = ?`,
       [Details.Id, Details.date, tenant_id, branch_id]
     );
-    return result[0];
+    return result;
   } catch (err) {
     console.error("❌ fetchMaterialUpdate Error:", err);
     throw err instanceof AppError
@@ -434,7 +434,7 @@ exports.fetchMaterialUsed = async (Details, tenant_id, branch_id) => {
       WHERE Project_id = ? AND Date = ? AND tenant_id = ? AND branch_id = ?`,
       [Details.Id, Details.date, tenant_id, branch_id]
     );
-    return result[0];
+    return result;
   } catch (err) {
     console.error("❌ fetchMaterialUsed Error:", err);
     throw err instanceof AppError
@@ -579,7 +579,7 @@ exports.measurementReports = async (Details, tenant_id, branch_id) => {
       ORDER BY Date`,
       [tenant_id, branch_id, Details.Id, Details.Start, Details.End]
     );
-    return result[0];
+    return result;
   } catch (err) {
     console.error("❌ measurementReports Error:", err);
     throw err instanceof AppError

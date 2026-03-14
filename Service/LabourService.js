@@ -218,7 +218,7 @@ exports.labourReports = async (Details, tenant_id, branch_id) => {
       ORDER BY Labour_id, Date`,
       [tenant_id, branch_id, Details.Id, Details.Start, Details.End]
     );
-    const rows = result[0];
+    const rows = result;
     const convertedRows = rows.map((row) => ({
       ...row,
       Salary: row.Salary?.toString(),
@@ -496,7 +496,7 @@ exports.contractorReport = async (Details, tenant_id, branch_id) => {
       ];
     }
     const result = await conn.query(query, params);
-    const rows = result[0];
+    const rows = result;
     const convertedRows = rows.map((row) => ({
       ...row,
       Salary: row.Salary?.toString(),
