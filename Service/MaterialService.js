@@ -86,7 +86,7 @@ exports.materialUsed = async (Mat_Used, tenant_id, branch_id) => {
           404
         );
       }
-      const Stock = rows[0].Stock_List;
+      const Stock = rows.Stock_List;
       await conn.query(insertQuery, [
         tenant_id,
         branch_id,
@@ -232,6 +232,7 @@ exports.EditMaterialUsed = async (Mat_Used, tenant_id, branch_id) => {
 =================================*/
 exports.measurementDetails = async (
   material_report,
+  username,
   tenant_id,
   branch_id,
   file = null
@@ -242,17 +243,19 @@ exports.measurementDetails = async (
       throw new AppError("No measurement details provided", 400);
     }
     conn = await pool.getConnection();
+    
     const convert = (str) => {
       if (!str) return null;
-      const date = new Date(str);
+      const date = new Date(str);  // ✅ Now uses global Date constructor
       const mnth = ("0" + (date.getMonth() + 1)).slice(-2);
       const day = ("0" + date.getDate()).slice(-2);
       return [date.getFullYear(), mnth, day].join("-");
     };
+    
     const {
       Project_id,
       Project_name,
-      Date,
+      Date: reportDate,  // ✅ Rename to avoid collision
       Measurement,
       Units,
       Nos,
@@ -266,10 +269,12 @@ exports.measurementDetails = async (
       Paid,
       Balance,
       Status,
-      username,
+      username: reportUsername,  // ✅ Also rename this to avoid collision
       currentDate,
     } = material_report;
+    
     const photoPath = file ? path.join("images", file.filename) : null;
+    
     const result = await conn.query(
       `INSERT INTO daily_process_details
       (tenant_id, branch_id, Project_id, Project_name, DATE, Measurement, Units, Nos,
@@ -281,7 +286,7 @@ exports.measurementDetails = async (
         branch_id,
         Project_id,
         Project_name,
-        Date,
+        reportDate,  // ✅ Use renamed variable
         Measurement,
         Units,
         Nos,
@@ -296,10 +301,11 @@ exports.measurementDetails = async (
         Paid,
         Balance,
         Status,
-        username,
+        username,  // ✅ Use function argument (not from material_report)
         convert(currentDate),
       ]
     );
+    
     console.log("✅ Measurement details inserted successfully");
     return {
       success: true,

@@ -15,7 +15,7 @@ exports.newPayment = async (req, res) => {
 exports.fetchPaymentUpdate = async (req, res) => {
   const { tenant_id, branch_id } = req;
   const details = req.body;
-  const cacheKey = `payment:update:${details.id}:${tenant_id}:${branch_id}`;
+  const cacheKey = `payment:update:${details.Id}:${tenant_id}:${branch_id}`;
 
   let data = await RedisService.read(cacheKey);
   if (data) {
@@ -33,8 +33,8 @@ exports.updatePaymentDetails = async (req, res) => {
   const details = req.body;
   const data = await paymentService.updatePaymentDetails(details, tenant_id, branch_id);
   
-  if (details.id) {
-    await RedisService.delete(`payment:${details.id}:${tenant_id}:${branch_id}`);
+  if (details.Id) {
+    await RedisService.delete(`payment:${details.Id}:${tenant_id}:${branch_id}`);
     await RedisService.deleteByPattern(`payment:*:${tenant_id}:${branch_id}`);
   }
   
@@ -46,7 +46,7 @@ exports.projectPaymentDelete = async (req, res) => {
   const details = req.body;
   const data = await paymentService.projectPaymentDelete(details, tenant_id, branch_id);
   
-  if (details.id) {
+  if (details.Id) {
     await RedisService.deleteByPattern(`payment:*:${tenant_id}:${branch_id}`);
   }
   

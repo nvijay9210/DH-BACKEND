@@ -8,8 +8,7 @@ const authMiddleware = require("../Middleware/AuthMiddleware");
 // router.post("/Material_List", asyncHandler(materialController.matList));
 router.put(
   "/MatUsed",
-
-  asyncHandler(materialController.matUsed)
+  asyncHandler(materialController.materialUsed)
 );
 router.put(
   "/EditMaterialUsed",
