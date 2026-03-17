@@ -179,19 +179,15 @@ exports.labourDelete = async (Details, tenant_id, branch_id) => {
   try {
     conn = await pool.getConnection();
     const result = await conn.query(
-      `SELECT * FROM labour_worked_details
-      WHERE Project_id = ? AND tenant_id = ? AND branch_id = ?`,
-      [Details.Id, tenant_id, branch_id]
+      `DELETE FROM labour_worked_details
+      WHERE Labour_id=? AND Project_id = ? AND tenant_id = ? AND branch_id = ?`,
+      [Details.Labour_id,Details.Project_id, tenant_id, branch_id]
     );
-    const rows = result;
-    const convertedRows = rows.map((row) => ({
-      ...row,
-      Salary: row.Salary?.toString(),
-      Total: row.Total?.toString(),
-      Paid: row.Paid?.toString(),
-      Balance: row.Balance?.toString(),
-    }));
-    return convertedRows;
+    return {
+      success: true,
+      message: `${result.affectedRows} records deleted successfully`,
+      affectedRows: result.affectedRows,
+    };
   } catch (error) {
     console.error("❌ labourDelete Error:", error);
     throw new AppError("Failed to fetch labour records", 500, error);

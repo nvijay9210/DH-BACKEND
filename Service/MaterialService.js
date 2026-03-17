@@ -123,11 +123,19 @@ exports.materialUsed = async (Mat_Used, tenant_id, branch_id) => {
 =================================*/
 exports.EditMaterialUsed = async (Mat_Used, tenant_id, branch_id) => {
   let conn;
+
   try {
+    console.log("📥 EditMaterialUsed called");
+    console.log("Tenant:", tenant_id, "Branch:", branch_id);
+    console.log("Incoming Data:", JSON.stringify(Mat_Used, null, 2));
+
     if (!Mat_Used || Mat_Used.length === 0) {
       throw new AppError("No material updates provided", 400);
     }
+
     conn = await pool.getConnection();
+    console.log("✅ DB connection acquired");
+
     const convert = (str) => {
       if (!str) return null;
       const date = new Date(str);
@@ -135,25 +143,33 @@ exports.EditMaterialUsed = async (Mat_Used, tenant_id, branch_id) => {
       const day = ("0" + date.getDate()).slice(-2);
       return [date.getFullYear(), mnth, day].join("-");
     };
+
     const selectUsedQuery = `
       SELECT Material_Used FROM materials_used
       WHERE Project_id = ? AND Material_List = ? AND DATE = ? AND tenant_id = ? AND branch_id = ?
     `;
+
     const selectStockQuery = `
       SELECT Stock_List FROM material_stock_list
       WHERE Project_id = ? AND Material_List = ? AND tenant_id = ? AND branch_id = ?
     `;
+
     const stockUpdateQuery = `
       UPDATE material_stock_list
       SET Stock_List = ?
       WHERE Project_id = ? AND Material_List = ? AND tenant_id = ? AND branch_id = ?
     `;
+
     const usedUpdateQuery = `
       UPDATE materials_used
       SET Material_Used = ?, LAST_UPDATED_BY = ?, LAST_UPDATED_DATETIME = ?
       WHERE Project_id = ? AND Material_List = ? AND DATE = ? AND tenant_id = ? AND branch_id = ?
     `;
+
     for (const details of Mat_Used) {
+      console.log("--------------------------------------------------");
+      console.log("🔄 Processing material:", details.Material_List);
+
       const {
         Project_id,
         Project_name,
@@ -161,10 +177,24 @@ exports.EditMaterialUsed = async (Mat_Used, tenant_id, branch_id) => {
         Material_List,
         Material_Used,
         username,
-        currentDate,
+        date,
+        Used
       } = details;
-      const formattedDate = convert(DATE);
-      const formattedUpdateDate = convert(currentDate);
+
+      const formattedDate = DATE;
+      const formattedUpdateDate = date;
+
+      console.log("📅 Formatted Date:", formattedDate);
+      console.log("📅 Update Date:", formattedUpdateDate);
+
+      console.log("🔎 Checking existing usage record...");
+
+      console.log(Project_id,
+        Material_List,
+        formattedDate,
+        tenant_id,
+        branch_id);
+
       const usedResult = await conn.query(selectUsedQuery, [
         Project_id,
         Material_List,
@@ -172,24 +202,44 @@ exports.EditMaterialUsed = async (Mat_Used, tenant_id, branch_id) => {
         tenant_id,
         branch_id,
       ]);
+
+      console.log("Used Query Result:", usedResult);
+
       const usedRows = usedResult[0];
-      if (!usedRows || usedRows.length === 0) {
+
+      if (!usedRows) {
         throw new AppError("Usage record not found for update", 404);
       }
-      const alreadyUsedStock = Number(usedRows[0].Material_Used);
+
+      const alreadyUsedStock = Number(usedRows.Material_Used);
       const newUsed = Number(Material_Used);
+
+      console.log("📊 Already Used:", alreadyUsedStock);
+      console.log("📊 New Used:", newUsed);
+
+      console.log("🔎 Fetching stock record...");
+
       const stockResult = await conn.query(selectStockQuery, [
         Project_id,
         Material_List,
         tenant_id,
         branch_id,
       ]);
+
+      console.log("Stock Query Result:", stockResult);
+
       const stockRows = stockResult[0];
+
       if (!stockRows || stockRows.length === 0) {
         throw new AppError("Stock record not found", 404);
       }
-      const currentStock = Number(stockRows[0].Stock_List);
+
+      const currentStock = Number(stockRows.Stock_List);
+
+      console.log("📦 Current Stock:", currentStock);
+
       let newStock;
+
       if (alreadyUsedStock > newUsed) {
         newStock = currentStock + (alreadyUsedStock - newUsed);
       } else if (alreadyUsedStock < newUsed) {
@@ -197,16 +247,33 @@ exports.EditMaterialUsed = async (Mat_Used, tenant_id, branch_id) => {
       } else {
         newStock = currentStock;
       }
-      await conn.query(usedUpdateQuery, [
-        newUsed,
+
+      console.log("📦 Calculated New Stock:", newStock);
+
+      console.log("✏️ Updating materials_used table...");
+
+      console.log("Used Update Params:",  Used,
         username,
         formattedUpdateDate,
         Project_id,
         Material_List,
-        formattedDate,
+        formattedUpdateDate,
+        tenant_id,
+        branch_id,);
+
+      await conn.query(usedUpdateQuery, [
+        Used,
+        username,
+        formattedUpdateDate,
+        Project_id,
+        Material_List,
+        formattedUpdateDate,
         tenant_id,
         branch_id,
       ]);
+
+      console.log("✏️ Updating material_stock_list table...");
+
       await conn.query(stockUpdateQuery, [
         newStock,
         Project_id,
@@ -214,16 +281,24 @@ exports.EditMaterialUsed = async (Mat_Used, tenant_id, branch_id) => {
         tenant_id,
         branch_id,
       ]);
+
       console.log(`✅ Material usage updated: ${Material_List}`);
     }
+
+    console.log("🎉 All materials updated successfully");
+
     return { success: true, message: "Material usage updated successfully" };
   } catch (err) {
     console.error("❌ EditMaterialUsed Error:", err);
+
     throw err instanceof AppError
       ? err
       : new AppError("Failed to update material usage", 500, err);
   } finally {
-    if (conn) conn.release();
+    if (conn) {
+      conn.release();
+      console.log("🔌 DB connection released");
+    }
   }
 };
 
@@ -244,19 +319,19 @@ exports.measurementDetails = async (
       throw new AppError("No measurement details provided", 400);
     }
     conn = await pool.getConnection();
-    
+
     const convert = (str) => {
       if (!str) return null;
-      const date = new Date(str);  // ✅ Now uses global Date constructor
+      const date = new Date(str); // ✅ Now uses global Date constructor
       const mnth = ("0" + (date.getMonth() + 1)).slice(-2);
       const day = ("0" + date.getDate()).slice(-2);
       return [date.getFullYear(), mnth, day].join("-");
     };
-    
+
     const {
       Project_id,
       Project_name,
-      Date: reportDate,  // ✅ Rename to avoid collision
+      Date: reportDate, // ✅ Rename to avoid collision
       Measurement,
       Units,
       Nos,
@@ -270,12 +345,12 @@ exports.measurementDetails = async (
       Paid,
       Balance,
       Status,
-      username: reportUsername,  // ✅ Also rename this to avoid collision
+      username: reportUsername, // ✅ Also rename this to avoid collision
       currentDate,
     } = material_report;
-    
+
     const photoPath = file ? path.join("images", file.filename) : null;
-    
+
     const result = await conn.query(
       `INSERT INTO daily_process_details
       (tenant_id, branch_id, Project_id, Project_name, DATE, Measurement, Units, Nos,
@@ -287,7 +362,7 @@ exports.measurementDetails = async (
         branch_id,
         Project_id,
         Project_name,
-        reportDate,  // ✅ Use renamed variable
+        reportDate, // ✅ Use renamed variable
         Measurement,
         Units,
         Nos,
@@ -302,11 +377,11 @@ exports.measurementDetails = async (
         Paid,
         Balance,
         Status,
-        username,  // ✅ Use function argument (not from material_report)
-        convert(currentDate),
+        username, // ✅ Use function argument (not from material_report)
+        currentDate,
       ]
     );
-    
+
     console.log("✅ Measurement details inserted successfully");
     return {
       success: true,
@@ -349,8 +424,8 @@ exports.updateMaterial = async (materialUpdates, tenant_id, branch_id) => {
     `;
     for (const update of materialUpdates) {
       const { username, currentDate, ...materialUpdate } = update;
-      const formattedDate = convert(materialUpdate.DATE);
-      const formattedUpdateDate = convert(currentDate);
+      const formattedDate = materialUpdate.DATE;
+      const formattedUpdateDate = currentDate;
       const {
         Project_id,
         Project_name,
@@ -437,7 +512,7 @@ exports.fetchMaterialUsed = async (Details, tenant_id, branch_id) => {
   try {
     conn = await pool.getConnection();
     const result = await conn.query(
-      `SELECT * FROM materials_used
+      `SELECT *,DATE_FORMAT(DATE, '%Y-%m-%d') AS Format_date FROM materials_used
       WHERE Project_id = ? AND Date = ? AND tenant_id = ? AND branch_id = ?`,
       [Details.Id, Details.date, tenant_id, branch_id]
     );

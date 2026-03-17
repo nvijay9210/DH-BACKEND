@@ -27,6 +27,7 @@ app.use(express.urlencoded({ extended: true }));
 const cors = require("cors");
 const { AppError } = require("./Logics/AppError");
 const cookieParser = require("cookie-parser");
+const dateMiddleware = require("./Middleware/DateTimeConversion");
 
 app.use(
   cors({
@@ -76,6 +77,8 @@ const withAuth = (router, includeContext = false) => {
     ? [ssoAuth.validateToken, authMiddleware, router]
     : [ssoAuth.validateToken, router];
 };
+
+app.use(dateMiddleware);
 
 app.use(`/api/keycloak`, ssoAuth.router);
 

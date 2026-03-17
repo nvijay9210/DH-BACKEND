@@ -117,6 +117,7 @@ class RedisService {
    */
   static async deleteByPattern(pattern) {
     try {
+       if (!redis.keys) return; // Redis disabled
       const keys = await redis.keys(pattern);
       if (keys.length === 0) {
         console.log(`⚠️ No keys found to delete for pattern: ${pattern}`);

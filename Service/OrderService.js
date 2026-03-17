@@ -260,6 +260,7 @@ exports.orderDelete = async (Details, tenant_id, branch_id) => {
         WHERE Project_id = ? AND Order_id = ? AND tenant_id = ? AND branch_id = ?`,
         [Details.Project_id, Details.Order_id, tenant_id, branch_id]
       );
+      console.log('deleteResult:', deleteResult);
       if (deleteResult.affectedRows === 0) {
         throw new AppError("Order not found", 404);
       }

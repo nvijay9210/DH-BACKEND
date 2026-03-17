@@ -38,7 +38,7 @@ exports.labourDelete = async (req, res) => {
   
   const data = await labourService.labourDelete(details, tenant_id, branch_id);
   
-  if (details.Id) {
+  if (details.Labour_id) {
     await RedisService.deleteByPattern(`labour:*:${tenant_id}:${branch_id}`);
   }
   
