@@ -3,6 +3,7 @@ const router = express.Router();
 const materialController = require("../Controller/MaterialController");
 const { asyncHandler } = require("../utils/Async");
 const authMiddleware = require("../Middleware/AuthMiddleware");
+const { dynamicUpload } = require("../utils/UploadFile");
 
 // Material Used
 // router.post("/Material_List", asyncHandler(materialController.matList));
@@ -19,14 +20,20 @@ router.put(
 // Measurement Details
 router.post(
   "/Measurement_Details",
-
+  dynamicUpload({
+      folder: "Measurement",
+      fields: [{ name: "Photos", type: "photo", maxCount: 10 }],
+    }),
   asyncHandler(materialController.measurementDetails)
 );
 
 // Material Update
 router.put(
   "/UpdateMaterial",
-
+dynamicUpload({
+      folder: "Measurement",
+      fields: [{ name: "Photos", type: "photo", maxCount: 10 }],
+    }),
   asyncHandler(materialController.updateMaterial)
 );
 

@@ -33,8 +33,8 @@ exports.updatePaymentDetails = async (req, res) => {
   const details = req.body;
   const data = await paymentService.updatePaymentDetails(details, tenant_id, branch_id);
   
-  if (details.Id) {
-    await RedisService.delete(`payment:${details.Id}:${tenant_id}:${branch_id}`);
+  if (details.Payment_id) {
+    await RedisService.delete(`payment:${details.Payment_id}:${tenant_id}:${branch_id}`);
     await RedisService.deleteByPattern(`payment:*:${tenant_id}:${branch_id}`);
   }
   

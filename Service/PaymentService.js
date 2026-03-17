@@ -132,7 +132,7 @@ exports.projectPaymentDelete = async (Details, tenant_id, branch_id) => {
       WHERE Project_id = ? AND Payment_id = ? AND tenant_id = ? AND branch_id = ?`,
       [Details.Project_id, Details.Payment_id, tenant_id, branch_id]
     );
-    if (result[0].affectedRows === 0) {
+    if (result.affectedRows === 0) {
       throw new AppError("Payment record not found", 404);
     }
     console.log("✅ Payment record deleted successfully");
@@ -173,21 +173,158 @@ exports.clientPaymentReport = async (Details, tenant_id, branch_id) => {
 /* ===============================
    Material Payments Update (Date Range)
 =================================*/
+// exports.materialPaymentsUpdate = async (Details, tenant_id, branch_id) => {
+//   console.log("🚀 ~ Details:", Details)
+//   let conn;
+//   try {
+//     conn = await pool.getConnection();
+//     const result = await conn.query(
+//       `SELECT * FROM payment_details
+//       WHERE tenant_id = ? AND branch_id = ? AND Project_id = ?
+//       AND payment_date BETWEEN ? AND ?
+//       ORDER BY payment_date`,
+//       [tenant_id, branch_id, Details.Id, Details.Start, Details.End]
+//     );
+//     return result;
+//   } catch (error) {
+//     console.error("❌ materialPaymentsUpdate Error:", error);
+//     throw new AppError("Failed to fetch payment records", 500, error);
+//   } finally {
+//     if (conn) conn.release();
+//   }
+// };
+
+
 exports.materialPaymentsUpdate = async (Details, tenant_id, branch_id) => {
+  console.log("🚀 ~ Details:", Details);
   let conn;
+
   try {
+    // ✅ Validate required fields
+    if (!Details?.Order_id || !Details?.Supplier || !Details?.Payment_Date || !Details?.Amount) {
+      throw new AppError("Missing required payment details", 400);
+    }
+
     conn = await pool.getConnection();
-    const result = await conn.query(
-      `SELECT * FROM payment_details
-      WHERE tenant_id = ? AND branch_id = ? AND Project_id = ?
-      AND payment_date BETWEEN ? AND ?
-      ORDER BY payment_date`,
-      [tenant_id, branch_id, Details.Id, Details.Start, Details.End]
+    await conn.beginTransaction();
+
+    // ✅ Helper: Convert ISO datetime → MySQL TIMESTAMP format
+    const toMySQLTimestamp = (dateInput) => {
+      if (!dateInput) return null; // Let DB use DEFAULT if column allows NULL
+      const date = new Date(dateInput);
+      if (isNaN(date.getTime())) return null;
+      return date.toISOString().slice(0, 19).replace('T', ' ');
+    };
+
+    // 🔹 STEP 1: Fetch current order details to calculate balance
+    const [order] = await conn.query(
+      `SELECT Order_id, Amount, Paid, Balance, Status, Project_id, Material_Name 
+       FROM order_details 
+       WHERE Order_id = ? AND tenant_id = ? AND branch_id = ? AND Status <> 'Paid'`,
+      [Details.Order_id, tenant_id, branch_id]
     );
-    return result;
+
+    if (!order || order.length === 0) {
+      throw new AppError("Order not found or already fully paid", 404);
+    }
+
+    const currentOrder = order;
+    const totalAmount = parseFloat(currentOrder.Amount) || 0;
+    const alreadyPaid = parseFloat(currentOrder.Paid) || 0;
+    const newPayment = parseFloat(Details.Amount) || 0;
+    const updatedPaid = alreadyPaid + newPayment;
+    const updatedBalance = totalAmount - updatedPaid;
+
+    // 🔹 STEP 2: Determine payment type & update status
+    const isFullPayment = updatedBalance <= 0;
+    const newStatus = isFullPayment ? 'Paid' : (alreadyPaid > 0 ? 'Partial' : 'Partial');
+    const finalPaid = isFullPayment ? totalAmount : updatedPaid;
+    const finalBalance = isFullPayment ? 0 : Math.max(0, updatedBalance);
+
+    // 🔹 STEP 3: UPDATE order_details
+    const updateResult = await conn.query(
+      `UPDATE order_details 
+       SET 
+         Paid = ?,
+         Balance = ?,
+         Status = ?,
+         Payment_Date = ?,
+         LAST_UPDATED_BY = ?,
+         LAST_UPDATED_DATETIME = ?
+       WHERE Order_id = ? AND tenant_id = ? AND branch_id = ?`,
+      [
+        finalPaid,                      // ✅ Calculated Paid
+        finalBalance,                   // ✅ Calculated Balance
+        newStatus,                      // ✅ Paid / Partial
+        Details.Payment_Date,           // Payment date
+        Details.username || 'SYSTEM',   // Auditor
+        toMySQLTimestamp(Details.currentDate) || null, // ✅ TIMESTAMP format
+        Details.Order_id,
+        tenant_id,
+        branch_id
+      ]
+    );
+
+    // 🔹 STEP 4: INSERT into material_payments (audit trail)
+    const insertResult = await conn.query(
+      `INSERT INTO material_payments 
+       (tenant_id, branch_id, Project_Id, Supplier_name, Payment_Date, Amount, 
+        Created_by, Created_Datetime, Bill_no, Material_name, Material_amount) 
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      [
+        tenant_id,
+        branch_id,
+        currentOrder.Project_id,        // From fetched order
+        Details.Supplier,
+        Details.Payment_Date,
+        newPayment,                     // ✅ This payment amount only
+        Details.username || 'SYSTEM',
+        toMySQLTimestamp(Details.currentDate) || null, // ✅ TIMESTAMP format
+        Details.BillNo || null,
+        Details.Material || currentOrder.Material_Name || null,
+        Details.Amount
+      ]
+    );
+
+    await conn.commit();
+
+    console.log(`✅ ${isFullPayment ? 'Full' : 'Partial'} payment processed: Order #${Details.Order_id}`);
+    
+    return {
+      success: true,
+      message: isFullPayment 
+        ? "Payment completed successfully - Order marked as Paid" 
+        : "Partial payment recorded - Balance remaining",
+      paymentType: isFullPayment ? 'FULL' : 'PARTIAL',
+      orderDetails: {
+        orderId: Details.Order_id,
+        totalAmount: totalAmount,
+        previouslyPaid: alreadyPaid,
+        thisPayment: newPayment,
+        newPaid: finalPaid,
+        newBalance: finalBalance,
+        status: newStatus
+      },
+      paymentRecordId: insertResult.insertId,
+      updatedRows: updateResult.affectedRows
+    };
+
   } catch (error) {
+    if (conn) await conn.rollback();
     console.error("❌ materialPaymentsUpdate Error:", error);
-    throw new AppError("Failed to fetch payment records", 500, error);
+    
+    if (error instanceof AppError) throw error;
+    
+    // Handle specific DB errors
+    if (error.errno === 1292) { // ER_TRUNCATED_WRONG_VALUE
+      throw new AppError("Invalid datetime format. Use 'YYYY-MM-DD HH:MM:SS'", 400);
+    }
+    if (error.errno === 1062) { // ER_DUP_ENTRY
+      throw new AppError("Duplicate payment record", 409);
+    }
+    
+    throw new AppError("Failed to process payment update", 500, error);
+    
   } finally {
     if (conn) conn.release();
   }
@@ -460,14 +597,14 @@ exports.fetchMaterialBalance = async (Details, tenant_id, branch_id) => {
       query = `
         SELECT * FROM order_details
         WHERE tenant_id = ? AND branch_id = ? AND Project_id = ?
-        AND STATUS != 'Paid' AND Order_date BETWEEN ? AND ?
+        AND STATUS <> 'Paid' AND Order_date BETWEEN ? AND ?
       `;
       params = [tenant_id, branch_id, Details.Id, Details.Start, Details.End];
     } else {
       query = `
         SELECT * FROM order_details
         WHERE tenant_id = ? AND branch_id = ? AND Project_id = ?
-        AND STATUS != 'Paid' AND Supplier_name = ? AND Order_date BETWEEN ? AND ?
+        AND STATUS <> 'Paid' AND Supplier_name = ? AND Order_date BETWEEN ? AND ?
       `;
       params = [
         tenant_id,

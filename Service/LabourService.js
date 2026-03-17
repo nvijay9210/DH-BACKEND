@@ -239,7 +239,7 @@ exports.labourPayment = async (Details, tenant_id, branch_id) => {
       query = `
         SELECT * FROM labour_worked_details
         WHERE tenant_id = ? AND branch_id = ? AND Project_id = ?
-        AND Status != 'Paid' AND Date BETWEEN ? AND ?
+        AND Status <> 'Paid' AND Date BETWEEN ? AND ?
         ORDER BY Date ASC
       `;
       params = [tenant_id, branch_id, Details.Id, Details.Start, Details.End];
@@ -247,7 +247,7 @@ exports.labourPayment = async (Details, tenant_id, branch_id) => {
       query = `
         SELECT * FROM labour_worked_details
         WHERE tenant_id = ? AND branch_id = ? AND Project_id = ?
-        AND Contractor = ? AND Status != 'Paid' AND Date BETWEEN ? AND ?
+        AND Contractor = ? AND Status <> 'Paid' AND Date BETWEEN ? AND ?
         ORDER BY Date ASC
       `;
       params = [
@@ -260,7 +260,7 @@ exports.labourPayment = async (Details, tenant_id, branch_id) => {
       ];
     }
     const result = await conn.query(query, params);
-    const rows = result[0];
+    const rows = result;
     const convertedRows = rows.map((row) => ({
       ...row,
       Salary: row.Salary?.toString(),
@@ -320,8 +320,8 @@ exports.labourPaymentUpdate = async (Details, tenant_id, branch_id) => {
     const result = await conn.query(query, params);
     return {
       success: true,
-      message: `${result[0].affectedRows} records updated successfully`,
-      affectedRows: result[0].affectedRows,
+      message: `${result.affectedRows} records updated successfully`,
+      affectedRows: result.affectedRows,
     };
   } catch (error) {
     console.error("❌ labourPaymentUpdate Error:", error);
@@ -372,8 +372,8 @@ exports.allLabourPaymentUpdate = async (Details, tenant_id, branch_id) => {
     const result = await conn.query(query, params);
     return {
       success: true,
-      message: `${result[0].affectedRows} records updated successfully`,
-      affectedRows: result[0].affectedRows,
+      message: `${result.affectedRows} records updated successfully`,
+      affectedRows: result.affectedRows,
     };
   } catch (error) {
     console.error("❌ allLabourPaymentUpdate Error:", error);
@@ -415,7 +415,7 @@ exports.allLabourPayment = async (Details, tenant_id, branch_id) => {
       ];
     }
     const result = await conn.query(query, params);
-    const rows = result[0];
+    const rows = result;
     const convertedRows = rows.map((row) => ({
       ...row,
       Salary: row.Salary?.toString(),

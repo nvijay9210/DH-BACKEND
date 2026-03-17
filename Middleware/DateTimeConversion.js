@@ -9,6 +9,7 @@ const DATE_ONLY_FIELDS = [
   'Order_date',
   'Delivery_Date',
   'Payment_Date',
+  'datetime',
   
   // materials_used
   'Date',
@@ -94,7 +95,6 @@ const DATETIME_FIELDS = [
   'Created_Datetime',
   
   // General
-  'datetime',
   'currentDate',
   'createdDate',
   'created_at',

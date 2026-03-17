@@ -320,18 +320,10 @@ exports.measurementDetails = async (
     }
     conn = await pool.getConnection();
 
-    const convert = (str) => {
-      if (!str) return null;
-      const date = new Date(str); // ✅ Now uses global Date constructor
-      const mnth = ("0" + (date.getMonth() + 1)).slice(-2);
-      const day = ("0" + date.getDate()).slice(-2);
-      return [date.getFullYear(), mnth, day].join("-");
-    };
-
     const {
       Project_id,
       Project_name,
-      Date: reportDate, // ✅ Rename to avoid collision
+      Date: reportDate,
       Measurement,
       Units,
       Nos,
@@ -345,11 +337,16 @@ exports.measurementDetails = async (
       Paid,
       Balance,
       Status,
-      username: reportUsername, // ✅ Also rename this to avoid collision
       currentDate,
     } = material_report;
 
     const photoPath = file ? path.join("images", file.filename) : null;
+
+    // ✅ FIX: Extract single values from arrays (use [0] if array, else use as-is)
+    const safeDate = Array.isArray(reportDate) ? reportDate[0] : reportDate;
+    const safeQuantity = Array.isArray(Quantity) ? Quantity[0] : Quantity;
+    const safeAmount = Array.isArray(Amount) ? Amount[0] : Amount;
+    const safeBalance = Array.isArray(Balance) ? Balance[0] : Balance;
 
     const result = await conn.query(
       `INSERT INTO daily_process_details
@@ -362,22 +359,22 @@ exports.measurementDetails = async (
         branch_id,
         Project_id,
         Project_name,
-        reportDate, // ✅ Use renamed variable
+        safeDate,        // ✅ Single value
         Measurement,
         Units,
         Nos,
         Length,
         Breadth,
         D_H,
-        Quantity,
+        safeQuantity,    // ✅ Single value
         Rate,
-        Amount,
+        safeAmount,      // ✅ Single value
         Remarks,
         photoPath,
         Paid,
-        Balance,
+        safeBalance,     // ✅ Single value
         Status,
-        username, // ✅ Use function argument (not from material_report)
+        username,
         currentDate,
       ]
     );
@@ -400,12 +397,17 @@ exports.measurementDetails = async (
    Update Material - Daily Process Details
 =================================*/
 exports.updateMaterial = async (materialUpdates, tenant_id, branch_id) => {
+  // console.log("🚀 ~ materialUpdates:", materialUpdates);
   let conn;
+  
   try {
-    if (!Array.isArray(materialUpdates) || materialUpdates.length === 0) {
-      throw new AppError("Material updates must be a non-empty array", 400);
-    }
     conn = await pool.getConnection();
+    
+    // ✅ FIX 1: Ensure materialUpdates is always an array
+    const updatesArray = Array.isArray(materialUpdates) 
+      ? materialUpdates 
+      : [materialUpdates];
+    
     const convert = (str) => {
       if (!str) return null;
       const date = new Date(str);
@@ -413,19 +415,26 @@ exports.updateMaterial = async (materialUpdates, tenant_id, branch_id) => {
       const day = ("0" + date.getDate()).slice(-2);
       return [date.getFullYear(), mnth, day].join("-");
     };
+
     const updateQuery = `
       UPDATE daily_process_details
       SET
-      Project_id = ?, Project_name = ?, Date = ?, Measurement = ?, Units = ?,
-      Nos = ?, Length = ?, Breadth = ?, D_H = ?, Quantity = ?, Rate = ?,
-      Amount = ?, Remarks = ?, Paid = ?, Balance = ?, Status = ?,
-      LAST_UPDATED_BY = ?, LAST_UPDATED_DATETIME = ?
+        Project_id = ?, Project_name = ?, Date = ?, Measurement = ?, Units = ?,
+        Nos = ?, Length = ?, Breadth = ?, D_H = ?, Quantity = ?, Rate = ?,
+        Amount = ?, Remarks = ?, Paid = ?, Balance = ?, Status = ?,
+        LAST_UPDATED_BY = ?, LAST_UPDATED_DATETIME = ?
       WHERE Dailyprocess_id = ? AND tenant_id = ? AND branch_id = ?
     `;
-    for (const update of materialUpdates) {
+
+    for (const update of updatesArray) {
       const { username, currentDate, ...materialUpdate } = update;
-      const formattedDate = materialUpdate.DATE;
+      
+      // ✅ FIX 2: Helper to extract single value from array fields
+      const safe = (val) => (Array.isArray(val) ? val[0] : val);
+      
+      const formattedDate = safe(materialUpdate.DATE) || safe(materialUpdate.Date);
       const formattedUpdateDate = currentDate;
+      
       const {
         Project_id,
         Project_name,
@@ -433,7 +442,7 @@ exports.updateMaterial = async (materialUpdates, tenant_id, branch_id) => {
         Units,
         Nos,
         Length,
-        breadth,
+        Breadth,        // ✅ FIX 3: Use uppercase 'Breadth' (not 'breadth')
         D_H,
         Quantity,
         Rate,
@@ -444,35 +453,43 @@ exports.updateMaterial = async (materialUpdates, tenant_id, branch_id) => {
         Status,
         Dailyprocess_id,
       } = materialUpdate;
+
       const result = await conn.query(updateQuery, [
-        Project_id,
-        Project_name,
+        safe(Project_id),
+        safe(Project_name),
         formattedDate,
         Measurement,
         Units,
         Nos,
         Length,
-        breadth,
+        safe(Breadth),          // ✅ Use correct case + safe()
         D_H,
-        Quantity,
+        safe(Quantity),
         Rate,
-        Amount,
+        safe(Amount),
         Remarks,
         Paid,
-        Balance,
+        safe(Balance),
         Status,
-        username,
-        formattedUpdateDate,
+        username || 'SYSTEM',
+        formattedUpdateDate || new Date(),
         Dailyprocess_id,
         tenant_id,
         branch_id,
       ]);
+
       if (result.affectedRows === 0) {
         throw new AppError(`Record not found: ${Dailyprocess_id}`, 404);
       }
       console.log(`✅ Daily process updated: ID ${Dailyprocess_id}`);
     }
-    return { success: true, message: "Material details updated successfully" };
+    
+    return { 
+      success: true, 
+      message: "Material details updated successfully",
+      updatedCount: updatesArray.length 
+    };
+    
   } catch (error) {
     console.error("❌ updateMaterial Error:", error);
     throw new AppError("Failed to update material details", 500, error);
@@ -632,7 +649,7 @@ exports.measurementDelete = async (Details, tenant_id, branch_id) => {
       WHERE Project_id = ? AND Dailyprocess_id = ? AND tenant_id = ? AND branch_id = ?`,
       [Details.Project_id, Details.Dailyprocess_id, tenant_id, branch_id]
     );
-    if (result[0].affectedRows === 0) {
+    if (result.affectedRows === 0) {
       throw new AppError("Measurement record not found", 404);
     }
     console.log("✅ Measurement record deleted successfully");

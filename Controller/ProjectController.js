@@ -187,9 +187,9 @@ exports.getProjectById = async (req, res) => {
 
 exports.deleteProjectPayment = async (req, res) => {
   const { tenant_id, branch_id } = req;
-  const paymentId = req.params.paymentId;
+  const details = req.body;
 
-  await projectService.deleteProjectPayment(paymentId, tenant_id, branch_id);
+  await projectService.deleteProjectPayment(details, tenant_id, branch_id);
 
   res.status(200).json({
     success: true,

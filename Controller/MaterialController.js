@@ -55,8 +55,8 @@ exports.editMaterialUsed = async (req, res) => {
 exports.measurementDetails = async (req, res) => {
   const { tenant_id, branch_id } = req;
   const username = req.user.given_name;
-  const details = req;
-  console.log("username:", details, username);
+  const details = req.body;
+
   const file = req.file;
   const data = await materialService.measurementDetails(
     details,

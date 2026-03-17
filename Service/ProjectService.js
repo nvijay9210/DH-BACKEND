@@ -259,22 +259,44 @@ exports.getProjectById = async (id, tenant_id, branch_id) => {
 /* ===============================
    Delete Project Payment
 =================================*/
-exports.deleteProjectPayment = async (paymentId, tenant_id, branch_id) => {
+exports.deleteProjectPayment = async (details, tenant_id, branch_id) => {
   let conn;
+  
   try {
+    // ✅ Validate input
+    if (!details?.Payment_id) {
+      throw new AppError("Payment_id is required", 400);
+    }
+
     conn = await pool.getConnection();
+    
+    // ✅ FIX: Destructure the first element from the query result array
     const result = await conn.query(
       `DELETE FROM payment_details
-      WHERE Payment_id = ? AND tenant_id = ? AND branch_id = ?`,
-      [paymentId, tenant_id, branch_id]
+       WHERE Payment_id = ? AND Project_id = ? AND tenant_id = ? AND branch_id = ?`,
+      [details.Payment_id, details.Project_id, tenant_id, branch_id]
     );
-    if (result[0].affectedRows === 0) {
-      throw new AppError("Payment record not found", 404);
+
+    console.log("🚀 ~ Delete result:", result);
+    
+    // ✅ Now result.affectedRows works correctly
+    if (!result || result[0].affectedRows === 0) {
+      throw new AppError("Payment record not found or already deleted", 404);
     }
-    return { success: true, message: "Payment deleted successfully" };
+    
+    return { 
+      success: true, 
+      message: "Payment deleted successfully",
+      deletedCount: result.affectedRows 
+    };
+    
   } catch (error) {
     console.error("❌ deleteProjectPayment Error:", error);
+    
+    // Preserve AppError, wrap others
+    if (error instanceof AppError) throw error;
     throw new AppError("Failed to delete payment", 500, error);
+    
   } finally {
     if (conn) conn.release();
   }
