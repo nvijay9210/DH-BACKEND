@@ -104,7 +104,7 @@ exports.updatePaymentDetails = async (details, tenant_id, branch_id) => {
         tenant_id,
         branch_id,
       ]);
-      if (result[0].affectedRows === 0) {
+      if (result.affectedRows === 0) {
         throw new AppError(`Payment record not found: ${Payment_id}`, 404);
       }
     }
