@@ -1,5 +1,6 @@
 const masterService = require("../Service/MasterService");
 const RedisService = require("../Service/RedisService");
+const RedisTime=process.env.RedisTime
 
 exports.labourList = async (req, res) => {
   const details = req.body;
@@ -13,7 +14,7 @@ exports.labourList = async (req, res) => {
 
   data = await masterService.labourList(details,tenant_id, branch_id);
   
-  await RedisService.create(cacheKey, data, 3600);
+  await RedisService.create(cacheKey, data, RedisTime);
   res.status(200).json({ success: true, data });
 };
 
@@ -29,7 +30,7 @@ exports.materialList = async (req, res) => {
 
   data = await masterService.materialList(details,tenant_id, branch_id);
   
-  await RedisService.create(cacheKey, data, 3600);
+  await RedisService.create(cacheKey, data, RedisTime);
   res.status(200).json({ success: true, data });
 };
 
@@ -45,7 +46,7 @@ exports.contractorList = async (req, res) => {
 
   data = await masterService.contractorList(details,tenant_id, branch_id);
   
-  await RedisService.create(cacheKey, data, 3600);
+  await RedisService.create(cacheKey, data, RedisTime);
   res.status(200).json({ success: true, data });
 };
 
@@ -61,7 +62,7 @@ exports.supplierList = async (req, res) => {
 
   data = await masterService.supplierList(details,tenant_id, branch_id);
   
-  await RedisService.create(cacheKey, data, 3600);
+  await RedisService.create(cacheKey, data, RedisTime);
   res.status(200).json({ success: true, data });
 };
 
@@ -76,7 +77,7 @@ exports.fetchMaterial = async (req, res) => {
 
   data = await masterService.fetchMaterial(tenant_id, branch_id);
   
-  await RedisService.create(cacheKey, data, 3600);
+  await RedisService.create(cacheKey, data, RedisTime);
   res.status(200).json({ success: true, data });
 };
 
@@ -91,7 +92,7 @@ exports.fetchLabour = async (req, res) => {
 
   data = await masterService.fetchLabour(tenant_id, branch_id);
   
-  await RedisService.create(cacheKey, data, 3600);
+  await RedisService.create(cacheKey, data, RedisTime);
   res.status(200).json({ success: true, data });
 };
 
@@ -106,7 +107,7 @@ exports.fetchContractor = async (req, res) => {
 
   data = await masterService.fetchContractor(tenant_id, branch_id);
   
-  await RedisService.create(cacheKey, data, 3600);
+  await RedisService.create(cacheKey, data, RedisTime);
   res.status(200).json({ success: true, data });
 };
 
@@ -121,7 +122,7 @@ exports.fetchSupplier = async (req, res) => {
 
   data = await masterService.fetchSupplier(tenant_id, branch_id);
   
-  await RedisService.create(cacheKey, data, 3600);
+  await RedisService.create(cacheKey, data, RedisTime);
   res.status(200).json({ success: true, data });
 };
 

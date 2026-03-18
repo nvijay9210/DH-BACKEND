@@ -1,5 +1,6 @@
 const labourService = require("../Service/LabourService");
 const RedisService = require("../Service/RedisService");
+const RedisTime=process.env.RedisTime
 
 exports.labourDetails = async (req, res) => {
   const { tenant_id, branch_id } = req;
@@ -13,7 +14,7 @@ exports.labourDetails = async (req, res) => {
 
   data = await labourService.labourDetails(details, tenant_id, branch_id);
   
-  await RedisService.create(cacheKey, data, 1800);
+  await RedisService.create(cacheKey, data, RedisTime);
   res.status(200).json({ success: true, data });
 };
 
@@ -57,7 +58,7 @@ exports.fetchLabourUpdate = async (req, res) => {
 
   data = await labourService.fetchLabourUpdate(details, tenant_id, branch_id);
   
-  await RedisService.create(cacheKey, data, 1800);
+  await RedisService.create(cacheKey, data, RedisTime);
   res.status(200).json({ success: true, data });
 };
 
@@ -73,7 +74,7 @@ exports.labourReports = async (req, res) => {
 
   data = await labourService.labourReports(details, tenant_id, branch_id);
   
-  await RedisService.create(cacheKey, data, 1800);
+  await RedisService.create(cacheKey, data, RedisTime);
   res.status(200).json({ success: true, data });
 };
 
@@ -89,7 +90,7 @@ exports.labourPayment = async (req, res) => {
 
   data = await labourService.labourPayment(details, tenant_id, branch_id);
   
-  await RedisService.create(cacheKey, data, 1800);
+  await RedisService.create(cacheKey, data, RedisTime);
   res.status(200).json({ success: true, data });
 };
 
@@ -127,7 +128,7 @@ exports.allLabourPayment = async (req, res) => {
 
   data = await labourService.allLabourPayment(details, tenant_id, branch_id);
   
-  await RedisService.create(cacheKey, data, 1800);
+  await RedisService.create(cacheKey, data, RedisTime);
   res.status(200).json({ success: true, data });
 };
 
@@ -142,7 +143,7 @@ exports.fetchContractorPay = async (req, res) => {
 
   data = await labourService.fetchContractorPay(tenant_id, branch_id);
   
-  await RedisService.create(cacheKey, data, 3600);
+  await RedisService.create(cacheKey, data, RedisTime);
   res.status(200).json({ success: true, data });
 };
 
@@ -158,7 +159,7 @@ exports.contractorReport = async (req, res) => {
 
   data = await labourService.contractorReport(details, tenant_id, branch_id);
   
-  await RedisService.create(cacheKey, data, 1800);
+  await RedisService.create(cacheKey, data, RedisTime);
   res.status(200).json({ success: true, data });
 };
 

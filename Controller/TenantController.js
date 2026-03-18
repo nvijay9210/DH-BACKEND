@@ -1,5 +1,6 @@
 const tenantService = require("../Service/TenantService");
 const RedisService = require("../Service/RedisService");
+const RedisTime=process.env.RedisTime
 
 exports.createTenant = async (req, res) => {
   const result = await tenantService.createTenant(req.body);
@@ -42,7 +43,7 @@ exports.getTenants = async (req, res) => {
 
   data = await tenantService.getTenants();
   
-  await RedisService.create(cacheKey, data, 3600);
+  await RedisService.create(cacheKey, data, RedisTime);
   
   res.status(200).json({
     success: true,
@@ -62,7 +63,7 @@ exports.getTenantById = async (req, res) => {
 
   data = await tenantService.getTenantById(tenant_id);
   
-  await RedisService.create(cacheKey, data, 3600);
+  await RedisService.create(cacheKey, data, RedisTime);
   
   res.status(200).json({ success: true, data });
 };

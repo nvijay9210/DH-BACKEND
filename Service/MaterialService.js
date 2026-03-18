@@ -718,7 +718,7 @@ exports.overAllReports = async (Details, tenant_id, branch_id) => {
         Details.End,
       ]
     );
-    return result[0];
+    return result;
   } catch (err) {
     console.error("❌ overAllReports Error:", err);
     throw err instanceof AppError

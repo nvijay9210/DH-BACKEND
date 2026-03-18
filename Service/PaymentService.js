@@ -794,14 +794,14 @@ exports.fetchMaterialBalance = async (Details, tenant_id, branch_id) => {
   try {
     conn = await pool.getConnection();
     let query, params;
-    if (!Details.Supplier || Details.Supplier === "null") {
+    if (Details.Supplier === null && Details.Material === null) {
       query = `
         SELECT * FROM order_details
         WHERE tenant_id = ? AND branch_id = ? AND Project_id = ?
-        AND STATUS <> 'Paid' AND Order_date BETWEEN ? AND ?
+        AND STATUS <> 'Paid'  AND Order_date BETWEEN ? AND ?
       `;
       params = [tenant_id, branch_id, Details.Id, Details.Start, Details.End];
-    } else {
+    } else if(Details.Supplier!==null && Details.Material===null) {
       query = `
         SELECT * FROM order_details
         WHERE tenant_id = ? AND branch_id = ? AND Project_id = ?
@@ -812,6 +812,37 @@ exports.fetchMaterialBalance = async (Details, tenant_id, branch_id) => {
         branch_id,
         Details.Id,
         Details.Supplier,
+        Details.Start,
+        Details.End,
+      ];
+    }
+    else if(Details.Supplier===null && Details.Material!==null) {
+      query = `
+        SELECT * FROM order_details
+        WHERE tenant_id = ? AND branch_id = ? AND Project_id = ?
+        AND STATUS <> 'Paid' AND Material_Name = ? AND Order_date BETWEEN ? AND ?
+      `;
+      params = [
+        tenant_id,
+        branch_id,
+        Details.Id,
+        Details.Material,
+        Details.Start,
+        Details.End,
+      ];
+    }
+    else if(Details.Supplier!==null && Details.Material!==null) {
+      query = `
+        SELECT * FROM order_details
+        WHERE tenant_id = ? AND branch_id = ? AND Project_id = ?
+        AND STATUS <> 'Paid' AND Supplier_name = ? AND Material_Name=? AND Order_date BETWEEN ? AND ?
+      `;
+      params = [
+        tenant_id,
+        branch_id,
+        Details.Id,
+        Details.Supplier,
+        Details.Material,
         Details.Start,
         Details.End,
       ];

@@ -1,0 +1,28 @@
+# Continue v1 Config - Optimized for 8GB RAM
+name: Low-RAM Setup
+version: 1.0.0
+schema: v1
+
+models:
+  # Chat model - smart but lightweight
+  - name: Qwen 1.5B Chat
+    uses: ollama/qwen2.5-coder:1.5b
+    # Optional: limit context to save RAM
+    contextLength: 2048
+
+  # Autocomplete model - ultra-lightweight for fast suggestions
+  - name: Qwen 0.5B Autocomplete
+    uses: ollama/qwen2.5-coder:0.5b
+    roles:
+      - autocomplete
+    contextLength: 512
+
+  # (Optional) Keep your cloud models if you have API keys
+  # - name: my gpt-5
+  #   provider: openai
+  #   model: gpt-5
+  #   apiKey: YOUR_OPENAI_API_KEY_HERE
+
+mcpServers:
+  # Add MCP servers here if needed
+  # - uses: anthropic/memory-mcp

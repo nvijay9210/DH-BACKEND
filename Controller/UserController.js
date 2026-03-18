@@ -1,6 +1,7 @@
 // Controller/UserController.js
 const userService = require("../Service/UserService");
 const RedisService = require("../Service/RedisService");
+const RedisTime=process.env.RedisTime
 const { validateData } = require("../Middleware/ValidationMiddleware");
 const { AppError } = require("../Logics/AppError");
 
@@ -44,7 +45,7 @@ exports.userDetails = async (req, res) => {
   data = await userService.userDetails(tenant_id, branch_id, role);
 
   // Cache for 1 hour
-  await RedisService.create(cacheKey, data, 3600);
+  await RedisService.create(cacheKey, data, RedisTime);
 
   res.status(200).json({ success: true, data });
 };
@@ -63,7 +64,7 @@ exports.userAccess = async (req, res) => {
   data = await userService.userAccess(req.body, tenant_id, branch_id, role);
   
   // Cache for 1 hour
-  await RedisService.create(cacheKey, data, 3600);
+  await RedisService.create(cacheKey, data, RedisTime);
   
   res.status(200).json({ success: true, data });
 };
@@ -91,7 +92,7 @@ exports.newUser = async (req, res) => {
 
   // Cache new user and invalidate list
   if (data.id) {
-    await RedisService.create(`user:${data.id}`, data, 3600);
+    await RedisService.create(`user:${data.id}`, data, RedisTime);
     await RedisService.deleteByPattern(`user:list:*`);
     await RedisService.deleteByPattern(`user:details:*`);
   }

@@ -1,5 +1,6 @@
 const projectService = require("../Service/ProjectService");
 const RedisService = require("../Service/RedisService");
+const RedisTime=process.env.RedisTime
 
 exports.createProject = async (req, res) => {
   const { tenant_id, branch_id } = req;
@@ -59,7 +60,7 @@ exports.getProjectList = async (req, res) => {
   data = await projectService.getProjectList(tenant_id, branch_id);
 
   // Cache for 1 hour
-  await RedisService.create(cacheKey, data, 3600);
+  await RedisService.create(cacheKey, data, RedisTime);
 
   res.status(200).json({
     success: true,
@@ -81,7 +82,7 @@ exports.getProjectTotalCost = async (req, res) => {
   data = await projectService.getProjectTotalCost(tenant_id, branch_id);
 
   // Cache for 1 hour
-  await RedisService.create(cacheKey, data, 3600);
+  await RedisService.create(cacheKey, data, RedisTime);
 
   res.status(200).json({ success: true, data });
 };
@@ -99,7 +100,7 @@ exports.getProjectSpended = async (req, res) => {
   data = await projectService.getProjectSpended(tenant_id, branch_id);
 
   // Cache for 1 hour
-  await RedisService.create(cacheKey, data, 3600);
+  await RedisService.create(cacheKey, data, RedisTime);
 
   res.status(200).json({ success: true, data });
 };
@@ -124,7 +125,7 @@ exports.getIndividualProjectSpended = async (req, res) => {
   );
 
   // Cache for 1 hour
-  await RedisService.create(cacheKey, data, 3600);
+  await RedisService.create(cacheKey, data, RedisTime);
 
   res.status(200).json({
     success: true,
@@ -153,7 +154,7 @@ exports.getIndividualProjectTotal = async (req, res) => {
   );
 
   // Cache for 1 hour
-  await RedisService.create(cacheKey, data, 3600);
+  await RedisService.create(cacheKey, data, RedisTime);
 
   res.status(200).json({
     success: true,
@@ -180,7 +181,7 @@ exports.getProjectById = async (req, res) => {
   );
 
   // Cache for 1 hour
-  await RedisService.create(cacheKey, data, 3600);
+  await RedisService.create(cacheKey, data, RedisTime);
 
   res.status(200).json({ success: true, data });
 };

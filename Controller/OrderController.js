@@ -1,5 +1,6 @@
 const orderService = require("../Service/OrderService");
 const RedisService = require("../Service/RedisService");
+const RedisTime=process.env.RedisTime
 
 exports.order = async (req, res) => {
   const { tenant_id, branch_id } = req;
@@ -8,7 +9,7 @@ exports.order = async (req, res) => {
   
   // Cache order and invalidate lists
   if (data.id) {
-    await RedisService.create(`order:${data.id}:${tenant_id}:${branch_id}`, data, 3600);
+    await RedisService.create(`order:${data.id}:${tenant_id}:${branch_id}`, data, RedisTime);
     await RedisService.deleteByPattern(`order:list:*`);
   }
   
@@ -56,7 +57,7 @@ exports.fetchOrderUpdate = async (req, res) => {
 
   data = await orderService.fetchOrderUpdate(details, tenant_id, branch_id);
   // Cache for 30 minutes
-  await RedisService.create(cacheKey, data, 1800);
+  await RedisService.create(cacheKey, data, RedisTime);
   
   res.status(200).json({ success: true, data });
 };
@@ -75,7 +76,7 @@ exports.orderReports = async (req, res) => {
   data = await orderService.orderReports(details, tenant_id, branch_id);
   
   // Cache for 30 minutes
-  await RedisService.create(cacheKey, data, 1800);
+  await RedisService.create(cacheKey, data, RedisTime);
   
   res.status(200).json({ success: true, data });
 };
@@ -94,7 +95,7 @@ exports.materialPaymentSelected = async (req, res) => {
   data = await orderService.materialPaymentSelected(details, tenant_id, branch_id);
   
   // Cache for 30 minutes
-  await RedisService.create(cacheKey, data, 1800);
+  await RedisService.create(cacheKey, data, RedisTime);
   
   res.status(200).json({ success: true, data });
 };
