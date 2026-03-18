@@ -57,7 +57,8 @@ const DATE_ONLY_FIELDS = [
   'date',
   'Format_date',
 
-  'createdDate'
+  'createdDate',
+  'updatedDateTime'
 ];
 
 /**

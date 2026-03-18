@@ -336,18 +336,63 @@ exports.labourPaymentUpdate = async (Details, tenant_id, branch_id) => {
 =================================*/
 exports.allLabourPaymentUpdate = async (Details, tenant_id, branch_id) => {
   let conn;
+
   try {
+    // ✅ Validate required fields
+    if (!Details?.Payment_Date || !Details?.Start || !Details?.End) {
+      throw new AppError("Payment date and date range are required", 400);
+    }
+
     conn = await pool.getConnection();
+    await conn.beginTransaction(); // 🔐 Start transaction
+
+    // 🔹 STEP 1: Fetch records to be updated (for audit & validation)
+    const selectQuery = `
+      SELECT Labour_id, Total, Paid, Balance, Status, Contractor, DATE
+      FROM labour_worked_details
+      WHERE tenant_id = ? AND branch_id = ? AND Status != 'Paid'
+      AND DATE BETWEEN ? AND ?
+      ${Details.contractor && Details.contractor !== "null" 
+        ? 'AND Contractor = ?' 
+        : ''}
+      ORDER BY DATE
+    `;
+
+    const selectParams = Details.contractor && Details.contractor !== "null"
+      ? [tenant_id, branch_id, Details.Start, Details.End, Details.contractor]
+      : [tenant_id, branch_id, Details.Start, Details.End];
+
+    const existingRecords = await conn.query(selectQuery, selectParams);
+
+    if (!existingRecords || existingRecords.length === 0) {
+      await conn.rollback();
+      throw new AppError("No unpaid labour records found in the specified date range", 404);
+    }
+
+    // 🔹 STEP 2: Calculate totals for reporting
+    const totalAmount = existingRecords.reduce((sum, rec) => sum + parseFloat(rec.Total || 0), 0);
+    const previouslyPaid = existingRecords.reduce((sum, rec) => sum + parseFloat(rec.Paid || 0), 0);
+    const newPayment = totalAmount - previouslyPaid;
+
+    // 🔹 STEP 3: Perform the UPDATE
     let query, params;
     if (!Details.contractor || Details.contractor === "null") {
       query = `
         UPDATE labour_worked_details
-        SET Paid = Total, Status = 'Paid', Balance = 0, Payment_Date = ?
+        SET 
+          Paid = Total,
+          Balance = 0,
+          Status = 'Paid',
+          Payment_Date = ?,
+          LAST_UPDATED_BY = ?,
+          LAST_UPDATED_DATETIME = ?
         WHERE tenant_id = ? AND branch_id = ? AND Status != 'Paid'
-        AND Date BETWEEN ? AND ?
+        AND DATE BETWEEN ? AND ?
       `;
       params = [
         Details.Payment_Date,
+        Details.username || 'SYSTEM',
+        new Date().toISOString().slice(0, 19).replace('T', ' '),
         tenant_id,
         branch_id,
         Details.Start,
@@ -356,12 +401,20 @@ exports.allLabourPaymentUpdate = async (Details, tenant_id, branch_id) => {
     } else {
       query = `
         UPDATE labour_worked_details
-        SET Paid = Total, Status = 'Paid', Balance = 0, Payment_Date = ?
+        SET 
+          Paid = Total,
+          Balance = 0,
+          Status = 'Paid',
+          Payment_Date = ?,
+          LAST_UPDATED_BY = ?,
+          LAST_UPDATED_DATETIME = ?
         WHERE tenant_id = ? AND branch_id = ? AND Contractor = ?
-        AND Status != 'Paid' AND Date BETWEEN ? AND ?
+        AND Status != 'Paid' AND DATE BETWEEN ? AND ?
       `;
       params = [
         Details.Payment_Date,
+        Details.username || 'SYSTEM',
+        new Date().toISOString().slice(0, 19).replace('T', ' '),
         tenant_id,
         branch_id,
         Details.contractor,
@@ -369,17 +422,57 @@ exports.allLabourPaymentUpdate = async (Details, tenant_id, branch_id) => {
         Details.End,
       ];
     }
-    const result = await conn.query(query, params);
+
+    const result = await conn.query(query, params); // ✅ Destructure array
+
+    // 🔹 STEP 4: Insert audit record into material_payments (optional)
+    await conn.query(
+      `INSERT INTO material_payments 
+       (tenant_id, branch_id, Project_Id, Supplier_name, Payment_Date, Amount, 
+        Created_by, Created_Datetime, Bill_no, Material_name, Material_amount)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      [
+        tenant_id,
+        branch_id,
+        existingRecords[0]?.Project_id || null,
+        Details.contractor || 'Multiple Contractors',
+        Details.Payment_Date,
+        newPayment,
+        Details.username || 'SYSTEM',
+        new Date().toISOString().slice(0, 19).replace('T', ' '),
+        null,
+        'Labour Payment',
+        totalAmount.toString()
+      ]
+    );
+
+    await conn.commit(); // ✅ Commit transaction
+
+    console.log(`✅ Labour payment processed: ${result.affectedRows} records updated`);
+
     return {
       success: true,
-      message: `${result.affectedRows} records updated successfully`,
-      affectedRows: result.affectedRows,
+      message: `${result.affectedRows} labour records marked as Paid`,
+      paymentSummary: {
+        recordsUpdated: result.affectedRows,
+        totalAmount,
+        previouslyPaid,
+        thisPayment: newPayment,
+        paymentDate: Details.Payment_Date,
+        contractor: Details.contractor || 'All Contractors',
+        dateRange: { start: Details.Start, end: Details.End }
+      }
     };
+
   } catch (error) {
+    if (conn) await conn.rollback(); // 🔴 Rollback on error
     console.error("❌ allLabourPaymentUpdate Error:", error);
+
+    if (error instanceof AppError) throw error;
     throw new AppError("Failed to update payment status", 500, error);
+
   } finally {
-    if (conn) conn.release();
+    if (conn) conn.release(); // 🔁 Release connection
   }
 };
 

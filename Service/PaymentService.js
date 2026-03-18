@@ -194,14 +194,18 @@ exports.clientPaymentReport = async (Details, tenant_id, branch_id) => {
 //   }
 // };
 
-
 exports.materialPaymentsUpdate = async (Details, tenant_id, branch_id) => {
   console.log("🚀 ~ Details:", Details);
   let conn;
 
   try {
     // ✅ Validate required fields
-    if (!Details?.Order_id || !Details?.Supplier || !Details?.Payment_Date || !Details?.Amount) {
+    if (
+      !Details?.Order_id ||
+      !Details?.Supplier ||
+      !Details?.Payment_Date ||
+      !Details?.Amount
+    ) {
       throw new AppError("Missing required payment details", 400);
     }
 
@@ -213,7 +217,7 @@ exports.materialPaymentsUpdate = async (Details, tenant_id, branch_id) => {
       if (!dateInput) return null; // Let DB use DEFAULT if column allows NULL
       const date = new Date(dateInput);
       if (isNaN(date.getTime())) return null;
-      return date.toISOString().slice(0, 19).replace('T', ' ');
+      return date.toISOString().slice(0, 19).replace("T", " ");
     };
 
     // 🔹 STEP 1: Fetch current order details to calculate balance
@@ -237,7 +241,11 @@ exports.materialPaymentsUpdate = async (Details, tenant_id, branch_id) => {
 
     // 🔹 STEP 2: Determine payment type & update status
     const isFullPayment = updatedBalance <= 0;
-    const newStatus = isFullPayment ? 'Paid' : (alreadyPaid > 0 ? 'Partial' : 'Partial');
+    const newStatus = isFullPayment
+      ? "Paid"
+      : alreadyPaid > 0
+      ? "Partial"
+      : "Partial";
     const finalPaid = isFullPayment ? totalAmount : updatedPaid;
     const finalBalance = isFullPayment ? 0 : Math.max(0, updatedBalance);
 
@@ -253,15 +261,15 @@ exports.materialPaymentsUpdate = async (Details, tenant_id, branch_id) => {
          LAST_UPDATED_DATETIME = ?
        WHERE Order_id = ? AND tenant_id = ? AND branch_id = ?`,
       [
-        finalPaid,                      // ✅ Calculated Paid
-        finalBalance,                   // ✅ Calculated Balance
-        newStatus,                      // ✅ Paid / Partial
-        Details.Payment_Date,           // Payment date
-        Details.username || 'SYSTEM',   // Auditor
+        finalPaid, // ✅ Calculated Paid
+        finalBalance, // ✅ Calculated Balance
+        newStatus, // ✅ Paid / Partial
+        Details.Payment_Date, // Payment date
+        Details.username || "SYSTEM", // Auditor
         toMySQLTimestamp(Details.currentDate) || null, // ✅ TIMESTAMP format
         Details.Order_id,
         tenant_id,
-        branch_id
+        branch_id,
       ]
     );
 
@@ -274,28 +282,32 @@ exports.materialPaymentsUpdate = async (Details, tenant_id, branch_id) => {
       [
         tenant_id,
         branch_id,
-        currentOrder.Project_id,        // From fetched order
+        currentOrder.Project_id, // From fetched order
         Details.Supplier,
         Details.Payment_Date,
-        newPayment,                     // ✅ This payment amount only
-        Details.username || 'SYSTEM',
+        newPayment, // ✅ This payment amount only
+        Details.username || "SYSTEM",
         toMySQLTimestamp(Details.currentDate) || null, // ✅ TIMESTAMP format
         Details.BillNo || null,
         Details.Material || currentOrder.Material_Name || null,
-        Details.Amount
+        Details.Amount,
       ]
     );
 
     await conn.commit();
 
-    console.log(`✅ ${isFullPayment ? 'Full' : 'Partial'} payment processed: Order #${Details.Order_id}`);
-    
+    console.log(
+      `✅ ${isFullPayment ? "Full" : "Partial"} payment processed: Order #${
+        Details.Order_id
+      }`
+    );
+
     return {
       success: true,
-      message: isFullPayment 
-        ? "Payment completed successfully - Order marked as Paid" 
+      message: isFullPayment
+        ? "Payment completed successfully - Order marked as Paid"
         : "Partial payment recorded - Balance remaining",
-      paymentType: isFullPayment ? 'FULL' : 'PARTIAL',
+      paymentType: isFullPayment ? "FULL" : "PARTIAL",
       orderDetails: {
         orderId: Details.Order_id,
         totalAmount: totalAmount,
@@ -303,28 +315,31 @@ exports.materialPaymentsUpdate = async (Details, tenant_id, branch_id) => {
         thisPayment: newPayment,
         newPaid: finalPaid,
         newBalance: finalBalance,
-        status: newStatus
+        status: newStatus,
       },
       paymentRecordId: insertResult.insertId,
-      updatedRows: updateResult.affectedRows
+      updatedRows: updateResult.affectedRows,
     };
-
   } catch (error) {
     if (conn) await conn.rollback();
     console.error("❌ materialPaymentsUpdate Error:", error);
-    
+
     if (error instanceof AppError) throw error;
-    
+
     // Handle specific DB errors
-    if (error.errno === 1292) { // ER_TRUNCATED_WRONG_VALUE
-      throw new AppError("Invalid datetime format. Use 'YYYY-MM-DD HH:MM:SS'", 400);
+    if (error.errno === 1292) {
+      // ER_TRUNCATED_WRONG_VALUE
+      throw new AppError(
+        "Invalid datetime format. Use 'YYYY-MM-DD HH:MM:SS'",
+        400
+      );
     }
-    if (error.errno === 1062) { // ER_DUP_ENTRY
+    if (error.errno === 1062) {
+      // ER_DUP_ENTRY
       throw new AppError("Duplicate payment record", 409);
     }
-    
+
     throw new AppError("Failed to process payment update", 500, error);
-    
   } finally {
     if (conn) conn.release();
   }
@@ -335,9 +350,24 @@ exports.materialPaymentsUpdate = async (Details, tenant_id, branch_id) => {
 =================================*/
 exports.allMaterialPaymentUpdate = async (Details, tenant_id, branch_id) => {
   let conn;
+
   try {
+    console.log("🚀 ~ allMaterialPaymentUpdate START ~ Details:", {
+      tenant_id,
+      branch_id,
+      Supplier: Details?.Supplier,
+      Start: Details?.Start,
+      End: Details?.End,
+      TotalAmount: Details?.Amount,
+      Payment_Date: Details?.Payment_Date,
+    });
+
     conn = await pool.getConnection();
+    console.log("🔐 Database connection acquired");
+
     await conn.beginTransaction();
+    console.log("🔄 Transaction started");
+
     try {
       const {
         Supplier,
@@ -346,88 +376,259 @@ exports.allMaterialPaymentUpdate = async (Details, tenant_id, branch_id) => {
         Payment_Date,
         Billno,
         username,
-        currentDate,
+        updatedDateTime,
         Amount: TotalAmount,
       } = Details;
-      let remainingAmount = Number(TotalAmount);
-      const selectResult = await conn.query(
-        `SELECT Project_id, Material_Name, CREATED_DATETIME, Supplier_name, Balance, Amount, Paid
+
+      // ✅ Validate required fields
+      if (!Supplier || !Start || !End || !TotalAmount) {
+        console.error("❌ Validation failed: Missing required fields", {
+          Supplier,
+          Start,
+          End,
+          TotalAmount,
+        });
+        throw new AppError("Missing required payment details", 400);
+      }
+
+      console.log("📋 Processing payment:", {
+        Supplier,
+        DateRange: `${Start} to ${End}`,
+        TotalAmount,
+        Payment_Date,
+        Billno,
+        username,
+      });
+
+      // 🔹 STEP 1: Fetch unpaid orders
+      console.log("🔍 Fetching unpaid orders for supplier:", Supplier);
+      let selectResult;
+      if (!Supplier || Supplier === "null") {
+         selectResult = await conn.query(
+          `SELECT Order_id, Project_id, Material_Name, CREATED_DATETIME, Supplier_name, Balance, Amount, Paid
         FROM order_details
-        WHERE tenant_id = ? AND branch_id = ? AND STATUS != 'Paid'
+        WHERE tenant_id = ? AND branch_id = ? AND Status <> 'Paid'
+         AND Order_date BETWEEN ? AND ?
+        ORDER BY CREATED_DATETIME`,
+          [tenant_id, branch_id, Start, End]
+        );
+      } else {
+         selectResult = await conn.query(
+          `SELECT Order_id, Project_id, Material_Name, CREATED_DATETIME, Supplier_name, Balance, Amount, Paid
+        FROM order_details
+        WHERE tenant_id = ? AND branch_id = ? AND Status <> 'Paid'
         AND Supplier_name = ? AND Order_date BETWEEN ? AND ?
         ORDER BY CREATED_DATETIME`,
-        [tenant_id, branch_id, Supplier, Start, End]
-      );
+          [tenant_id, branch_id, Supplier, Start, End]
+        );
+      }
+
+      console.log("📦 Query result:", {
+        rowsFound: selectResult?.length || 0,
+      });
+
+      if (!selectResult || selectResult.length === 0) {
+        console.warn("⚠️ No unpaid orders found for the given criteria");
+        await conn.rollback();
+        return {
+          success: true,
+          message: "No unpaid orders found to process",
+          processedCount: 0,
+        };
+      }
+
       const orders = selectResult;
-      for (const item of orders) {
-        if (remainingAmount <= 0) break;
-        const itemBalance = Number(item.Balance);
-        const itemAmount = Number(item.Amount);
+      console.log(
+        "📋 Orders to process:",
+        orders.map((o) => ({
+          Order_id: o.Order_id,
+          Material: o.Material_Name,
+          Balance: o.Balance,
+          Amount: o.Amount,
+          Paid: o.Paid,
+        }))
+      );
+
+      let remainingAmount = Number(TotalAmount);
+      let processedCount = 0;
+      const paymentLog = [];
+
+      // 🔹 STEP 2: Process each order
+      for (const [index, item] of orders.entries()) {
+        console.log(`\n🔄 Processing order #${index + 1}/${orders.length}:`, {
+          Order_id: item.Order_id,
+          Material_Name: item.Material_Name,
+          Balance: item.Balance,
+          Amount: item.Amount,
+          Paid: item.Paid,
+          remainingAmount,
+        });
+
+        if (remainingAmount <= 0) {
+          console.log("⏹️ Remaining amount exhausted, stopping loop");
+          break;
+        }
+
+        const itemBalance = Number(item.Balance) || 0;
+        const itemAmount = Number(item.Amount) || 0;
+        const itemPaid = Number(item.Paid) || 0;
+
+        if (itemBalance <= 0) {
+          console.log("⏭️ Skipping order with zero/negative balance");
+          continue;
+        }
+
         const payNow = Math.min(remainingAmount, itemBalance);
-        await conn.query(
+        console.log("💰 Payment allocation:", {
+          itemBalance,
+          remainingAmount,
+          payNow,
+        });
+
+        // 🔹 INSERT payment record
+        console.log("📝 Inserting payment record into material_payments...");
+        const insertResult = await conn.query(
           `INSERT INTO material_payments
           (tenant_id, branch_id, Project_id, Bill_no, Material_name, Supplier_name,
-          Payment_Date, Material_amount, Amount, Created_by, Created_Datetime)
-          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+          Payment_Date, Material_amount, Amount, Created_by)
+          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
           [
             tenant_id,
             branch_id,
             item.Project_id,
-            Billno,
+            Billno || null,
             item.Material_Name,
             Supplier,
             Payment_Date,
-            payNow,
-            TotalAmount,
-            username,
-            currentDate,
+            payNow, // Material_amount = amount paid for this item
+            TotalAmount, // Amount = total payment amount (for reference)
+            username || "SYSTEM",
           ]
         );
-        const newPaid = Number(item.Paid) + payNow;
-        const newBalance = itemAmount - newPaid;
-        const newStatus = newBalance === 0 ? "Paid" : "Partial";
-        await conn.query(
+        console.log("✅ Payment record inserted:", {
+          insertId: insertResult?.insertId,
+        });
+
+        // 🔹 UPDATE order_details
+        const newPaid = itemPaid + payNow;
+        const newBalance = Math.max(0, itemAmount - newPaid); // Prevent negative
+        const newStatus = newBalance <= 0 ? "Paid" : "Partial";
+
+        console.log("✏️ Updating order_details:", {
+          Order_id: item.Order_id,
+          oldPaid: itemPaid,
+          newPaid,
+          oldBalance: itemBalance,
+          newBalance,
+          newStatus,
+        });
+
+        const updateResult = await conn.query(
           `UPDATE order_details
-          SET Paid = ?, Balance = ?, Status = ?, Payment_Date = ?
-          WHERE Order_id = (
-          SELECT Order_id FROM order_details
-          WHERE tenant_id = ? AND branch_id = ? AND Project_id = ?
-          AND Material_Name = ? AND Supplier_name = ? AND CREATED_DATETIME = ?
-          LIMIT 1
-          )`,
+          SET Paid = ?, Balance = ?, Status = ?, Payment_Date = ?,
+              LAST_UPDATED_BY = ?, LAST_UPDATED_DATETIME = ?
+          WHERE Order_id = ? AND tenant_id = ? AND branch_id = ?`,
           [
             newPaid,
             newBalance,
             newStatus,
             Payment_Date,
+            username || "SYSTEM",
+            updatedDateTime,
+            item.Order_id, // ✅ Use Order_id directly (simpler & safer)
             tenant_id,
             branch_id,
-            item.Project_id,
-            item.Material_Name,
-            Supplier,
-            item.CREATED_DATETIME,
           ]
         );
+        console.log("✅ Order updated:", {
+          affectedRows: updateResult?.affectedRows,
+        });
+
+        // Track progress
         remainingAmount -= payNow;
+        processedCount++;
+        paymentLog.push({
+          Order_id: item.Order_id,
+          Material_Name: item.Material_Name,
+          allocated: payNow,
+          newBalance,
+          newStatus,
+        });
+
+        console.log(
+          `📊 Progress: ${processedCount}/${orders.length} orders processed, ₹${remainingAmount} remaining\n`
+        );
       }
+
+      // 🔹 COMMIT transaction
+      console.log("🎯 Final summary:", {
+        totalOrders: orders.length,
+        processedCount,
+        originalAmount: TotalAmount,
+        remainingAmount,
+        payments: paymentLog,
+      });
+
       await conn.commit();
-      console.log("✅ Material payments processed successfully");
+      console.log("✅ Transaction committed successfully");
+
       return {
         success: true,
-        message: "Payments processed successfully",
-        remainingAmount: remainingAmount > 0 ? remainingAmount : 0,
+        message:
+          processedCount > 0
+            ? `Payments processed successfully for ${processedCount} order(s)`
+            : "No orders required payment",
+        summary: {
+          totalOrders: orders.length,
+          processedCount,
+          originalAmount: Number(TotalAmount),
+          amountUsed: Number(TotalAmount) - remainingAmount,
+          remainingAmount: remainingAmount > 0 ? remainingAmount : 0,
+          paymentDate: Payment_Date,
+          supplier: Supplier,
+        },
+        details: paymentLog,
       };
     } catch (err) {
+      console.error("❌ Inner catch - Rolling back transaction:", {
+        error: err.message,
+        code: err.errno,
+        sqlState: err.sqlState,
+      });
       await conn.rollback();
+      console.log("🔄 Transaction rolled back");
       throw err;
     }
   } catch (err) {
-    console.error("❌ allMaterialPaymentUpdate Error:", err);
-    throw err instanceof AppError
-      ? err
-      : new AppError("Failed to process payments", 500, err);
+    console.error("❌ allMaterialPaymentUpdate Error:", {
+      message: err.message,
+      name: err.name,
+      code: err.errno || err.code,
+      sqlState: err.sqlState,
+      stack: err.stack,
+      Details,
+    });
+
+    if (err instanceof AppError) throw err;
+
+    // Handle specific DB errors
+    if (err.errno === 1292) {
+      throw new AppError(
+        "Invalid datetime format. Use 'YYYY-MM-DD HH:MM:SS'",
+        400
+      );
+    }
+    if (err.errno === 1062) {
+      throw new AppError("Duplicate payment record", 409);
+    }
+
+    throw new AppError("Failed to process payments", 500, err);
   } finally {
-    if (conn) conn.release();
+    if (conn) {
+      conn.release();
+      console.log("🔌 Database connection released");
+    }
+    console.log("🏁 allMaterialPaymentUpdate END\n");
   }
 };
 

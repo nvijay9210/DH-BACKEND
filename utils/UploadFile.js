@@ -82,7 +82,7 @@ const processFile = async (file, folderPath, type) => {
 // ==============================
 // 🚀 DYNAMIC MIDDLEWARE FACTORY
 // ==============================
-const dynamicUpload = ({ folder, fields }) => {
+const  dynamicUpload = ({ folder, fields }) => {
   return [
     memoryUpload.fields(fields),
 
