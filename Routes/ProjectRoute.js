@@ -125,4 +125,23 @@ router.put(
   asyncHandler(projectController.EditProject_Details)
 );
 
+// Dashboard routes
+router.get('/projects/financials', 
+  projectController.getProjectFinancialSummary
+);
+
+router.get('/summary', 
+  projectController.getDashboardSummary
+);
+
+router.get('/projects/comparison', 
+
+  projectController.getProjectComparisonData
+);
+
+router.get('/projects/:project_id/trend', 
+
+  projectController.getMonthlyTrendData
+);
+
 module.exports = router;

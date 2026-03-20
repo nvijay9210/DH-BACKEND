@@ -39,7 +39,7 @@ exports.createProject = async (data, tenant_id, branch_id) => {
     return {
       success: true,
       message: "Project created successfully",
-      insertId: result[0].insertId,
+      insertId: result.insertId,
     };
   } catch (error) {
     console.error("❌ createProject Error:", error);
@@ -594,6 +594,258 @@ exports.EditProject_Details = async (details, tenant_id, branch_id) => {
     throw new AppError("Failed to update project", 500, error);
   } finally {
     if (conn) conn.release();
+  }
+};
+
+/* ===============================
+   Dashboard: Get Project Financial Summary (All Projects)
+=================================*/
+exports.getProjectFinancialSummary = async (tenant_id, branch_id) => {
+  let conn;
+  try {
+    conn = await pool.getConnection();
+    
+    // Get all projects for tenant/branch
+    const projects = await conn.query(
+      `SELECT Project_id, Project_name, Project_cost, Project_status 
+       FROM project_list 
+       WHERE tenant_id = ? AND branch_id = ?`,
+      [tenant_id, branch_id]
+    );
+
+    const financialData = await Promise.all(
+      projects.map(async (project) => {
+        return await this.getProjectFinancials(conn, project.Project_id, tenant_id, branch_id,project.Project_name);
+      })
+    );
+
+    return financialData;
+  } catch (error) {
+    console.error("❌ getProjectFinancialSummary Error:", error);
+    throw new AppError("Failed to fetch project financial summary", 500, error);
+  } finally {
+    if (conn) conn.release();
+  }
+};
+
+/* ===============================
+   Dashboard: Get Financials for Single Project
+=================================*/
+exports.getProjectFinancials = async (conn, project_id, tenant_id, branch_id, project_name) => {
+  try {
+    // 1. INCOME: Payment Details + Daily Process (Paid amounts)
+    const incomeResult = await conn.query(
+      `SELECT 
+         COALESCE(SUM(pd.Amount), 0) as payment_income,
+         COALESCE(SUM(dpd.Paid), 0) as process_income
+       FROM project_list p
+       LEFT JOIN payment_details pd ON p.Project_id = pd.Project_id 
+         AND pd.tenant_id = ? AND pd.branch_id = ?
+       LEFT JOIN daily_process_details dpd ON p.Project_id = dpd.Project_id 
+         AND dpd.tenant_id = ? AND dpd.branch_id = ?
+       WHERE p.Project_id = ?`,
+      [tenant_id, branch_id, tenant_id, branch_id, project_id]
+    );
+
+    // 2. MATERIAL: Material Payments + Order Details
+    const materialResult = await conn.query(
+      `SELECT 
+         COALESCE(SUM(mp.Amount), 0) as material_paid,
+         COALESCE(SUM(od.Amount), 0) as material_ordered,
+         COALESCE(SUM(od.Paid), 0) as order_paid,
+         COALESCE(SUM(od.Balance), 0) as order_balance
+       FROM project_list p
+       LEFT JOIN material_payments mp ON p.Project_id = mp.Project_Id 
+         AND mp.tenant_id = ? AND mp.branch_id = ?
+       LEFT JOIN order_details od ON p.Project_id = od.Project_id 
+         AND od.tenant_id = ? AND od.branch_id = ?
+       WHERE p.Project_id = ?`,
+      [tenant_id, branch_id, tenant_id, branch_id, project_id]
+    );
+
+    // 3. LABOUR: Labour Worked Details
+    const labourResult = await conn.query(
+      `SELECT 
+         COALESCE(SUM(Total), 0) as labour_total,
+         COALESCE(SUM(Paid), 0) as labour_paid,
+         COALESCE(SUM(Balance), 0) as labour_balance,
+         COUNT(*) as labour_entries
+       FROM labour_worked_details
+       WHERE Project_id = ? AND tenant_id = ? AND branch_id = ?`,
+      [project_id, tenant_id, branch_id]
+    );
+
+    // Calculate totals
+    const totalIncome = Number(incomeResult[0].payment_income) + Number(incomeResult[0].process_income);
+    const totalMaterial = Number(materialResult[0].material_ordered); // Use ordered amount as material expense
+    const totalLabour = Number(labourResult[0].labour_total);
+    const totalExpense = totalMaterial + totalLabour;
+    const profit = totalIncome - totalExpense;
+
+    return {
+      Project_id: project_id,
+      Project_name: project_name,
+      income: {
+        total: totalIncome,
+        payments: Number(incomeResult[0].payment_income),
+        daily_process: Number(incomeResult[0].process_income)
+      },
+      expense: {
+        total: totalExpense,
+        material: totalMaterial,
+        labour: totalLabour
+      },
+      material: {
+        total: totalMaterial,
+        paid: Number(materialResult[0].order_paid),
+        balance: Number(materialResult[0].order_balance)
+      },
+      labour: {
+        total: totalLabour,
+        paid: Number(labourResult[0].labour_paid),
+        balance: Number(labourResult[0].labour_balance),
+        entries: labourResult[0].labour_entries
+      },
+      profit: profit,
+      profit_margin: totalIncome > 0 ? ((profit / totalIncome) * 100).toFixed(2) : 0
+    };
+  } catch (error) {
+    console.error("❌ getProjectFinancials Error:", error);
+    throw error;
+  }
+};
+
+/* ===============================
+   Dashboard: Get Summary Cards Data
+=================================*/
+exports.getDashboardSummary = async (tenant_id, branch_id) => {
+  try {
+    // Total Projects & Active Projects
+    const projectStats = await pool.query(
+      `SELECT 
+         COUNT(*) as total_projects,
+         SUM(CASE WHEN Project_status = 'Active' THEN 1 ELSE 0 END) as active_projects
+       FROM project_list
+       WHERE tenant_id = ? AND branch_id = ?`,
+      [tenant_id, branch_id]
+    );
+
+    // Total Income (Payments + Daily Process Paid)
+    const incomeData = await pool.query(
+      `SELECT 
+         COALESCE(SUM(pd.Amount), 0) as payment_income,
+         COALESCE(SUM(dpd.Paid), 0) as process_income
+       FROM project_list p
+       LEFT JOIN payment_details pd ON p.Project_id = pd.Project_id 
+         AND pd.tenant_id = ? AND pd.branch_id = ?
+       LEFT JOIN daily_process_details dpd ON p.Project_id = dpd.Project_id 
+         AND dpd.tenant_id = ? AND dpd.branch_id = ?
+       WHERE p.tenant_id = ? AND p.branch_id = ?`,
+      [tenant_id, branch_id, tenant_id, branch_id, tenant_id, branch_id]
+    );
+
+    // Total Material Expense
+    const materialData = await pool.query(
+      `SELECT COALESCE(SUM(Amount), 0) as total_material
+       FROM order_details
+       WHERE tenant_id = ? AND branch_id = ?`,
+      [tenant_id, branch_id]
+    );
+
+    // Total Labour Expense
+    const labourData = await pool.query(
+      `SELECT COALESCE(SUM(Total), 0) as total_labour
+       FROM labour_worked_details
+       WHERE tenant_id = ? AND branch_id = ?`,
+      [tenant_id, branch_id]
+    );
+
+    const totalIncome = Number(incomeData[0].payment_income) + Number(incomeData[0].process_income);
+    const totalMaterial = Number(materialData[0].total_material);
+    const totalLabour = Number(labourData[0].total_labour);
+    const totalExpense = totalMaterial + totalLabour;
+    const totalProfit = totalIncome - totalExpense;
+
+    return {
+      total_projects: projectStats[0].total_projects,
+      active_projects: projectStats[0].active_projects,
+      total_income: totalIncome,
+      total_expense: totalExpense,
+      total_material: totalMaterial,
+      total_labour: totalLabour,
+      total_profit: totalProfit,
+      profit_margin: totalIncome > 0 ? ((totalProfit / totalIncome) * 100).toFixed(2) : 0
+    };
+  } catch (error) {
+    console.error("❌ getDashboardSummary Error:", error);
+    throw new AppError("Failed to fetch dashboard summary", 500, error);
+  }
+};
+
+/* ===============================
+   Dashboard: Get Project Comparison Data (For Charts)
+=================================*/
+exports.getProjectComparisonData = async (tenant_id, branch_id) => {
+  try {
+    const results = await pool.query(
+      `SELECT 
+         p.Project_id,
+         p.Project_name,
+         p.Project_cost as budget,
+         COALESCE(SUM(pd.Amount), 0) as income,
+         COALESCE(SUM(od.Amount), 0) as material_expense,
+         COALESCE(SUM(lwd.Total), 0) as labour_expense,
+         (COALESCE(SUM(od.Amount), 0) + COALESCE(SUM(lwd.Total), 0)) as total_expense,
+         (COALESCE(SUM(pd.Amount), 0) - (COALESCE(SUM(od.Amount), 0) + COALESCE(SUM(lwd.Total), 0))) as profit
+       FROM project_list p
+       LEFT JOIN payment_details pd ON p.Project_id = pd.Project_id 
+         AND pd.tenant_id = ? AND pd.branch_id = ?
+       LEFT JOIN order_details od ON p.Project_id = od.Project_id 
+         AND od.tenant_id = ? AND od.branch_id = ?
+       LEFT JOIN labour_worked_details lwd ON p.Project_id = lwd.Project_id 
+         AND lwd.tenant_id = ? AND lwd.branch_id = ?
+       WHERE p.tenant_id = ? AND p.branch_id = ?
+       GROUP BY p.Project_id, p.Project_name, p.Project_cost
+       ORDER BY p.Project_id`,
+      [tenant_id, branch_id, tenant_id, branch_id, tenant_id, branch_id, tenant_id, branch_id]
+    );
+
+    return results;
+  } catch (error) {
+    console.error("❌ getProjectComparisonData Error:", error);
+    throw new AppError("Failed to fetch project comparison data", 500, error);
+  }
+};
+
+/* ===============================
+   Dashboard: Get Monthly Trend Data for Project
+=================================*/
+exports.getMonthlyTrendData = async (project_id, tenant_id, branch_id, months = 12) => {
+  try {
+    const results = await pool.query(
+      `SELECT 
+         DATE_FORMAT(COALESCE(pd.Payment_date, od.Order_date, lwd.DATE), '%Y-%m') as month,
+         COALESCE(SUM(pd.Amount), 0) as income,
+         COALESCE(SUM(od.Amount), 0) as material_expense,
+         COALESCE(SUM(lwd.Total), 0) as labour_expense
+       FROM project_list p
+       LEFT JOIN payment_details pd ON p.Project_id = pd.Project_id 
+         AND pd.tenant_id = ? AND pd.branch_id = ?
+       LEFT JOIN order_details od ON p.Project_id = od.Project_id 
+         AND od.tenant_id = ? AND od.branch_id = ?
+       LEFT JOIN labour_worked_details lwd ON p.Project_id = lwd.Project_id 
+         AND lwd.tenant_id = ? AND lwd.branch_id = ?
+       WHERE p.Project_id = ? AND p.tenant_id = ? AND p.branch_id = ?
+       GROUP BY DATE_FORMAT(COALESCE(pd.Payment_date, od.Order_date, lwd.DATE), '%Y-%m')
+       ORDER BY month DESC
+       LIMIT ?`,
+      [tenant_id, branch_id, tenant_id, branch_id, tenant_id, branch_id, project_id, tenant_id, branch_id, months]
+    );
+
+    return results;
+  } catch (error) {
+    console.error("❌ getMonthlyTrendData Error:", error);
+    throw new AppError("Failed to fetch monthly trend data", 500, error);
   }
 };
 

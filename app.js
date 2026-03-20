@@ -82,6 +82,77 @@ app.use(dateMiddleware);
 
 app.use(`/api/keycloak`, ssoAuth.router);
 
+const maxmind = require('maxmind');
+
+let lookup;
+
+// Initialize DB properly
+async function initLookup() {
+    const dbPath = path.join(__dirname, 'data', 'GeoLite2-City.mmdb');
+    lookup = await maxmind.open(dbPath);
+    console.log("✅ MaxMind DB loaded");
+}
+
+// Call and WAIT before starting server
+initLookup().catch(console.error);
+
+// Helper: get real client IP
+const getClientIp = (req) => {
+    let ip =
+        req.headers['x-forwarded-for']?.split(',')[0] ||
+        req.socket?.remoteAddress ||
+        '';
+
+    // Normalize IPv6 localhost
+    if (ip === '::1') {
+        return '8.8.8.8'; // fallback (Google DNS)
+    }
+
+    // Remove IPv6 prefix
+    if (ip.includes('::ffff:')) {
+        ip = ip.split('::ffff:')[1];
+    }
+
+    return ip;
+};
+
+// Route
+app.get('/api/user-activity', async (req, res) => {
+    try {
+        if (!lookup) {
+            return res.status(500).send('Geo DB not loaded yet');
+        }
+
+        let ip = getClientIp(req);
+
+        console.log("🌐 IP:", ip);
+
+        // ⚠️ Handle localhost testing
+        if (!ip || ip === '127.0.0.1') {
+            ip = '8.8.8.8'; // fallback test IP
+        }
+
+        const location = lookup.get(ip);
+
+        console.log("📍 Location:", location);
+
+        if (location) {
+            return res.json({
+                city: location.city?.names?.en,
+                country: location.country?.iso_code,
+                lat: location.location?.latitude,
+                lon: location.location?.longitude
+            });
+        } else {
+            return res.status(404).send('Location not found');
+        }
+
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Error fetching location');
+    }
+});
+
 app.use(`/api/material`, ssoAuth.validateToken, materialRouter);
 app.use(`/api/master`, ssoAuth.validateToken, masterRouter);
 app.use(`/api/order`, ssoAuth.validateToken, orderRouter);

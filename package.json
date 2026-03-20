@@ -18,6 +18,7 @@
     "joi": "^17.9.2",
     "jsonwebtoken": "^9.0.1",
     "mariadb": "^3.2.0",
+    "maxmind": "^5.0.5",
     "multer": "^1.4.5-lts.1",
     "nodemailer": "^6.9.4",
     "pdf-lib": "^1.17.1",
@@ -26,7 +27,9 @@
   },
   "devDependencies": {
     "nodemon": "^2.0.22",
-    "axios-cookiejar-support": "^2.1.0",
     "tough-cookie": "^4.0.0"
+  },
+  "overrides": {
+    "axios-cookiejar-support": "2.0.1"
   }
 }
