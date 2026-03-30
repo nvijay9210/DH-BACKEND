@@ -280,3 +280,172 @@ exports.EditProject_Details = async (req, res) => {
 
   res.status(200).json({ success: true, data });
 };
+
+/* ===============================
+   Dashboard: Get Project Financial Summary
+   GET /api/dashboard/projects/financials
+=================================*/
+exports.getProjectFinancialSummary = async (req, res) => {
+  const { tenant_id, branch_id } = req;
+  const cacheKey = `dashboard:financials:${tenant_id}:${branch_id}`;
+
+  try {
+    // Check cache
+    let data = await RedisService.read(cacheKey);
+    if (data) {
+      return res.status(200).json({
+        success: true,
+        count: data.length,
+        data,
+      });
+    }
+
+    data = await projectService.getProjectFinancialSummary(tenant_id, branch_id);
+
+    // Cache for 30 minutes (financial data changes frequently)
+    await RedisService.create(cacheKey, data, 1800);
+
+    res.status(200).json({
+      success: true,
+      count: data.length,
+      data,
+    });
+  } catch (error) {
+    console.error("❌ getProjectFinancialSummary Controller Error:", error);
+    res.status(500).json({
+      success: false,
+      message: error.message || "Failed to fetch financial summary",
+    });
+  }
+};
+
+/* ===============================
+   Dashboard: Get Summary Cards
+   GET /api/dashboard/summary
+=================================*/
+exports.getDashboardSummary = async (req, res) => {
+  const { tenant_id, branch_id } = req;
+  const cacheKey = `dashboard:summary:${tenant_id}:${branch_id}`;
+
+  try {
+    // Check cache
+    let data = await RedisService.read(cacheKey);
+    if (data) {
+      return res.status(200).json({ success: true, data });
+    }
+
+    data = await projectService.getDashboardSummary(tenant_id, branch_id);
+
+    // Cache for 5 minutes (summary updates frequently)
+    await RedisService.create(cacheKey, data, 300);
+
+    res.status(200).json({ success: true, data });
+  } catch (error) {
+    console.error("❌ getDashboardSummary Controller Error:", error);
+    res.status(500).json({
+      success: false,
+      message: error.message || "Failed to fetch dashboard summary",
+    });
+  }
+};
+
+/* ===============================
+   Dashboard: Get Project Comparison (Charts)
+   GET /api/dashboard/projects/comparison
+=================================*/
+exports.getProjectComparisonData = async (req, res) => {
+  const { tenant_id, branch_id } = req;
+  const cacheKey = `dashboard:comparison:${tenant_id}:${branch_id}`;
+
+  try {
+    // Check cache
+    let data = await RedisService.read(cacheKey);
+    if (data) {
+      return res.status(200).json({
+        success: true,
+        count: data.length,
+        data,
+      });
+    }
+
+    data = await projectService.getProjectComparisonData(tenant_id, branch_id);
+
+    // Cache for 15 minutes
+    await RedisService.create(cacheKey, data, 900);
+
+    res.status(200).json({
+      success: true,
+      count: data.length,
+      data,
+    });
+  } catch (error) {
+    console.error("❌ getProjectComparisonData Controller Error:", error);
+    res.status(500).json({
+      success: false,
+      message: error.message || "Failed to fetch comparison data",
+    });
+  }
+};
+
+/* ===============================
+   Dashboard: Get Monthly Trend for Project
+   GET /api/dashboard/projects/:project_id/trend?months=12
+=================================*/
+exports.getMonthlyTrendData = async (req, res) => {
+  const { tenant_id, branch_id } = req;
+  const { project_id } = req.params;
+  const { months = 12 } = req.query;
+  const cacheKey = `dashboard:trend:${project_id}:${tenant_id}:${branch_id}:${months}`;
+
+  try {
+    // Check cache
+    let data = await RedisService.read(cacheKey);
+    if (data) {
+      return res.status(200).json({ success: true, data });
+    }
+
+    data = await projectService.getMonthlyTrendData(
+      project_id,
+      tenant_id,
+      branch_id,
+      parseInt(months)
+    );
+
+    // Cache for 10 minutes
+    await RedisService.create(cacheKey, data, 600);
+
+    res.status(200).json({ success: true, data });
+  } catch (error) {
+    console.error("❌ getMonthlyTrendData Controller Error:", error);
+    res.status(500).json({
+      success: false,
+      message: error.message || "Failed to fetch trend data",
+    });
+  }
+};
+
+/* ===============================
+   Dashboard: Invalidate Cache on Data Change
+   Call this after create/update/delete operations
+=================================*/
+exports.invalidateDashboardCache = async (tenant_id, branch_id, project_id = null) => {
+  try {
+    const patterns = [
+      `dashboard:financials:${tenant_id}:${branch_id}`,
+      `dashboard:summary:${tenant_id}:${branch_id}`,
+      `dashboard:comparison:${tenant_id}:${branch_id}`,
+    ];
+    
+    if (project_id) {
+      patterns.push(`dashboard:trend:${project_id}:${tenant_id}:${branch_id}:*`);
+    }
+    
+    for (const pattern of patterns) {
+      await RedisService.deleteByPattern(pattern);
+    }
+    
+    console.log("✅ Dashboard cache invalidated");
+  } catch (error) {
+    console.error("❌ invalidateDashboardCache Error:", error);
+  }
+};
