@@ -14,6 +14,7 @@ const Redis = require("ioredis");
 const { pool } = require("../config/db"); // DB Pool
 const { getTenantById } = require("../Service/TenantService");
 const { validateRequest } = require("../Middleware/ValidationMiddleware");
+const RedisService = require("../Service/RedisService");
 
 const router = express.Router();
 router.use(cookieParser());
@@ -555,20 +556,20 @@ const SessionService = {
         cookie.name === "access_token"
           ? tokens.access_token
           : cookie.name === "refresh_token"
-          ? tokens.refresh_token
-          : cookie.name === "session_id"
-          ? session_id
-          : cookie.name === "clientId"
-          ? clientId
-          : cookie.name === "realm"
-          ? realm
-          : cookie.name === "user_id"
-          ? userContext.user_id
-          : cookie.name === "tenant_id"
-          ? userContext.tenant_id // 👈 tenant_id from context
-          : cookie.name === "branch_id"
-          ? userContext.default_branch_id // 👈 or userContext.branch_id if preferred
-          : null, // fallback
+            ? tokens.refresh_token
+            : cookie.name === "session_id"
+              ? session_id
+              : cookie.name === "clientId"
+                ? clientId
+                : cookie.name === "realm"
+                  ? realm
+                  : cookie.name === "user_id"
+                    ? userContext.user_id
+                    : cookie.name === "tenant_id"
+                      ? userContext.tenant_id // 👈 tenant_id from context
+                      : cookie.name === "branch_id"
+                        ? userContext.default_branch_id // 👈 or userContext.branch_id if preferred
+                        : null, // fallback
         cookie.name === "access_token"
           ? { ...CONFIG.COOKIES.OPTIONS, maxAge: CONFIG.COOKIES.EXPIRY.ACCESS }
           : cookieOpts
@@ -970,9 +971,7 @@ const validateToken = async (req, res, next) => {
           keycloakId,
           tenantId: req.tenant_id,
         });
-        return next(
-          new AppError("User not found or inactive in system", 401)
-        );
+        return next(new AppError("User not found or inactive in system", 401));
       }
 
       // Set req.role from database user data
@@ -1085,8 +1084,37 @@ router.get("/me", validateToken, async (req, res) => {
   }
 });
 
+
+async function getAddressFromLatLng(lat, lon) {
+  try {
+    const url = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`;
+
+    const response = await axios.get(url);
+
+    console.log(response)
+
+    const address = response?.address;
+
+    if (!address) return null;
+
+    return {
+      city:
+        address.city ||
+        address.town ||
+        address.village ||
+        address.county ||
+        "",
+      state: address.state || "",
+      country: address.country || "",
+    };
+  } catch (error) {
+    console.error("❌ Reverse geocoding error:", error.response?.status, error.message);
+    return null;
+  }
+}
+
 // --- POST /login ---
-router.post("/login",validateRequest('login'), async (req, res) => {
+router.post("/login", validateRequest("login"), async (req, res) => {
   debug.log("Route", "📍 POST /login called", {
     username: req.body.username,
     host: req.body.host,
@@ -1094,8 +1122,21 @@ router.post("/login",validateRequest('login'), async (req, res) => {
   });
 
   try {
-    const { username, password, host } = req.body;
-    console.log(username, password, host)
+    const { username, password, host, latitude, longitude } = req.body;
+    let locationDetails = {};
+
+    const cacheKey = `userlocation:${username}`;
+    locationDetails = await RedisService.read(cacheKey);
+    if (!locationDetails) {
+      if (latitude && longitude) {
+        locationDetails = await getAddressFromLatLng(latitude, longitude);
+      }
+      await RedisService.create(cacheKey, locationDetails, 3600);
+    }
+
+    console.log("📍 Location Full:", locationDetails);
+
+    console.log(username, password, host, latitude, longitude);
     if (!username || !password) {
       debug.error("Route", "Missing credentials");
       return res
