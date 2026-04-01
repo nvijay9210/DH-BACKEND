@@ -32,8 +32,9 @@ exports.logout = async (req, res) => {
 };
 
 exports.userDetails = async (req, res) => {
-  const { tenant_id, branch_id } = req;
-  const role = req.role;
+  const { tenant_id, branch_id,role } = req;
+  console.log(tenant_id, branch_id,role)
+
   const cacheKey = `user:details:${tenant_id}:${branch_id}:${role}`;
 
   // Check cache
@@ -87,6 +88,8 @@ exports.newUser = async (req, res) => {
 
   // Use the validated/cleaned data
   const cleanData = validation.value;
+
+  console.log('cleanData:',cleanData)
 
   const data = await userService.newUser(cleanData, tenant_id, branch_id, createdBy);
 

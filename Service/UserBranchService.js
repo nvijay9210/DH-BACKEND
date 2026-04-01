@@ -7,32 +7,49 @@ const { AppError } = require("../Logics/AppError");
 exports.createUserBranch = async (
   Details,
   tenant_id,
+  branch_id,
   createdBy,
   userId = 0
 ) => {
+  // 🔐 Validate required parameters
+  if (!tenant_id || !branch_id || !createdBy) {
+    console.error("❌ createUserBranch: Missing required params", {
+      tenant_id,
+      branch_id,
+      createdBy,
+      userId
+    });
+    throw new AppError("Invalid parameters for user-branch mapping", 400);
+  }
+
   let conn;
-  userId = userId ?? Details.user_id;
+  userId = userId ?? Details?.user_id;
+  
   try {
     conn = await pool.getConnection();
+    
     const existing = await conn.query(
       `SELECT 1 FROM userbranch
-      WHERE tenant_id = ? AND branch_id = ? AND user_id = ?`,
-      [tenant_id, Details.branch_id, userId]
+       WHERE tenant_id = ? AND branch_id = ? AND user_id = ?`,
+      [tenant_id, branch_id, userId]
     );
-    if (existing[0].length > 0) {
+    
+    if (existing.length > 0) {
       throw new AppError("User is already mapped to this branch", 409);
     }
+    
     const result = await conn.query(
       `INSERT INTO userbranch
-      (tenant_id, branch_id, user_id, created_by)
-      VALUES (?, ?, ?, ?)`,
-      [tenant_id, Details.branch_id, userId, createdBy]
+       (tenant_id, branch_id, user_id, created_by)
+       VALUES (?, ?, ?, ?)`,
+      [tenant_id, branch_id, userId, createdBy]  // ✅ Now createdBy is defined
     );
+    
     console.log("✅ User-Branch mapping created successfully");
     return {
       success: true,
       message: "User-Branch mapping created successfully",
-      insertId: result[0].insertId,
+      insertId: result[0]?.insertId,
     };
   } catch (err) {
     console.error("❌ createUserBranch Error:", err);

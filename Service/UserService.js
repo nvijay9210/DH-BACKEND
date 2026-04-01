@@ -51,7 +51,7 @@ exports.login = async (Details) => {
 
     // ✅ Password check (handle case if password is null/empty)
     // if (user.Password) {
-    //   const isMatch = await bcrypt.compare(Details.password, user.Password);
+    //   const isMatch = await bcrypt.compare(Details.Password, user.Password);
     //   if (!isMatch) throw new AppError("Invalid credentials", 401);
     // }
 
@@ -241,7 +241,7 @@ exports.adminPassChange = async (
       throw new AppError("Access denied: Admin privileges required", 403);
     }
 
-    const hashedPassword = await bcrypt.hash(Details.password, 10);
+    const hashedPassword = await bcrypt.hash(Details.Password, 10);
 
     const result = await conn.query(
       `UPDATE user 
@@ -269,6 +269,16 @@ exports.newUser = async (Details, tenant_id, branch_id, createdBy) => {
   try {
     conn = await pool.getConnection();
 
+    // 🔐 Validate password exists
+    if (!Details?.Password || typeof Details.Password !== 'string') {
+      throw new AppError("Password is required", 400);
+    }
+
+    // 🔐 Optional: Enforce password strength
+    if (Details.Password.length < 8) {
+      throw new AppError("Password must be at least 8 characters", 400);
+    }
+
     // Check for existing username (case-insensitive)
     const existing = await conn.query(
       `SELECT User_id FROM user WHERE LOWER(User_name) = LOWER(?) AND tenant_id = ?`,
@@ -277,17 +287,18 @@ exports.newUser = async (Details, tenant_id, branch_id, createdBy) => {
 
     if (existing.length > 0) throw new AppError("Username already exists", 409);
 
-    const hashedPassword = await bcrypt.hash(Details.password, 10);
+    // ✅ Now safe to hash
+    const hashedPassword = await bcrypt.hash(Details.Password.trim(), 10);
 
     const result = await conn.query(
       `INSERT INTO user 
        (User_name, Password, Rights, Status, Created_by, Created_date, tenant_id, branch_id) 
        VALUES (?, ?, ?, ?, ?, NOW(), ?, ?)`,
       [
-        Details.username.toUpperCase(),
+        Details.User_name?.toUpperCase(),
         hashedPassword,
-        Details.rights,
-        Details.status,
+        Details.Rights,
+        Details.Status,
         createdBy,
         tenant_id,
         branch_id,
@@ -296,9 +307,8 @@ exports.newUser = async (Details, tenant_id, branch_id, createdBy) => {
 
     const userId = result.insertId;
 
-    // Create user-branch mapping if needed
     if (typeof createUserBranch === "function") {
-      await createUserBranch(Details, tenant_id, createdBy, userId);
+      await createUserBranch(Details, tenant_id,branch_id, createdBy, userId);
     }
 
     return { success: true, message: "User created successfully", userId };

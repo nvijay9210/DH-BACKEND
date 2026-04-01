@@ -35,7 +35,7 @@ class RedisService {
         console.log(`⚠️ Redis key not found: ${key}`);
         return null;
       }
-      console.log(`✅ Redis GET: ${key}`);
+      // console.log(`✅ Redis GET: ${key}`,value);
       return JSON.parse(value);
     } catch (error) {
       console.error(`❌ Redis GET error for key ${key}:`, error);

@@ -20,6 +20,7 @@ exports.labourList = async (req, res) => {
 
 exports.materialList = async (req, res) => {
   const details = req.body;
+  console.log('details:',details)
   const { tenant_id, branch_id } = req;
   const cacheKey = `master:material:list:${tenant_id}:${branch_id}`;
 
