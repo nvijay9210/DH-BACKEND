@@ -20,6 +20,7 @@ router.put("/UserAccess",  ssoAuth.validateToken, validateRequest('userAccess'),
 router.put("/AdminPassChange",  ssoAuth.validateToken,asyncHandler(userController.adminPassChange));
 
 router.post("/NewUser",  ssoAuth.validateToken, validateRequest('createUser'), asyncHandler(userController.newUser));
+router.post("/addUser",  ssoAuth.validateToken, validateRequest('createUser'), asyncHandler(userController.addUser));
 router.post("/SwitchBranch",  ssoAuth.validateToken,asyncHandler(userController.switchBranch)); // ✅ Added missing route
 
 router.delete("/:user_id",  ssoAuth.validateToken,validateIds, asyncHandler(userController.deleteUser));

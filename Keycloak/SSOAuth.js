@@ -83,7 +83,7 @@ async function getUserByKeycloakId(keycloakId) {
         u.user_id,
         u.keycloak_id,
         u.user_name,
-        u.Rights,
+        u.role,
         u.status,
         u.failed_attempt_count,
         u.account_locked,
@@ -122,7 +122,7 @@ async function getUserByKeycloakIdWithTenant(keycloakId, tenantId, branchId) {
         u.user_id,
         u.keycloak_id,
         u.user_name,
-        u.Rights,
+        u.role,
         u.status,
         u.failed_attempt_count,
         u.account_locked,
@@ -951,11 +951,11 @@ const validateToken = async (req, res, next) => {
         return next(new AppError("User not found or inactive in system", 401));
       }
 
-      req.role = userData.Rights;
+      req.role = userData.role;
       req.userStatus = userData.status;
       debug.log("Middleware", "✅ User fetched from DB, role assigned", {
         userId: userData.user_id,
-        role: userData.Rights,
+        role: userData.role,
         status: userData.status,
       });
       debug.log(
@@ -994,7 +994,7 @@ router.get("/me", validateToken, async (req, res) => {
   try {
     conn = await pool.getConnection();
     const [user] = await conn.query(
-      `SELECT u.user_id, u.user_name, u.Rights, t.* FROM user u JOIN tenant t ON t.tenant_id = u.tenant_id WHERE u.user_id = ?`,
+      `SELECT u.user_id, u.user_name, u.role, t.* FROM user u JOIN tenant t ON t.tenant_id = u.tenant_id WHERE u.user_id = ?`,
       [user_id],
     );
     if (!user) {

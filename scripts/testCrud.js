@@ -76,7 +76,7 @@ async function testUserCrud() {
   const createResp = await client.post("/user/NewUser", {
     username,
     password: "password123",
-    rights: "Admin",
+    role: "Admin",
     status: "Active",
   });
   console.log("Created user id", createResp.data.userId);
@@ -88,7 +88,7 @@ async function testUserCrud() {
   // UPDATE ACCESS
   await client.put("/user/UserAccess", {
     username,
-    rights: "Operator",
+    role: "Operator",
     status: "Active",
   });
   console.log("Updated user access");

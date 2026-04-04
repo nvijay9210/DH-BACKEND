@@ -91,7 +91,40 @@ exports.newUser = async (req, res) => {
 
   console.log('cleanData:',cleanData)
 
-  const data = await userService.newUser(cleanData, tenant_id, branch_id, createdBy);
+  const data = await userService.addUser(cleanData, tenant_id, branch_id, createdBy,req);
+
+  // Cache new user and invalidate list
+  if (data.id) {
+    await RedisService.create(`user:${data.id}`, data, RedisTime);
+    await RedisService.deleteByPattern(`user:list:*`);
+    await RedisService.deleteByPattern(`user:details:*`);
+  }
+  
+  res.status(200).json({ success: true, data });
+};
+
+exports.addUser = async (req, res) => {
+  const { tenant_id, branch_id } = req;
+  const createdBy = req.user?.username;
+
+  // Example: Additional validation in controller (if needed)
+  // The route-level validation already handles this, but you can add more logic here
+  const validation = validateData('createUser', req.body);
+  if (!validation.isValid) {
+    // Custom error handling if needed
+    return res.status(400).json({
+      success: false,
+      message: 'Validation failed',
+      errors: validation.errors
+    });
+  }
+
+  // Use the validated/cleaned data
+  const cleanData = validation.value;
+
+  console.log('cleanData:',cleanData)
+
+  const data = await userService.addUser(cleanData, tenant_id, branch_id, createdBy);
 
   // Cache new user and invalidate list
   if (data.id) {

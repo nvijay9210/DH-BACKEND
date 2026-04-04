@@ -80,7 +80,7 @@ exports.login = async (Details) => {
         username: user.User_name,
         tenant_id: user.tenant_id,
         branch_id: assignedBranch?.branch_id || user.branch_id || null,
-        role: user.Rights,
+        role: user.role,
       },
       jwt_key,
       { expiresIn: "1d" }
@@ -95,7 +95,7 @@ exports.login = async (Details) => {
         username: user.User_name,
         tenant_id: user.tenant_id,
         branch_id: assignedBranch?.branch_id || user.branch_id,
-        rights: user.Rights,
+        role: user.role,
       },
     };
   } catch (err) {
@@ -127,7 +127,7 @@ exports.userDetails = async (tenant_id, branch_id, currentUserRights) => {
     }
 
     const rows = await conn.query(
-      `SELECT User_id, User_name, Rights, Status, Created_by, Created_date, tenant_id, branch_id 
+      `SELECT User_id, User_name, role, Status, Created_by, Created_date, tenant_id, branch_id 
        FROM user 
        WHERE tenant_id = ? AND branch_id = ?
        ORDER BY User_name`,
@@ -155,7 +155,7 @@ exports.userList = async (tenant_id, branch_id, currentUserRights) => {
     }
 
     const rows = await conn.query(
-      `SELECT User_id, User_name, Rights, Status, Created_date 
+      `SELECT User_id, User_name, role, Status, Created_date 
        FROM user 
        WHERE tenant_id = ? AND branch_id = ? 
        ORDER BY User_name`,
@@ -208,9 +208,9 @@ exports.userAccess = async (
 
     const result = await conn.query(
       `UPDATE user 
-       SET Rights = ?, Status = ?, Updated_date = NOW()
+       SET role = ?, Status = ?, Updated_date = NOW()
        WHERE User_name = ? AND tenant_id = ?`,
-      [Details.rights, Details.status, Details.username, tenant_id]
+      [Details.role, Details.status, Details.username, tenant_id]
     );
 
     if (result.affectedRows === 0) throw new AppError("User not found", 404);
@@ -292,12 +292,12 @@ exports.newUser = async (Details, tenant_id, branch_id, createdBy) => {
 
     const result = await conn.query(
       `INSERT INTO user 
-       (User_name, Password, Rights, Status, Created_by, Created_date, tenant_id, branch_id) 
+       (User_name, Password, role, Status, Created_by, Created_date, tenant_id, branch_id) 
        VALUES (?, ?, ?, ?, ?, NOW(), ?, ?)`,
       [
         Details.User_name?.toUpperCase(),
         hashedPassword,
-        Details.Rights,
+        Details.role,
         Details.Status,
         createdBy,
         tenant_id,
@@ -314,6 +314,103 @@ exports.newUser = async (Details, tenant_id, branch_id, createdBy) => {
     return { success: true, message: "User created successfully", userId };
   } catch (err) {
     console.error("❌ newUser Error:", err);
+    throw err;
+  } finally {
+    if (conn) conn.release();
+  }
+};
+
+exports.addUser = async (details,tenant_id,branch_id,created_by, req) => {
+  let conn,keycloakdata;
+
+  try {
+    conn = await pool.getConnection();
+
+    // 🔥 START TRANSACTION
+    await conn.beginTransaction();
+
+     keycloakdata = await createUser(req);
+    // console.log('keycloakdata:',keycloakdata)
+    details.keycloak_id = keycloakdata.id;
+
+    const safe = (val) => (val === undefined ? null : val);
+
+    const sql = `
+      INSERT INTO user 
+      (tenant_id, first_name, last_name, email, phone_number, role, status,
+       password_hash, created_by, keycloak_id, username, user_photo, id_card_photo, 
+       aadhaar_number, address, district, city, state, country, pincode)
+      VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+    `;
+
+    const values = [
+      safe(tenant_id),
+      safe(details.first_name?.toUpperCase()),
+      safe(details.last_name?.toUpperCase()),
+      safe(details.email),
+      safe(details.phone_number),
+      safe(details.role),
+      safe(details.status) || "A",
+      safe(details.password_hash),
+      safe(details.created_by),
+      safe(details.keycloak_id),
+      safe(details.username),
+      safe(details.user_photo),
+      safe(details.id_card_photo),
+      safe(details.aadhaar_number),
+      safe(details.address),
+      safe(details.district),
+      safe(details.city),
+      safe(details.state),
+      safe(details.country),
+      safe(details.pincode),
+    ];
+
+    if (values.length !== 20) {
+      throw new Error(
+        `Value count mismatch: Expected 20, got ${values.length}`,
+      );
+    }
+
+    // ✅ Insert User
+    const result = await conn.query(sql, values);
+
+    let branchIds = details.branch_ids;
+
+    // ✅ Convert string "1,7" → [1,7]
+    if (typeof branchIds === "string") {
+      branchIds = branchIds.split(",").map((id) => Number(id.trim()));
+    }
+
+    console.log(branchIds);
+
+    // ✅ Insert User-Branch Mapping
+    if (result.insertId && branchIds?.length) {
+      for (const bid of branchIds) {
+        await conn.query(
+          `INSERT INTO userbranch (tenant_id, branch_id, user_id, created_by)
+           VALUES (?, ?, ?, ?)`,
+          [details.tenant_id, bid, Number(result.insertId), details.created_by],
+        );
+      }
+    }
+
+    // 🔥 COMMIT if everything succeeds
+    await conn.commit();
+
+    return result;
+  } catch (err) {
+    // ❌ ROLLBACK if ANY error occurs
+    if (conn) await conn.rollback();
+
+    if (keycloakdata?.id) {
+      const token = req.cookies.access_token;
+      const realm = req.cookies.realm;
+
+      await deleteUser(token, realm, keycloakdata.id);
+    }
+
+    console.error("Transaction failed, rolled back:", err.message);
     throw err;
   } finally {
     if (conn) conn.release();
@@ -381,7 +478,7 @@ exports.switchBranch = async (tenant_id, branch_id, currentUser) => {
       throw new AppError("Invalid or inactive branch", 400);
     }
 
-    if (currentUser.rights !== "Super User") {
+    if (currentUser.role !== "Super User") {
       throw new AppError("Access denied: Super User privileges required", 403);
     }
 
@@ -391,7 +488,7 @@ exports.switchBranch = async (tenant_id, branch_id, currentUser) => {
         username: currentUser.username,
         tenant_id,
         branch_id: branch_id || null,
-        role: currentUser.rights,
+        role: currentUser.role,
       },
       process.env.JWT_KEY,
       { expiresIn: "4h" }

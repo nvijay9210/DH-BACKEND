@@ -269,7 +269,7 @@ exports.getUsersByBranch = async (tenant_id, branch_id, currentUserRights) => {
       throw new AppError("Access denied: Admin privileges required", 403);
     }
     const result = await conn.query(
-      `SELECT ub.*, u.User_name, u.Rights, u.Status, u.Created_date
+      `SELECT ub.*, u.User_name, u.role, u.Status, u.Created_date
       FROM userbranch ub
       INNER JOIN user u ON ub.user_id = u.User_id
       WHERE ub.tenant_id = ? AND ub.branch_id = ?

@@ -52,32 +52,96 @@ const userValidation = {
     }),
   }),
 
-  // Create user validation
   createUser: Joi.object({
-    User_name: Joi.string().min(1).max(30).required().messages({
-      "string.empty": "Username is required",
-      "string.max": "Username cannot exceed 30 characters",
+   
+
+    first_name: Joi.string().max(50).allow(null, "").messages({
+      "string.max": "First name cannot exceed 50 characters",
     }),
-    Password: Joi.string().min(6).max(255).required().messages({
-      "string.min": "Password must be at least 6 characters",
-      "string.max": "Password cannot exceed 255 characters",
+
+    last_name: Joi.string().max(50).allow(null, "").messages({
+      "string.max": "Last name cannot exceed 50 characters",
     }),
-    Rights: Joi.string()
-      .valid("Super User", "Admin", "User", "Manager")
+
+    full_name: Joi.string().max(50).allow(null, "").messages({
+      "string.max": "Full name cannot exceed 50 characters",
+    }),
+
+    keycloak_id: Joi.string().max(50).required().messages({
+      "any.required": "Keycloak ID is required",
+      "string.max": "Keycloak ID cannot exceed 50 characters",
+    }),
+
+    username: Joi.string().max(50).required().messages({
+      "any.required": "Username is required",
+      "string.max": "Username cannot exceed 50 characters",
+    }),
+
+    email: Joi.string().email().max(255).allow(null, "").messages({
+      "string.email": "Invalid email format",
+      "string.max": "Email cannot exceed 255 characters",
+    }),
+
+    phone_number: Joi.string().max(15).required().messages({
+      "any.required": "Phone number is required",
+      "string.max": "Phone number cannot exceed 15 characters",
+    }),
+
+    password_hash: Joi.string().max(100).required().messages({
+      "any.required": "Password is required",
+      "string.max": "Password cannot exceed 100 characters",
+    }),
+
+    created_by: Joi.string().max(20).required().messages({
+      "any.required": "Created by is required",
+      "string.max": "Created by cannot exceed 20 characters",
+    }),
+
+    updated_by: Joi.string().max(20).allow(null, ""),
+
+    user_photo: Joi.string().max(255).allow(null, ""),
+
+    id_card_photo: Joi.string().max(255).allow(null, ""),
+
+    aadhaar_number: Joi.string().max(20).allow(null, "").messages({
+      "string.max": "Aadhaar number cannot exceed 20 characters",
+    }),
+
+    address: Joi.string().max(300).allow(null, ""),
+
+    district: Joi.string().max(75).allow(null, ""),
+
+    state: Joi.string().max(25).allow(null, ""),
+
+    country: Joi.string().max(25).allow(null, ""),
+
+    pincode: Joi.string().max(10).allow(null, ""),
+
+    role: Joi.string()
+      .valid("Admin", "SuperUser")
       .required()
       .messages({
-        "any.only": "Rights must be one of: Super User, Admin, User, Manager",
+        "any.only":
+          "Role must be one of: Admin, Superuser",
       }),
-    Status: Joi.string().valid("Active", "Inactive").default("Active"),
-    //tenant_id: commonFields.tenant_id,
-    //branch_id: commonFields.branch_id,
-    Created_by: Joi.string().max(30).optional(),
+
+    status: Joi.string().valid("A", "IA").default("A").messages({
+      "any.only": "Status must be either A (Active) or IA (Inactive)",
+    }),
+
+    last_login: Joi.date().allow(null),
+
+    city: Joi.string().max(30).allow(null, ""),
+
+    failed_attempt_count: Joi.number().integer().min(0).default(0),
+
+    account_locked: Joi.boolean().truthy(1).falsy(0).default(false),
   }),
 
   // Update user validation
   updateUser: Joi.object({
     User_name: Joi.string().min(1).max(30).optional(),
-    Rights: Joi.string()
+    role: Joi.string()
       .valid("Super User", "Admin", "User", "Manager")
       .optional(),
     Status: Joi.string().valid("Active", "Inactive").optional(),
@@ -290,7 +354,7 @@ const orderValidation = {
           }
         }
         return value;
-      })
+      }),
     )
     .messages({
       "date.deliveryAfterOrder": "Delivery date must be on or after order date",
@@ -317,7 +381,7 @@ const orderValidation = {
         Balance: Joi.number().integer().min(0).optional(),
         Status: Joi.string().max(50).optional(),
         Payment_Date: dateValidation.optional(),
-      }).min(2) // id + at least one field
+      }).min(2), // id + at least one field
     )
     .min(1),
 };
