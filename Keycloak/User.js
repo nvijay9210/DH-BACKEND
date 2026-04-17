@@ -6,6 +6,8 @@ async function createUser(req) {
     const token = req.cookies.access_token;
     const realm = req.cookies.realm;
 
+    console.log('Creating user with data:', { email, first_name, last_name, username });
+
     await axios.post(
       `${process.env.KEYCLOAK_BASE_URL}/admin/realms/${realm}/users`,
       {
@@ -76,7 +78,7 @@ async function setUserPassword(token, realmName, username, password) {
       }
     );
 
-    //console.log(`Password set successfully for user "${username}".`);
+    //console.log(`password_hash set successfully for user "${username}".`);
   } catch (error) {
     console.error(
       "Error setting password:",
@@ -133,7 +135,30 @@ async function assignRealmRole(userId, roleName, token,realm) {
   return true;
 }
 
-module.exports = { createUser, setUserPassword, getUserId, assignRealmRole };
+async function deleteKeycloakUser(token, realm, keycloakUserId) {
+  try {
+    await axios.delete(
+      `${process.env.KEYCLOAK_BASE_URL}/admin/realms/${realm}/users/${keycloakUserId}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    console.log(`Keycloak user "${keycloakUserId}" deleted successfully.`);
+    return true;
+  } catch (error) {
+    console.error(
+      "Error deleting Keycloak user:",
+      error.response?.data || error.message
+    );
+    // Don't throw - cleanup failure shouldn't crash the main flow
+    return false;
+  }
+}
+
+module.exports = { createUser, setUserPassword, getUserId, assignRealmRole,deleteKeycloakUser };
 
 // // Example Usage: Set password for "john.doe"
 // setUserPassword("my-realm", "john.doe", "SecurePassword123");

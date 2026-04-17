@@ -250,7 +250,7 @@ async function verifyUserTokenInDB(token, login_operation = false, req) {
     const roles = decoded?.realm_access?.roles || [];
 
     // Determine role
-    // const ROLE_PRIORITY = ["admin", "manager", "operator"];
+    // const ROLE_PRIORITY = ["ADMIN", "manager", "operator"];
     // const userRole = ROLE_PRIORITY.find(r => roles.includes(r)) || "guest";
 
      // Fetch DB user
@@ -261,7 +261,7 @@ async function verifyUserTokenInDB(token, login_operation = false, req) {
 
     //  console.log('user:',user)
 
-    // Admin or Guest bypass all checks
+    // ADMIN or Guest bypass all checks
     if (user.role === "ADMIN" || user.role === "DEV" || user.role === "A" || user.role === "D") {
       return user ;
     }

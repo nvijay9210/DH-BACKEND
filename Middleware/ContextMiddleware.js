@@ -11,6 +11,9 @@ exports.validateIds = async (req, res, next) => {
     const user_id =
       req.user_id || req.body.user_id || req.params.user_id || req.query.user_id;
 
+    const role = req.role;
+    console.log('role:',role)
+
     // Tenant validation
     if (tenant_id) {
         console.log(tenant_id)
@@ -26,9 +29,9 @@ exports.validateIds = async (req, res, next) => {
     }
 
     // User validation
-    if (user_id) {
+    if (user_id && role!=='SUPERUSER' && role!=='DEV') {
       await checkRecordExists("user", {
-        User_id: user_id,
+        user_id: user_id,
         ...(tenant_id && { tenant_id }),
         ...(branch_id && { branch_id }),
       });

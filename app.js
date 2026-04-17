@@ -80,9 +80,27 @@ const withAuth = (router, includeContext = false) => {
 
 app.use(dateMiddleware);
 
+
+
 app.use(`/api/keycloak`, ssoAuth.router);
 
 const maxmind = require('maxmind');
+const logger = require("./Logs/Logger");
+
+app.use((req, res, next) => {
+  const start = Date.now();
+  
+  // Log request start
+  logger.request(req, 'info', '📥 Request received');
+  
+  res.on('finish', () => {
+    const duration = Date.now() - start;
+    // Log response
+    logger.response(req, res, duration, '📤 Request completed');
+  });
+  
+  next();
+});
 
 let lookup;
 

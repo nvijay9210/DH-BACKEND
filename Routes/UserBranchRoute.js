@@ -8,25 +8,25 @@ const { asyncHandler } = require("../utils/Async");
    User-Branch Mapping Routes
 ========================================= */
 
-// 🔐 CREATE: Super User / Admin only
+// 🔐 CREATE: SUPERUSER / ADMIN only
 router.post("/", requireSuperuser, asyncHandler(userBranchController.createUserBranch));
 
-// 👁️ GET ALL: Super User / Admin only (with optional filters)
+// 👁️ GET ALL: SUPERUSER / ADMIN only (with optional filters)
 router.get("/", requireSuperuser, asyncHandler(userBranchController.getUserBranches));
 
-// 👁️ GET SPECIFIC: Self or Super User
+// 👁️ GET SPECIFIC: Self or SUPERUSER
 router.get("/:branch_id/:user_id", isSelfOrSuperuser, asyncHandler(userBranchController.getUserBranchById));
 
-// 🔐 UPDATE: Super User / Admin only
+// 🔐 UPDATE: SUPERUSER / ADMIN only
 router.put("/:branch_id/:user_id", requireSuperuser, asyncHandler(userBranchController.updateUserBranch));
 
-// 🔐 DELETE: Super User / Admin only
+// 🔐 DELETE: SUPERUSER / ADMIN only
 router.delete("/:branch_id/:user_id", requireSuperuser, asyncHandler(userBranchController.deleteUserBranch));
 
-// 👁️ GET BRANCHES BY USER: Self or Super User
+// 👁️ GET BRANCHES BY USER: Self or SUPERUSER
 router.get("/user/:user_id/branches", isSelfOrSuperuser, asyncHandler(userBranchController.getBranchesByUser));
 
-// 🔐 GET USERS BY BRANCH: Super User / Admin only
+// 🔐 GET USERS BY BRANCH: SUPERUSER / ADMIN only
 router.get("/branch/:branch_id/users", requireSuperuser, asyncHandler(userBranchController.getUsersByBranch));
 
 module.exports = router;

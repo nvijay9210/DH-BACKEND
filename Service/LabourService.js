@@ -18,7 +18,7 @@ exports.labourDetails = async (Order, tenant_id, branch_id) => {
       INSERT INTO labour_worked_details
       (tenant_id, branch_id, Project_id, Project_name, Date, Contractor,
       Labour_types, No_Of_Persons, Salary, Ratio, Total, Site_supervisor,
-      Payment_Date, Paid, Balance, Status, CREATED_BY, CREATED_DATETIME)
+      Payment_Date, Paid, Balance, status, CREATED_BY, CREATED_DATETIME)
       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `;
 
@@ -39,7 +39,7 @@ exports.labourDetails = async (Order, tenant_id, branch_id) => {
         details.Payment_Date,
         details.Paid,
         details.Balance,
-        details.Status,
+        details.status,
         details.username,
         details.currentDate || new Date()
       ];
@@ -80,7 +80,7 @@ exports.updateLabour = async (username,details, tenant_id, branch_id) => {
       SET Project_id = ?, Project_name = ?, DATE = ?, Contractor = ?,
       Labour_types = ?, No_Of_Persons = ?, Salary = ?, Ratio = ?,
       Total = ?, Site_supervisor = ?, Payment_Date = ?, Paid = ?,
-      Balance = ?, Status = ?, LAST_UPDATED_BY = ?, LAST_UPDATED_DATETIME = ?
+      Balance = ?, status = ?, LAST_UPDATED_BY = ?, LAST_UPDATED_DATETIME = ?
       WHERE Labour_id = ? AND tenant_id = ? AND branch_id = ?
     `;
     const convert = (str) => {
@@ -106,7 +106,7 @@ exports.updateLabour = async (username,details, tenant_id, branch_id) => {
         datetime,
         Paid,
         Balance,
-        Status,
+        status,
         Labour_id,
       } = order;
       await conn.query(updateQuery, [
@@ -123,7 +123,7 @@ exports.updateLabour = async (username,details, tenant_id, branch_id) => {
         Payment_Date,
         Paid,
         Balance,
-        Status,
+        status,
         username,
         datetime,
         Labour_id,
@@ -239,7 +239,7 @@ exports.labourPayment = async (Details, tenant_id, branch_id) => {
       query = `
         SELECT * FROM labour_worked_details
         WHERE tenant_id = ? AND branch_id = ? AND Project_id = ?
-        AND Status <> 'Paid' AND Date BETWEEN ? AND ?
+        AND status <> 'Paid' AND Date BETWEEN ? AND ?
         ORDER BY Date ASC
       `;
       params = [tenant_id, branch_id, Details.Id, Details.Start, Details.End];
@@ -247,7 +247,7 @@ exports.labourPayment = async (Details, tenant_id, branch_id) => {
       query = `
         SELECT * FROM labour_worked_details
         WHERE tenant_id = ? AND branch_id = ? AND Project_id = ?
-        AND Contractor = ? AND Status <> 'Paid' AND Date BETWEEN ? AND ?
+        AND Contractor = ? AND status <> 'Paid' AND Date BETWEEN ? AND ?
         ORDER BY Date ASC
       `;
       params = [
@@ -288,9 +288,9 @@ exports.labourPaymentUpdate = async (Details, tenant_id, branch_id) => {
     if (!Details.contractor || Details.contractor === "null") {
       query = `
         UPDATE labour_worked_details
-        SET Paid = Total, Status = 'Paid', Balance = 0, Payment_Date = ?
+        SET Paid = Total, status = 'Paid', Balance = 0, Payment_Date = ?
         WHERE tenant_id = ? AND branch_id = ? AND Project_id = ?
-        AND Status != 'Paid' AND Date BETWEEN ? AND ?
+        AND status != 'Paid' AND Date BETWEEN ? AND ?
       `;
       params = [
         Details.Payment_Date,
@@ -303,9 +303,9 @@ exports.labourPaymentUpdate = async (Details, tenant_id, branch_id) => {
     } else {
       query = `
         UPDATE labour_worked_details
-        SET Paid = Total, Status = 'Paid', Balance = 0, Payment_Date = ?
+        SET Paid = Total, status = 'Paid', Balance = 0, Payment_Date = ?
         WHERE tenant_id = ? AND branch_id = ? AND Project_id = ?
-        AND Contractor = ? AND Status != 'Paid' AND Date BETWEEN ? AND ?
+        AND Contractor = ? AND status != 'Paid' AND Date BETWEEN ? AND ?
       `;
       params = [
         Details.Payment_Date,
@@ -348,9 +348,9 @@ exports.allLabourPaymentUpdate = async (Details, tenant_id, branch_id) => {
 
     // 🔹 STEP 1: Fetch records to be updated (for audit & validation)
     const selectQuery = `
-      SELECT Labour_id, Total, Paid, Balance, Status, Contractor, DATE
+      SELECT Labour_id, Total, Paid, Balance, status, Contractor, DATE
       FROM labour_worked_details
-      WHERE tenant_id = ? AND branch_id = ? AND Status != 'Paid'
+      WHERE tenant_id = ? AND branch_id = ? AND status != 'Paid'
       AND DATE BETWEEN ? AND ?
       ${Details.contractor && Details.contractor !== "null" 
         ? 'AND Contractor = ?' 
@@ -382,11 +382,11 @@ exports.allLabourPaymentUpdate = async (Details, tenant_id, branch_id) => {
         SET 
           Paid = Total,
           Balance = 0,
-          Status = 'Paid',
+          status = 'Paid',
           Payment_Date = ?,
           LAST_UPDATED_BY = ?,
           LAST_UPDATED_DATETIME = ?
-        WHERE tenant_id = ? AND branch_id = ? AND Status != 'Paid'
+        WHERE tenant_id = ? AND branch_id = ? AND status != 'Paid'
         AND DATE BETWEEN ? AND ?
       `;
       params = [
@@ -404,12 +404,12 @@ exports.allLabourPaymentUpdate = async (Details, tenant_id, branch_id) => {
         SET 
           Paid = Total,
           Balance = 0,
-          Status = 'Paid',
+          status = 'Paid',
           Payment_Date = ?,
           LAST_UPDATED_BY = ?,
           LAST_UPDATED_DATETIME = ?
         WHERE tenant_id = ? AND branch_id = ? AND Contractor = ?
-        AND Status != 'Paid' AND DATE BETWEEN ? AND ?
+        AND status != 'Paid' AND DATE BETWEEN ? AND ?
       `;
       params = [
         Details.Payment_Date,
@@ -429,7 +429,7 @@ exports.allLabourPaymentUpdate = async (Details, tenant_id, branch_id) => {
     await conn.query(
       `INSERT INTO material_payments 
        (tenant_id, branch_id, Project_Id, Supplier_name, Payment_Date, Amount, 
-        Created_by, Created_Datetime, Bill_no, Material_name, Material_amount)
+        created_by, Created_Datetime, Bill_no, Material_name, Material_amount)
        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
       [
         tenant_id,
@@ -487,7 +487,7 @@ exports.allLabourPayment = async (Details, tenant_id, branch_id) => {
     if (!Details.contractor || Details.contractor === "null") {
       query = `
         SELECT * FROM labour_worked_details
-        WHERE tenant_id = ? AND branch_id = ? AND Status != 'Paid'
+        WHERE tenant_id = ? AND branch_id = ? AND status != 'Paid'
         AND Date BETWEEN ? AND ?
         ORDER BY Date
       `;
@@ -496,7 +496,7 @@ exports.allLabourPayment = async (Details, tenant_id, branch_id) => {
       query = `
         SELECT * FROM labour_worked_details
         WHERE tenant_id = ? AND branch_id = ? AND Contractor = ?
-        AND Status != 'Paid' AND Date BETWEEN ? AND ?
+        AND status != 'Paid' AND Date BETWEEN ? AND ?
         ORDER BY Date
       `;
       params = [
@@ -535,7 +535,7 @@ exports.fetchContractorPay = async (tenant_id, branch_id) => {
     const result = await conn.query(
       `SELECT Contractor, SUM(Balance) as TotalBalance
       FROM labour_worked_details
-      WHERE tenant_id = ? AND branch_id = ? AND Status != 'Paid'
+      WHERE tenant_id = ? AND branch_id = ? AND status != 'Paid'
       GROUP BY Contractor`,
       [tenant_id, branch_id]
     );

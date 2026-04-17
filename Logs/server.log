@@ -1,0 +1,1264 @@
+[17/4/2026, 4:37:47 pm] [INFO] 🛑 Shutting down Redis connection...
+[17/4/2026, 4:37:54 pm] [INFO] 🪵 Logger initialized with URL tracking {"env":"development","log_level":"info","log_directory":"D:\\BRIGHTON\\DREAM HOUSE\\BACKEND\\logs"}
+[17/4/2026, 4:37:55 pm] [INFO] 🚀 Server running on port 8006 {"env":"development","pid":4544}
+[17/4/2026, 4:37:55 pm] [INFO] ✅ Redis connected
+[17/4/2026, 4:37:55 pm] [INFO] ✅ Redis connected: {"host":"127.0.0.1","port":6379,"db":0}
+[17/4/2026, 4:37:55 pm] [INFO] ✅ Database connected {"threadId":256,"config":{"host":"localhost","database":"dreamhouse"}}
+[17/4/2026, 4:37:55 pm] [INFO] 🚀 Redis is ready to accept commands
+[17/4/2026, 4:37:55 pm] [INFO] ℹ️  [11:07:55.405] [SsoAuth:SSO_AUTH] 🔐 Redis health: healthy 
+[17/4/2026, 4:37:55 pm] [INFO] ✅ MaxMind DB loaded
+[17/4/2026, 4:38:05 pm] [INFO] [HTTP] 🌐 📥 Request received POST /api/labour/FetchLabourUpdate {"ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Sa"}
+[17/4/2026, 4:38:06 pm] [INFO] 🔍 [11:08:06.347] [SsoAuth:Middleware] 🔐 Validating token 
+📦 {
+  "hasSessionCookie": true,
+  "hasSessionHeader": false,
+  "hasAuthHeader": false
+}
+[17/4/2026, 4:38:06 pm] [INFO] 🔍 [11:08:06.371] [SsoAuth:SessionService] Fetching session from Redis 
+📦 {
+  "session_id": "7af95682-a236-4e5f-a22b-4974dee506a0"
+}
+[17/4/2026, 4:38:06 pm] [INFO] [HTTP] 🌐 📥 Request received POST /api/labour/FetchLabourUpdate {"ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Sa"}
+[17/4/2026, 4:38:06 pm] [INFO] 🔍 [11:08:06.400] [SsoAuth:Middleware] 🔐 Validating token 
+📦 {
+  "hasSessionCookie": true,
+  "hasSessionHeader": false,
+  "hasAuthHeader": false
+}
+[17/4/2026, 4:38:06 pm] [INFO] 🔍 [11:08:06.409] [SsoAuth:SessionService] Fetching session from Redis 
+📦 {
+  "session_id": "7af95682-a236-4e5f-a22b-4974dee506a0"
+}
+[17/4/2026, 4:38:06 pm] [INFO] [HTTP] 🌐 📥 Request received GET /api/master/fetchLabour {"ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Sa"}
+[17/4/2026, 4:38:06 pm] [INFO] 🔍 [11:08:06.426] [SsoAuth:Middleware] 🔐 Validating token 
+📦 {
+  "hasSessionCookie": true,
+  "hasSessionHeader": false,
+  "hasAuthHeader": false
+}
+[17/4/2026, 4:38:06 pm] [INFO] 🔍 [11:08:06.435] [SsoAuth:SessionService] Fetching session from Redis 
+📦 {
+  "session_id": "7af95682-a236-4e5f-a22b-4974dee506a0"
+}
+[17/4/2026, 4:38:06 pm] [INFO] [HTTP] 🌐 📥 Request received GET /api/master/fetchContractor {"ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Sa"}
+[17/4/2026, 4:38:06 pm] [INFO] 🔍 [11:08:06.447] [SsoAuth:Middleware] 🔐 Validating token 
+📦 {
+  "hasSessionCookie": true,
+  "hasSessionHeader": false,
+  "hasAuthHeader": false
+}
+[17/4/2026, 4:38:06 pm] [INFO] 🔍 [11:08:06.454] [SsoAuth:SessionService] Fetching session from Redis 
+📦 {
+  "session_id": "7af95682-a236-4e5f-a22b-4974dee506a0"
+}
+[17/4/2026, 4:38:07 pm] [INFO] 🔍 [11:08:07.021] [SsoAuth:SessionService] ✅ Session found 
+📦 {
+  "userId": 1,
+  "role": "SUPERUSER",
+  "tokenPreview": "eyJhbGciOi..."
+}
+[17/4/2026, 4:38:07 pm] [INFO] 🔍 [11:08:07.080] [SsoAuth:SessionService] ✅ Session found 
+📦 {
+  "userId": 1,
+  "role": "SUPERUSER",
+  "tokenPreview": "eyJhbGciOi..."
+}
+[17/4/2026, 4:38:07 pm] [INFO] 🔍 [11:08:07.133] [SsoAuth:SessionService] ✅ Session found 
+📦 {
+  "userId": 1,
+  "role": "SUPERUSER",
+  "tokenPreview": "eyJhbGciOi..."
+}
+[17/4/2026, 4:38:07 pm] [INFO] 🔍 [11:08:07.200] [SsoAuth:SessionService] ✅ Session found 
+📦 {
+  "userId": 1,
+  "role": "SUPERUSER",
+  "tokenPreview": "eyJhbGciOi..."
+}
+[17/4/2026, 4:38:07 pm] [INFO] 🔍 [11:08:07.267] [SsoAuth:Middleware] Verifying JWT signature 
+[17/4/2026, 4:38:07 pm] [INFO] SUPERUSER
+[17/4/2026, 4:38:07 pm] [INFO] 🔍 [11:08:07.444] [SsoAuth:Middleware] Fetching user from database 
+📦 {
+  "keycloakId": "fc201f67-c778-46a9-b14c-a223b9e2094a",
+  "tenantId": 1,
+  "branchId": "1"
+}
+[17/4/2026, 4:38:07 pm] [INFO] 🔍 [11:08:07.568] [SsoAuth:UserService] Fetching user by Keycloak ID with tenant/branch 
+📦 {
+  "keycloakId": "fc201f67-c778-46a9-b14c-a223b9e2094a",
+  "tenantId": 1,
+  "branchId": "1"
+}
+[17/4/2026, 4:38:07 pm] [INFO] 🔍 [11:08:07.619] [SsoAuth:Middleware] Verifying JWT signature 
+[17/4/2026, 4:38:07 pm] [INFO] SUPERUSER
+[17/4/2026, 4:38:07 pm] [INFO] 🔍 [11:08:07.961] [SsoAuth:Middleware] Fetching user from database 
+📦 {
+  "keycloakId": "fc201f67-c778-46a9-b14c-a223b9e2094a",
+  "tenantId": 1,
+  "branchId": "1"
+}
+[17/4/2026, 4:38:08 pm] [INFO] 🔍 [11:08:08.612] [SsoAuth:UserService] Fetching user by Keycloak ID with tenant/branch 
+📦 {
+  "keycloakId": "fc201f67-c778-46a9-b14c-a223b9e2094a",
+  "tenantId": 1,
+  "branchId": "1"
+}
+[17/4/2026, 4:38:08 pm] [INFO] 🔍 [11:08:08.753] [SsoAuth:Middleware] Verifying JWT signature 
+[17/4/2026, 4:38:08 pm] [INFO] SUPERUSER
+[17/4/2026, 4:38:08 pm] [INFO] 🔍 [11:08:08.958] [SsoAuth:Middleware] Fetching user from database 
+📦 {
+  "keycloakId": "fc201f67-c778-46a9-b14c-a223b9e2094a",
+  "tenantId": 1,
+  "branchId": "1"
+}
+[17/4/2026, 4:38:09 pm] [INFO] 🔍 [11:08:09.028] [SsoAuth:UserService] Fetching user by Keycloak ID with tenant/branch 
+📦 {
+  "keycloakId": "fc201f67-c778-46a9-b14c-a223b9e2094a",
+  "tenantId": 1,
+  "branchId": "1"
+}
+[17/4/2026, 4:38:09 pm] [INFO] 🔍 [11:08:09.114] [SsoAuth:Middleware] Verifying JWT signature 
+[17/4/2026, 4:38:09 pm] [INFO] SUPERUSER
+[17/4/2026, 4:38:09 pm] [INFO] 🔍 [11:08:09.161] [SsoAuth:Middleware] Fetching user from database 
+📦 {
+  "keycloakId": "fc201f67-c778-46a9-b14c-a223b9e2094a",
+  "tenantId": 1,
+  "branchId": "1"
+}
+[17/4/2026, 4:38:09 pm] [INFO] 🔍 [11:08:09.165] [SsoAuth:UserService] Fetching user by Keycloak ID with tenant/branch 
+📦 {
+  "keycloakId": "fc201f67-c778-46a9-b14c-a223b9e2094a",
+  "tenantId": 1,
+  "branchId": "1"
+}
+[17/4/2026, 4:38:09 pm] [INFO] [HTTP] 🌐 📥 Request received POST /api/material/Stock_List {"ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Sa"}
+[17/4/2026, 4:38:09 pm] [INFO] 🔍 [11:08:09.266] [SsoAuth:Middleware] 🔐 Validating token 
+📦 {
+  "hasSessionCookie": true,
+  "hasSessionHeader": false,
+  "hasAuthHeader": false
+}
+[17/4/2026, 4:38:09 pm] [INFO] 🔍 [11:08:09.274] [SsoAuth:SessionService] Fetching session from Redis 
+📦 {
+  "session_id": "7af95682-a236-4e5f-a22b-4974dee506a0"
+}
+[17/4/2026, 4:38:09 pm] [INFO] [HTTP] 🌐 📥 Request received POST /api/material/Stock_List {"ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Sa"}
+[17/4/2026, 4:38:09 pm] [INFO] 🔍 [11:08:09.385] [SsoAuth:Middleware] 🔐 Validating token 
+📦 {
+  "hasSessionCookie": true,
+  "hasSessionHeader": false,
+  "hasAuthHeader": false
+}
+[17/4/2026, 4:38:09 pm] [INFO] 🔍 [11:08:09.498] [SsoAuth:SessionService] Fetching session from Redis 
+📦 {
+  "session_id": "7af95682-a236-4e5f-a22b-4974dee506a0"
+}
+[17/4/2026, 4:38:09 pm] [INFO] 🔍 [11:08:09.767] [SsoAuth:SessionService] ✅ Session found 
+📦 {
+  "userId": 1,
+  "role": "SUPERUSER",
+  "tokenPreview": "eyJhbGciOi..."
+}
+[17/4/2026, 4:38:09 pm] [INFO] 🔍 [11:08:09.912] [SsoAuth:SessionService] ✅ Session found 
+📦 {
+  "userId": 1,
+  "role": "SUPERUSER",
+  "tokenPreview": "eyJhbGciOi..."
+}
+[17/4/2026, 4:38:09 pm] [INFO] 🔍 [11:08:09.945] [SsoAuth:Middleware] Verifying JWT signature 
+[17/4/2026, 4:38:09 pm] [INFO] SUPERUSER
+[17/4/2026, 4:38:10 pm] [INFO] 🔍 [11:08:10.012] [SsoAuth:Middleware] Fetching user from database 
+📦 {
+  "keycloakId": "fc201f67-c778-46a9-b14c-a223b9e2094a",
+  "tenantId": 1,
+  "branchId": "1"
+}
+[17/4/2026, 4:38:10 pm] [INFO] 🔍 [11:08:10.054] [SsoAuth:UserService] Fetching user by Keycloak ID with tenant/branch 
+📦 {
+  "keycloakId": "fc201f67-c778-46a9-b14c-a223b9e2094a",
+  "tenantId": 1,
+  "branchId": "1"
+}
+[17/4/2026, 4:38:10 pm] [INFO] 🔍 [11:08:10.146] [SsoAuth:Middleware] Verifying JWT signature 
+[17/4/2026, 4:38:10 pm] [INFO] SUPERUSER
+[17/4/2026, 4:38:10 pm] [INFO] 🔍 [11:08:10.195] [SsoAuth:Middleware] Fetching user from database 
+📦 {
+  "keycloakId": "fc201f67-c778-46a9-b14c-a223b9e2094a",
+  "tenantId": 1,
+  "branchId": "1"
+}
+[17/4/2026, 4:38:10 pm] [INFO] 🔍 [11:08:10.203] [SsoAuth:UserService] Fetching user by Keycloak ID with tenant/branch 
+📦 {
+  "keycloakId": "fc201f67-c778-46a9-b14c-a223b9e2094a",
+  "tenantId": 1,
+  "branchId": "1"
+}
+[17/4/2026, 4:38:10 pm] [INFO] 🔍 [11:08:10.463] [SsoAuth:UserService] User fetch with tenant/branch result 
+📦 {
+  "found": true,
+  "userId": 1,
+  "role": "SUPERUSER"
+}
+[17/4/2026, 4:38:10 pm] [INFO] 🔍 [11:08:10.542] [SsoAuth:Middleware] ✅ User fetched from DB, role assigned 
+📦 {
+  "userId": 1,
+  "role": "SUPERUSER",
+  "status": "A"
+}
+[17/4/2026, 4:38:10 pm] [INFO] 🔍 [11:08:10.546] [SsoAuth:Middleware] ✅ Token valid, proceeding to next middleware... 
+[17/4/2026, 4:38:10 pm] [INFO] 🔍 [11:08:10.551] [SsoAuth:Middleware] ✅ validateToken function completed 
+[17/4/2026, 4:38:10 pm] [INFO] 🔍 [11:08:10.686] [SsoAuth:UserService] User fetch with tenant/branch result 
+📦 {
+  "found": true,
+  "userId": 1,
+  "role": "SUPERUSER"
+}
+[17/4/2026, 4:38:10 pm] [INFO] 🔍 [11:08:10.692] [SsoAuth:Middleware] ✅ User fetched from DB, role assigned 
+📦 {
+  "userId": 1,
+  "role": "SUPERUSER",
+  "status": "A"
+}
+[17/4/2026, 4:38:10 pm] [INFO] 🔍 [11:08:10.697] [SsoAuth:Middleware] ✅ Token valid, proceeding to next middleware... 
+[17/4/2026, 4:38:10 pm] [INFO] 🔍 [11:08:10.701] [SsoAuth:Middleware] ✅ validateToken function completed 
+[17/4/2026, 4:38:10 pm] [INFO] ⚠️ Redis key not found: master:labour:fetch:1:1
+[17/4/2026, 4:38:10 pm] [INFO] ⚠️ Redis key not found: labour:update:16:1:1
+[17/4/2026, 4:38:10 pm] [INFO] 🔍 [11:08:10.870] [SsoAuth:UserService] User fetch with tenant/branch result 
+📦 {
+  "found": true,
+  "userId": 1,
+  "role": "SUPERUSER"
+}
+[17/4/2026, 4:38:10 pm] [INFO] 🔍 [11:08:10.990] [SsoAuth:Middleware] ✅ User fetched from DB, role assigned 
+📦 {
+  "userId": 1,
+  "role": "SUPERUSER",
+  "status": "A"
+}
+[17/4/2026, 4:38:11 pm] [INFO] 🔍 [11:08:11.009] [SsoAuth:Middleware] ✅ Token valid, proceeding to next middleware... 
+[17/4/2026, 4:38:11 pm] [INFO] 🔍 [11:08:11.012] [SsoAuth:Middleware] ✅ validateToken function completed 
+[17/4/2026, 4:38:11 pm] [INFO] 🔍 [11:08:11.019] [SsoAuth:UserService] User fetch with tenant/branch result 
+📦 {
+  "found": true,
+  "userId": 1,
+  "role": "SUPERUSER"
+}
+[17/4/2026, 4:38:11 pm] [INFO] 🔍 [11:08:11.051] [SsoAuth:Middleware] ✅ User fetched from DB, role assigned 
+📦 {
+  "userId": 1,
+  "role": "SUPERUSER",
+  "status": "A"
+}
+[17/4/2026, 4:38:11 pm] [INFO] 🔍 [11:08:11.110] [SsoAuth:Middleware] ✅ Token valid, proceeding to next middleware... 
+[17/4/2026, 4:38:11 pm] [INFO] 🔍 [11:08:11.116] [SsoAuth:Middleware] ✅ validateToken function completed 
+[17/4/2026, 4:38:11 pm] [INFO] ⚠️ Redis key not found: master:contractor:fetch:1:1
+[17/4/2026, 4:38:11 pm] [INFO] ⚠️ Redis key not found: labour:update:16:1:1
+[17/4/2026, 4:38:11 pm] [INFO] 🔍 [11:08:11.356] [SsoAuth:UserService] User fetch with tenant/branch result 
+📦 {
+  "found": true,
+  "userId": 1,
+  "role": "SUPERUSER"
+}
+[17/4/2026, 4:38:11 pm] [INFO] 🔍 [11:08:11.361] [SsoAuth:Middleware] ✅ User fetched from DB, role assigned 
+📦 {
+  "userId": 1,
+  "role": "SUPERUSER",
+  "status": "A"
+}
+[17/4/2026, 4:38:11 pm] [INFO] 🔍 [11:08:11.367] [SsoAuth:Middleware] ✅ Token valid, proceeding to next middleware... 
+[17/4/2026, 4:38:11 pm] [INFO] 🔍 [11:08:11.409] [SsoAuth:Middleware] ✅ validateToken function completed 
+[17/4/2026, 4:38:11 pm] [INFO] 🔍 [11:08:11.538] [SsoAuth:UserService] User fetch with tenant/branch result 
+📦 {
+  "found": true,
+  "userId": 1,
+  "role": "SUPERUSER"
+}
+[17/4/2026, 4:38:11 pm] [INFO] 🔍 [11:08:11.545] [SsoAuth:Middleware] ✅ User fetched from DB, role assigned 
+📦 {
+  "userId": 1,
+  "role": "SUPERUSER",
+  "status": "A"
+}
+[17/4/2026, 4:38:11 pm] [INFO] 🔍 [11:08:11.550] [SsoAuth:Middleware] ✅ Token valid, proceeding to next middleware... 
+[17/4/2026, 4:38:11 pm] [INFO] 🔍 [11:08:11.555] [SsoAuth:Middleware] ✅ validateToken function completed 
+[17/4/2026, 4:38:11 pm] [INFO] ✅ Redis SET: master:labour:fetch:1:1
+[17/4/2026, 4:38:11 pm] [INFO] ⚠️ Redis key not found: material:stock:1:1
+[17/4/2026, 4:38:11 pm] [INFO] ⚠️ Redis key not found: material:stock:1:1
+[17/4/2026, 4:38:11 pm] [DEBUG] [HTTP] ✅ 📤 Request completed GET /api/master/fetchLabour (user:1) {"status":304,"duration_ms":5283}
+[17/4/2026, 4:38:11 pm] [INFO] ✅ Redis SET: labour:update:16:1:1
+[17/4/2026, 4:38:11 pm] [INFO] ✅ Redis SET: master:contractor:fetch:1:1
+[17/4/2026, 4:38:11 pm] [INFO] ✅ Redis SET: labour:update:16:1:1
+[17/4/2026, 4:38:11 pm] [DEBUG] [HTTP] ✅ 📤 Request completed POST /api/labour/FetchLabourUpdate (user:1) {"status":200,"duration_ms":6016}
+[17/4/2026, 4:38:11 pm] [DEBUG] [HTTP] ✅ 📤 Request completed GET /api/master/fetchContractor (user:1) {"status":304,"duration_ms":5459}
+[17/4/2026, 4:38:11 pm] [DEBUG] [HTTP] ✅ 📤 Request completed POST /api/labour/FetchLabourUpdate (user:1) {"status":200,"duration_ms":5520}
+[17/4/2026, 4:38:11 pm] [INFO] [HTTP] 🌐 📥 Request received GET /api/master/fetchLabour {"ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Sa"}
+[17/4/2026, 4:38:11 pm] [INFO] 🔍 [11:08:11.926] [SsoAuth:Middleware] 🔐 Validating token 
+📦 {
+  "hasSessionCookie": true,
+  "hasSessionHeader": false,
+  "hasAuthHeader": false
+}
+[17/4/2026, 4:38:12 pm] [INFO] 🔍 [11:08:12.049] [SsoAuth:SessionService] Fetching session from Redis 
+📦 {
+  "session_id": "7af95682-a236-4e5f-a22b-4974dee506a0"
+}
+[17/4/2026, 4:38:12 pm] [INFO] [HTTP] 🌐 📥 Request received GET /api/master/fetchContractor {"ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Sa"}
+[17/4/2026, 4:38:12 pm] [INFO] 🔍 [11:08:12.181] [SsoAuth:Middleware] 🔐 Validating token 
+📦 {
+  "hasSessionCookie": true,
+  "hasSessionHeader": false,
+  "hasAuthHeader": false
+}
+[17/4/2026, 4:38:12 pm] [INFO] 🔍 [11:08:12.185] [SsoAuth:SessionService] Fetching session from Redis 
+📦 {
+  "session_id": "7af95682-a236-4e5f-a22b-4974dee506a0"
+}
+[17/4/2026, 4:38:12 pm] [INFO] 🔍 [11:08:12.278] [SsoAuth:SessionService] ✅ Session found 
+📦 {
+  "userId": 1,
+  "role": "SUPERUSER",
+  "tokenPreview": "eyJhbGciOi..."
+}
+[17/4/2026, 4:38:12 pm] [INFO] 🔍 [11:08:12.284] [SsoAuth:SessionService] ✅ Session found 
+📦 {
+  "userId": 1,
+  "role": "SUPERUSER",
+  "tokenPreview": "eyJhbGciOi..."
+}
+[17/4/2026, 4:38:12 pm] [INFO] 🔍 [11:08:12.375] [SsoAuth:Middleware] Verifying JWT signature 
+[17/4/2026, 4:38:12 pm] [INFO] SUPERUSER
+[17/4/2026, 4:38:12 pm] [INFO] 🔍 [11:08:12.417] [SsoAuth:Middleware] Fetching user from database 
+📦 {
+  "keycloakId": "fc201f67-c778-46a9-b14c-a223b9e2094a",
+  "tenantId": 1,
+  "branchId": "1"
+}
+[17/4/2026, 4:38:12 pm] [INFO] 🔍 [11:08:12.514] [SsoAuth:UserService] Fetching user by Keycloak ID with tenant/branch 
+📦 {
+  "keycloakId": "fc201f67-c778-46a9-b14c-a223b9e2094a",
+  "tenantId": 1,
+  "branchId": "1"
+}
+[17/4/2026, 4:38:12 pm] [INFO] 🔍 [11:08:12.518] [SsoAuth:Middleware] Verifying JWT signature 
+[17/4/2026, 4:38:12 pm] [INFO] SUPERUSER
+[17/4/2026, 4:38:12 pm] [INFO] 🔍 [11:08:12.566] [SsoAuth:Middleware] Fetching user from database 
+📦 {
+  "keycloakId": "fc201f67-c778-46a9-b14c-a223b9e2094a",
+  "tenantId": 1,
+  "branchId": "1"
+}
+[17/4/2026, 4:38:12 pm] [INFO] 🔍 [11:08:12.570] [SsoAuth:UserService] Fetching user by Keycloak ID with tenant/branch 
+📦 {
+  "keycloakId": "fc201f67-c778-46a9-b14c-a223b9e2094a",
+  "tenantId": 1,
+  "branchId": "1"
+}
+[17/4/2026, 4:38:12 pm] [INFO] ✅ Redis SET: material:stock:1:1
+[17/4/2026, 4:38:12 pm] [INFO] ✅ Redis SET: material:stock:1:1
+[17/4/2026, 4:38:12 pm] [DEBUG] [HTTP] ✅ 📤 Request completed POST /api/material/Stock_List (user:1) {"status":200,"duration_ms":3455}
+[17/4/2026, 4:38:12 pm] [DEBUG] [HTTP] ✅ 📤 Request completed POST /api/material/Stock_List (user:1) {"status":200,"duration_ms":3382}
+[17/4/2026, 4:38:12 pm] [INFO] 🔍 [11:08:12.821] [SsoAuth:UserService] User fetch with tenant/branch result 
+📦 {
+  "found": true,
+  "userId": 1,
+  "role": "SUPERUSER"
+}
+[17/4/2026, 4:38:12 pm] [INFO] 🔍 [11:08:12.834] [SsoAuth:Middleware] ✅ User fetched from DB, role assigned 
+📦 {
+  "userId": 1,
+  "role": "SUPERUSER",
+  "status": "A"
+}
+[17/4/2026, 4:38:12 pm] [INFO] 🔍 [11:08:12.877] [SsoAuth:Middleware] ✅ Token valid, proceeding to next middleware... 
+[17/4/2026, 4:38:12 pm] [INFO] 🔍 [11:08:12.883] [SsoAuth:Middleware] ✅ validateToken function completed 
+[17/4/2026, 4:38:12 pm] [INFO] 🔍 [11:08:12.933] [SsoAuth:UserService] User fetch with tenant/branch result 
+📦 {
+  "found": true,
+  "userId": 1,
+  "role": "SUPERUSER"
+}
+[17/4/2026, 4:38:12 pm] [INFO] 🔍 [11:08:12.979] [SsoAuth:Middleware] ✅ User fetched from DB, role assigned 
+📦 {
+  "userId": 1,
+  "role": "SUPERUSER",
+  "status": "A"
+}
+[17/4/2026, 4:38:13 pm] [INFO] 🔍 [11:08:13.024] [SsoAuth:Middleware] ✅ Token valid, proceeding to next middleware... 
+[17/4/2026, 4:38:13 pm] [INFO] 🔍 [11:08:13.042] [SsoAuth:Middleware] ✅ validateToken function completed 
+[17/4/2026, 4:38:13 pm] [DEBUG] [HTTP] ✅ 📤 Request completed GET /api/master/fetchLabour (user:1) {"status":304,"duration_ms":1165}
+[17/4/2026, 4:38:13 pm] [DEBUG] [HTTP] ✅ 📤 Request completed GET /api/master/fetchContractor (user:1) {"status":304,"duration_ms":945}
+[17/4/2026, 4:41:14 pm] [INFO] 🛑 Shutting down Redis connection...
+[17/4/2026, 4:41:28 pm] [INFO] 🪵 Logger initialized with URL tracking {"env":"development","log_level":"warn","log_directory":"D:\\BRIGHTON\\DREAM HOUSE\\BACKEND\\logs"}
+[17/4/2026, 4:41:28 pm] [INFO] 🚀 Server running on port 8006 {"env":"development","pid":2648}
+[17/4/2026, 4:41:28 pm] [INFO] ✅ Redis connected
+[17/4/2026, 4:41:28 pm] [INFO] ✅ Redis connected: {"host":"127.0.0.1","port":6379,"db":0}
+[17/4/2026, 4:41:29 pm] [INFO] ✅ Database connected {"threadId":266,"config":{"host":"localhost","database":"dreamhouse"}}
+[17/4/2026, 4:41:30 pm] [INFO] 🚀 Redis is ready to accept commands
+[17/4/2026, 4:41:30 pm] [INFO] ℹ️  [11:11:30.445] [SsoAuth:SSO_AUTH] 🔐 Redis health: healthy 
+[17/4/2026, 4:41:32 pm] [INFO] ✅ MaxMind DB loaded
+[17/4/2026, 4:42:24 pm] [INFO] [HTTP] 🌐 📥 Request received GET /api/user/UserDetails {"ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Sa"}
+[17/4/2026, 4:42:24 pm] [INFO] 🔍 [11:12:24.528] [SsoAuth:Middleware] 🔐 Validating token 
+📦 {
+  "hasSessionCookie": true,
+  "hasSessionHeader": false,
+  "hasAuthHeader": false
+}
+[17/4/2026, 4:42:24 pm] [INFO] 🔍 [11:12:24.754] [SsoAuth:SessionService] Fetching session from Redis 
+📦 {
+  "session_id": "7af95682-a236-4e5f-a22b-4974dee506a0"
+}
+[17/4/2026, 4:42:25 pm] [INFO] 🔍 [11:12:25.187] [SsoAuth:SessionService] ✅ Session found 
+📦 {
+  "userId": 1,
+  "role": "SUPERUSER",
+  "tokenPreview": "eyJhbGciOi..."
+}
+[17/4/2026, 4:42:25 pm] [INFO] 🔍 [11:12:25.205] [SsoAuth:Middleware] Verifying JWT signature 
+[17/4/2026, 4:42:25 pm] [INFO] SUPERUSER
+[17/4/2026, 4:42:25 pm] [INFO] 🔍 [11:12:25.224] [SsoAuth:Middleware] Fetching user from database 
+📦 {
+  "keycloakId": "fc201f67-c778-46a9-b14c-a223b9e2094a",
+  "tenantId": 1,
+  "branchId": "1"
+}
+[17/4/2026, 4:42:25 pm] [INFO] 🔍 [11:12:25.232] [SsoAuth:UserService] Fetching user by Keycloak ID with tenant/branch 
+📦 {
+  "keycloakId": "fc201f67-c778-46a9-b14c-a223b9e2094a",
+  "tenantId": 1,
+  "branchId": "1"
+}
+[17/4/2026, 4:42:26 pm] [INFO] 🔍 [11:12:26.425] [SsoAuth:UserService] User fetch with tenant/branch result 
+📦 {
+  "found": true,
+  "userId": 1,
+  "role": "SUPERUSER"
+}
+[17/4/2026, 4:42:26 pm] [INFO] 🔍 [11:12:26.706] [SsoAuth:Middleware] ✅ User fetched from DB, role assigned 
+📦 {
+  "userId": 1,
+  "role": "SUPERUSER",
+  "status": "A"
+}
+[17/4/2026, 4:42:26 pm] [INFO] 🔍 [11:12:26.815] [SsoAuth:Middleware] ✅ Token valid, proceeding to next middleware... 
+[17/4/2026, 4:42:26 pm] [INFO] 1 1 SUPERUSER
+[17/4/2026, 4:42:27 pm] [INFO] 🔍 [11:12:27.037] [SsoAuth:Middleware] ✅ validateToken function completed 
+[17/4/2026, 4:42:27 pm] [INFO] ⚠️ Redis key not found: user:details:1:1:SUPERUSER
+[17/4/2026, 4:42:27 pm] [INFO] 🔹 SUPERUSER query: SELECT * FROM user 
+                    WHERE tenant_id = ? 
+                      AND role NOT IN ('SUPERUSER', 'DEV') 
+                      AND status = 'A'  -- ✅ Ensure this matches your DB
+                    ORDER BY username [1]
+[17/4/2026, 4:42:27 pm] [INFO] ✅ Returned 3 active users
+[17/4/2026, 4:42:27 pm] [INFO] ✅ Redis SET: user:details:1:1:SUPERUSER
+[17/4/2026, 4:42:27 pm] [DEBUG] [HTTP] ✅ 📤 Request completed GET /api/user/UserDetails (user:1) {"status":304,"duration_ms":2906}
+[17/4/2026, 4:42:27 pm] [INFO] [HTTP] 🌐 📥 Request received GET /api/user/UserDetails {"ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Sa"}
+[17/4/2026, 4:42:27 pm] [INFO] 🔍 [11:12:27.646] [SsoAuth:Middleware] 🔐 Validating token 
+📦 {
+  "hasSessionCookie": true,
+  "hasSessionHeader": false,
+  "hasAuthHeader": false
+}
+[17/4/2026, 4:42:27 pm] [INFO] 🔍 [11:12:27.662] [SsoAuth:SessionService] Fetching session from Redis 
+📦 {
+  "session_id": "7af95682-a236-4e5f-a22b-4974dee506a0"
+}
+[17/4/2026, 4:42:27 pm] [INFO] 🔍 [11:12:27.936] [SsoAuth:SessionService] ✅ Session found 
+📦 {
+  "userId": 1,
+  "role": "SUPERUSER",
+  "tokenPreview": "eyJhbGciOi..."
+}
+[17/4/2026, 4:42:28 pm] [INFO] 🔍 [11:12:28.170] [SsoAuth:Middleware] Verifying JWT signature 
+[17/4/2026, 4:42:28 pm] [INFO] SUPERUSER
+[17/4/2026, 4:42:28 pm] [INFO] 🔍 [11:12:28.244] [SsoAuth:Middleware] Fetching user from database 
+📦 {
+  "keycloakId": "fc201f67-c778-46a9-b14c-a223b9e2094a",
+  "tenantId": 1,
+  "branchId": "1"
+}
+[17/4/2026, 4:42:28 pm] [INFO] 🔍 [11:12:28.475] [SsoAuth:UserService] Fetching user by Keycloak ID with tenant/branch 
+📦 {
+  "keycloakId": "fc201f67-c778-46a9-b14c-a223b9e2094a",
+  "tenantId": 1,
+  "branchId": "1"
+}
+[17/4/2026, 4:42:28 pm] [INFO] 🔍 [11:12:28.849] [SsoAuth:UserService] User fetch with tenant/branch result 
+📦 {
+  "found": true,
+  "userId": 1,
+  "role": "SUPERUSER"
+}
+[17/4/2026, 4:42:28 pm] [INFO] 🔍 [11:12:28.862] [SsoAuth:Middleware] ✅ User fetched from DB, role assigned 
+📦 {
+  "userId": 1,
+  "role": "SUPERUSER",
+  "status": "A"
+}
+[17/4/2026, 4:42:29 pm] [INFO] 🔍 [11:12:29.115] [SsoAuth:Middleware] ✅ Token valid, proceeding to next middleware... 
+[17/4/2026, 4:42:29 pm] [INFO] 1 1 SUPERUSER
+[17/4/2026, 4:42:29 pm] [INFO] 🔍 [11:12:29.123] [SsoAuth:Middleware] ✅ validateToken function completed 
+[17/4/2026, 4:42:29 pm] [DEBUG] [HTTP] ✅ 📤 Request completed GET /api/user/UserDetails (user:1) {"status":304,"duration_ms":1898}
+[17/4/2026, 4:46:07 pm] [INFO] 🪵 Logger initialized {"env":"development","log_level":"info","toggles":{"master":true,"console":true,"file":true,"requests":true},"log_directory":"D:\\BRIGHTON\\DREAM HOUSE\\BACKEND\\logs"}
+[17/4/2026, 4:46:08 pm] [INFO] 🚀 Server running on port 8006 {"env":"development","pid":4648}
+[17/4/2026, 4:46:08 pm] [INFO] ✅ Redis connected
+[17/4/2026, 4:46:08 pm] [INFO] ✅ Redis connected: {"host":"127.0.0.1","port":6379,"db":0}
+[17/4/2026, 4:46:13 pm] [INFO] ✅ Database connected {"threadId":272,"config":{"host":"localhost","database":"dreamhouse"}}
+[17/4/2026, 4:46:13 pm] [INFO] 🚀 Redis is ready to accept commands
+[17/4/2026, 4:46:13 pm] [INFO] ℹ️  [11:16:13.942] [SsoAuth:SSO_AUTH] 🔐 Redis health: healthy 
+[17/4/2026, 4:46:15 pm] [INFO] ✅ MaxMind DB loaded
+[17/4/2026, 4:46:32 pm] [INFO] 🛑 Shutting down Redis connection...
+[17/4/2026, 4:46:47 pm] [INFO] 🪵 Logger initialized {"env":"development","log_level":"info","toggles":{"master":true,"console":true,"file":true,"requests":true},"log_directory":"D:\\BRIGHTON\\DREAM HOUSE\\BACKEND\\logs"}
+[17/4/2026, 4:46:48 pm] [INFO] 🚀 Server running on port 8006 {"env":"development","pid":11896}
+[17/4/2026, 4:46:48 pm] [INFO] ✅ Redis connected
+[17/4/2026, 4:46:48 pm] [INFO] ✅ Redis connected: {"host":"127.0.0.1","port":6379,"db":0}
+[17/4/2026, 4:46:49 pm] [INFO] ✅ Database connected {"threadId":275,"config":{"host":"localhost","database":"dreamhouse"}}
+[17/4/2026, 4:46:49 pm] [INFO] 🚀 Redis is ready to accept commands
+[17/4/2026, 4:46:49 pm] [INFO] ℹ️  [11:16:49.731] [SsoAuth:SSO_AUTH] 🔐 Redis health: healthy 
+[17/4/2026, 4:46:50 pm] [INFO] ✅ MaxMind DB loaded
+[17/4/2026, 4:48:17 pm] [INFO] [HTTP] 🌐 📥 Request received POST /api/order/FetchOrderUpdate {"ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Sa"}
+[17/4/2026, 4:48:17 pm] [INFO] 🔍 [11:18:17.023] [SsoAuth:Middleware] 🔐 Validating token 
+📦 {
+  "hasSessionCookie": true,
+  "hasSessionHeader": false,
+  "hasAuthHeader": false
+}
+[17/4/2026, 4:48:17 pm] [INFO] 🔍 [11:18:17.110] [SsoAuth:SessionService] Fetching session from Redis 
+📦 {
+  "session_id": "7af95682-a236-4e5f-a22b-4974dee506a0"
+}
+[17/4/2026, 4:48:17 pm] [INFO] [HTTP] 🌐 📥 Request received POST /api/order/FetchOrderUpdate {"ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Sa"}
+[17/4/2026, 4:48:17 pm] [INFO] 🔍 [11:18:17.340] [SsoAuth:Middleware] 🔐 Validating token 
+📦 {
+  "hasSessionCookie": true,
+  "hasSessionHeader": false,
+  "hasAuthHeader": false
+}
+[17/4/2026, 4:48:17 pm] [INFO] 🔍 [11:18:17.358] [SsoAuth:SessionService] Fetching session from Redis 
+📦 {
+  "session_id": "7af95682-a236-4e5f-a22b-4974dee506a0"
+}
+[17/4/2026, 4:48:17 pm] [INFO] 🔍 [11:18:17.503] [SsoAuth:SessionService] ✅ Session found 
+📦 {
+  "userId": 1,
+  "role": "SUPERUSER",
+  "tokenPreview": "eyJhbGciOi..."
+}
+[17/4/2026, 4:48:17 pm] [INFO] 🔍 [11:18:17.577] [SsoAuth:SessionService] ✅ Session found 
+📦 {
+  "userId": 1,
+  "role": "SUPERUSER",
+  "tokenPreview": "eyJhbGciOi..."
+}
+[17/4/2026, 4:48:17 pm] [INFO] 🔍 [11:18:17.664] [SsoAuth:Middleware] Verifying JWT signature 
+[17/4/2026, 4:48:17 pm] [INFO] SUPERUSER
+[17/4/2026, 4:48:17 pm] [INFO] 🔍 [11:18:17.778] [SsoAuth:Middleware] Fetching user from database 
+📦 {
+  "keycloakId": "fc201f67-c778-46a9-b14c-a223b9e2094a",
+  "tenantId": 1,
+  "branchId": "1"
+}
+[17/4/2026, 4:48:17 pm] [INFO] 🔍 [11:18:17.786] [SsoAuth:UserService] Fetching user by Keycloak ID with tenant/branch 
+📦 {
+  "keycloakId": "fc201f67-c778-46a9-b14c-a223b9e2094a",
+  "tenantId": 1,
+  "branchId": "1"
+}
+[17/4/2026, 4:48:17 pm] [INFO] 🔍 [11:18:17.853] [SsoAuth:Middleware] Verifying JWT signature 
+[17/4/2026, 4:48:18 pm] [INFO] SUPERUSER
+[17/4/2026, 4:48:18 pm] [INFO] 🔍 [11:18:18.812] [SsoAuth:Middleware] Fetching user from database 
+📦 {
+  "keycloakId": "fc201f67-c778-46a9-b14c-a223b9e2094a",
+  "tenantId": 1,
+  "branchId": "1"
+}
+[17/4/2026, 4:48:18 pm] [INFO] 🔍 [11:18:18.875] [SsoAuth:UserService] Fetching user by Keycloak ID with tenant/branch 
+📦 {
+  "keycloakId": "fc201f67-c778-46a9-b14c-a223b9e2094a",
+  "tenantId": 1,
+  "branchId": "1"
+}
+[17/4/2026, 4:48:18 pm] [INFO] [HTTP] 🌐 📥 Request received GET /api/master/fetchMaterial {"ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Sa"}
+[17/4/2026, 4:48:18 pm] [INFO] 🔍 [11:18:18.948] [SsoAuth:Middleware] 🔐 Validating token 
+📦 {
+  "hasSessionCookie": true,
+  "hasSessionHeader": false,
+  "hasAuthHeader": false
+}
+[17/4/2026, 4:48:18 pm] [INFO] 🔍 [11:18:18.994] [SsoAuth:SessionService] Fetching session from Redis 
+📦 {
+  "session_id": "7af95682-a236-4e5f-a22b-4974dee506a0"
+}
+[17/4/2026, 4:48:19 pm] [INFO] 🔍 [11:18:19.158] [SsoAuth:SessionService] ✅ Session found 
+📦 {
+  "userId": 1,
+  "role": "SUPERUSER",
+  "tokenPreview": "eyJhbGciOi..."
+}
+[17/4/2026, 4:48:19 pm] [INFO] 🔍 [11:18:19.178] [SsoAuth:Middleware] Verifying JWT signature 
+[17/4/2026, 4:48:19 pm] [INFO] SUPERUSER
+[17/4/2026, 4:48:19 pm] [INFO] 🔍 [11:18:19.275] [SsoAuth:Middleware] Fetching user from database 
+📦 {
+  "keycloakId": "fc201f67-c778-46a9-b14c-a223b9e2094a",
+  "tenantId": 1,
+  "branchId": "1"
+}
+[17/4/2026, 4:48:19 pm] [INFO] 🔍 [11:18:19.282] [SsoAuth:UserService] Fetching user by Keycloak ID with tenant/branch 
+📦 {
+  "keycloakId": "fc201f67-c778-46a9-b14c-a223b9e2094a",
+  "tenantId": 1,
+  "branchId": "1"
+}
+[17/4/2026, 4:48:19 pm] [INFO] 🔍 [11:18:19.391] [SsoAuth:UserService] User fetch with tenant/branch result 
+📦 {
+  "found": true,
+  "userId": 1,
+  "role": "SUPERUSER"
+}
+[17/4/2026, 4:48:19 pm] [INFO] 🔍 [11:18:19.395] [SsoAuth:Middleware] ✅ User fetched from DB, role assigned 
+📦 {
+  "userId": 1,
+  "role": "SUPERUSER",
+  "status": "A"
+}
+[17/4/2026, 4:48:19 pm] [INFO] 🔍 [11:18:19.473] [SsoAuth:Middleware] ✅ Token valid, proceeding to next middleware... 
+[17/4/2026, 4:48:19 pm] [INFO] 🔍 [11:18:19.476] [SsoAuth:Middleware] ✅ validateToken function completed 
+[17/4/2026, 4:48:19 pm] [INFO] ⚠️ Redis key not found: order:update:2026-04-17:2026-04-17:16:1:1
+[17/4/2026, 4:48:19 pm] [INFO] 🔍 [11:18:19.541] [SsoAuth:UserService] User fetch with tenant/branch result 
+📦 {
+  "found": true,
+  "userId": 1,
+  "role": "SUPERUSER"
+}
+[17/4/2026, 4:48:19 pm] [INFO] 🔍 [11:18:19.545] [SsoAuth:Middleware] ✅ User fetched from DB, role assigned 
+📦 {
+  "userId": 1,
+  "role": "SUPERUSER",
+  "status": "A"
+}
+[17/4/2026, 4:48:19 pm] [INFO] 🔍 [11:18:19.641] [SsoAuth:Middleware] ✅ Token valid, proceeding to next middleware... 
+[17/4/2026, 4:48:19 pm] [INFO] 🔍 [11:18:19.702] [SsoAuth:Middleware] ✅ validateToken function completed 
+[17/4/2026, 4:48:19 pm] [INFO] 🔍 [11:18:19.874] [SsoAuth:UserService] User fetch with tenant/branch result 
+📦 {
+  "found": true,
+  "userId": 1,
+  "role": "SUPERUSER"
+}
+[17/4/2026, 4:48:20 pm] [INFO] 🔍 [11:18:20.270] [SsoAuth:Middleware] ✅ User fetched from DB, role assigned 
+📦 {
+  "userId": 1,
+  "role": "SUPERUSER",
+  "status": "A"
+}
+[17/4/2026, 4:48:20 pm] [INFO] 🔍 [11:18:20.471] [SsoAuth:Middleware] ✅ Token valid, proceeding to next middleware... 
+[17/4/2026, 4:48:20 pm] [INFO] 🔍 [11:18:20.475] [SsoAuth:Middleware] ✅ validateToken function completed 
+[17/4/2026, 4:48:20 pm] [INFO] ⚠️ Redis key not found: master:material:fetch:1:1
+[17/4/2026, 4:48:20 pm] [INFO] ✅ Redis SET: order:update:2026-04-17:2026-04-17:16:1:1
+[17/4/2026, 4:48:20 pm] [INFO] ✅ Redis SET: master:material:fetch:1:1
+[17/4/2026, 4:48:20 pm] [INFO] [HTTP] 🌐 📥 Request received GET /api/master/fetchMaterial {"ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Sa"}
+[17/4/2026, 4:48:20 pm] [INFO] 🔍 [11:18:20.738] [SsoAuth:Middleware] 🔐 Validating token 
+📦 {
+  "hasSessionCookie": true,
+  "hasSessionHeader": false,
+  "hasAuthHeader": false
+}
+[17/4/2026, 4:48:20 pm] [INFO] 🔍 [11:18:20.746] [SsoAuth:SessionService] Fetching session from Redis 
+📦 {
+  "session_id": "7af95682-a236-4e5f-a22b-4974dee506a0"
+}
+[17/4/2026, 4:48:20 pm] [INFO] 🔍 [11:18:20.749] [SsoAuth:SessionService] ✅ Session found 
+📦 {
+  "userId": 1,
+  "role": "SUPERUSER",
+  "tokenPreview": "eyJhbGciOi..."
+}
+[17/4/2026, 4:48:20 pm] [INFO] 🔍 [11:18:20.818] [SsoAuth:Middleware] Verifying JWT signature 
+[17/4/2026, 4:48:20 pm] [INFO] SUPERUSER
+[17/4/2026, 4:48:20 pm] [INFO] 🔍 [11:18:20.827] [SsoAuth:Middleware] Fetching user from database 
+📦 {
+  "keycloakId": "fc201f67-c778-46a9-b14c-a223b9e2094a",
+  "tenantId": 1,
+  "branchId": "1"
+}
+[17/4/2026, 4:48:20 pm] [INFO] 🔍 [11:18:20.894] [SsoAuth:UserService] Fetching user by Keycloak ID with tenant/branch 
+📦 {
+  "keycloakId": "fc201f67-c778-46a9-b14c-a223b9e2094a",
+  "tenantId": 1,
+  "branchId": "1"
+}
+[17/4/2026, 4:48:20 pm] [INFO] 🔍 [11:18:20.949] [SsoAuth:UserService] User fetch with tenant/branch result 
+📦 {
+  "found": true,
+  "userId": 1,
+  "role": "SUPERUSER"
+}
+[17/4/2026, 4:48:21 pm] [INFO] 🔍 [11:18:21.052] [SsoAuth:Middleware] ✅ User fetched from DB, role assigned 
+📦 {
+  "userId": 1,
+  "role": "SUPERUSER",
+  "status": "A"
+}
+[17/4/2026, 4:48:21 pm] [INFO] 🔍 [11:18:21.106] [SsoAuth:Middleware] ✅ Token valid, proceeding to next middleware... 
+[17/4/2026, 4:48:21 pm] [INFO] 🔍 [11:18:21.112] [SsoAuth:Middleware] ✅ validateToken function completed 
+[17/4/2026, 4:49:11 pm] [INFO] 🛑 Shutting down Redis connection...
+[17/4/2026, 4:51:17 pm] [INFO] 🪵 Logger initialized {"env":"development","log_level":"info","toggles":{"master":true,"console":false,"file":true,"requests":true},"log_directory":"D:\\BRIGHTON\\DREAM HOUSE\\BACKEND\\logs"}
+[17/4/2026, 4:51:17 pm] [INFO] 🚀 Server running on port 8006 {"env":"development","pid":5820}
+[17/4/2026, 4:51:17 pm] [INFO] ✅ Redis connected
+[17/4/2026, 4:51:17 pm] [INFO] ✅ Redis connected: {"host":"127.0.0.1","port":6379,"db":0}
+[17/4/2026, 4:51:17 pm] [INFO] ✅ Database connected {"threadId":285,"config":{"host":"localhost","database":"dreamhouse"}}
+[17/4/2026, 4:51:17 pm] [INFO] 🚀 Redis is ready to accept commands
+[17/4/2026, 4:51:17 pm] [INFO] ℹ️  [11:21:17.409] [SsoAuth:SSO_AUTH] 🔐 Redis health: healthy 
+[17/4/2026, 4:51:17 pm] [INFO] ✅ MaxMind DB loaded
+[17/4/2026, 4:51:30 pm] [INFO] [HTTP] 🌐 📥 Request received POST /api/material/Stock_List {"ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Sa"}
+[17/4/2026, 4:51:30 pm] [INFO] 🔍 [11:21:30.473] [SsoAuth:Middleware] 🔐 Validating token 
+📦 {
+  "hasSessionCookie": true,
+  "hasSessionHeader": false,
+  "hasAuthHeader": false
+}
+[17/4/2026, 4:51:30 pm] [INFO] 🔍 [11:21:30.474] [SsoAuth:SessionService] Fetching session from Redis 
+📦 {
+  "session_id": "7af95682-a236-4e5f-a22b-4974dee506a0"
+}
+[17/4/2026, 4:51:30 pm] [INFO] [HTTP] 🌐 📥 Request received POST /api/material/Stock_List {"ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Sa"}
+[17/4/2026, 4:51:30 pm] [INFO] 🔍 [11:21:30.485] [SsoAuth:Middleware] 🔐 Validating token 
+📦 {
+  "hasSessionCookie": true,
+  "hasSessionHeader": false,
+  "hasAuthHeader": false
+}
+[17/4/2026, 4:51:30 pm] [INFO] 🔍 [11:21:30.486] [SsoAuth:SessionService] Fetching session from Redis 
+📦 {
+  "session_id": "7af95682-a236-4e5f-a22b-4974dee506a0"
+}
+[17/4/2026, 4:51:30 pm] [INFO] 🔍 [11:21:30.528] [SsoAuth:SessionService] ✅ Session found 
+📦 {
+  "userId": 1,
+  "role": "SUPERUSER",
+  "tokenPreview": "eyJhbGciOi..."
+}
+[17/4/2026, 4:51:30 pm] [INFO] 🔍 [11:21:30.528] [SsoAuth:SessionService] ✅ Session found 
+📦 {
+  "userId": 1,
+  "role": "SUPERUSER",
+  "tokenPreview": "eyJhbGciOi..."
+}
+[17/4/2026, 4:51:30 pm] [INFO] 🔍 [11:21:30.529] [SsoAuth:Middleware] Verifying JWT signature 
+[17/4/2026, 4:51:30 pm] [INFO] SUPERUSER
+[17/4/2026, 4:51:30 pm] [INFO] 🔍 [11:21:30.541] [SsoAuth:Middleware] Fetching user from database 
+📦 {
+  "keycloakId": "fc201f67-c778-46a9-b14c-a223b9e2094a",
+  "tenantId": 1,
+  "branchId": "1"
+}
+[17/4/2026, 4:51:30 pm] [INFO] 🔍 [11:21:30.544] [SsoAuth:UserService] Fetching user by Keycloak ID with tenant/branch 
+📦 {
+  "keycloakId": "fc201f67-c778-46a9-b14c-a223b9e2094a",
+  "tenantId": 1,
+  "branchId": "1"
+}
+[17/4/2026, 4:51:30 pm] [INFO] 🔍 [11:21:30.546] [SsoAuth:Middleware] Verifying JWT signature 
+[17/4/2026, 4:51:30 pm] [INFO] SUPERUSER
+[17/4/2026, 4:51:30 pm] [INFO] 🔍 [11:21:30.549] [SsoAuth:Middleware] Fetching user from database 
+📦 {
+  "keycloakId": "fc201f67-c778-46a9-b14c-a223b9e2094a",
+  "tenantId": 1,
+  "branchId": "1"
+}
+[17/4/2026, 4:51:30 pm] [INFO] 🔍 [11:21:30.550] [SsoAuth:UserService] Fetching user by Keycloak ID with tenant/branch 
+📦 {
+  "keycloakId": "fc201f67-c778-46a9-b14c-a223b9e2094a",
+  "tenantId": 1,
+  "branchId": "1"
+}
+[17/4/2026, 4:51:30 pm] [INFO] 🔍 [11:21:30.566] [SsoAuth:UserService] User fetch with tenant/branch result 
+📦 {
+  "found": true,
+  "userId": 1,
+  "role": "SUPERUSER"
+}
+[17/4/2026, 4:51:30 pm] [INFO] 🔍 [11:21:30.567] [SsoAuth:Middleware] ✅ User fetched from DB, role assigned 
+📦 {
+  "userId": 1,
+  "role": "SUPERUSER",
+  "status": "A"
+}
+[17/4/2026, 4:51:30 pm] [INFO] 🔍 [11:21:30.568] [SsoAuth:Middleware] ✅ Token valid, proceeding to next middleware... 
+[17/4/2026, 4:51:30 pm] [INFO] 🔍 [11:21:30.571] [SsoAuth:Middleware] ✅ validateToken function completed 
+[17/4/2026, 4:51:30 pm] [INFO] ⚠️ Redis key not found: material:stock:1:1
+[17/4/2026, 4:51:30 pm] [INFO] 🔍 [11:21:30.597] [SsoAuth:UserService] User fetch with tenant/branch result 
+📦 {
+  "found": true,
+  "userId": 1,
+  "role": "SUPERUSER"
+}
+[17/4/2026, 4:51:30 pm] [INFO] 🔍 [11:21:30.598] [SsoAuth:Middleware] ✅ User fetched from DB, role assigned 
+📦 {
+  "userId": 1,
+  "role": "SUPERUSER",
+  "status": "A"
+}
+[17/4/2026, 4:51:30 pm] [INFO] 🔍 [11:21:30.599] [SsoAuth:Middleware] ✅ Token valid, proceeding to next middleware... 
+[17/4/2026, 4:51:30 pm] [INFO] 🔍 [11:21:30.600] [SsoAuth:Middleware] ✅ validateToken function completed 
+[17/4/2026, 4:51:30 pm] [INFO] ⚠️ Redis key not found: material:stock:1:1
+[17/4/2026, 4:51:30 pm] [INFO] ✅ Redis SET: material:stock:1:1
+[17/4/2026, 4:51:30 pm] [INFO] ✅ Redis SET: material:stock:1:1
+[17/4/2026, 4:51:44 pm] [INFO] [HTTP] 🌐 📥 Request received GET /api/user/UserDetails {"ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Sa"}
+[17/4/2026, 4:51:44 pm] [INFO] 🔍 [11:21:44.769] [SsoAuth:Middleware] 🔐 Validating token 
+📦 {
+  "hasSessionCookie": true,
+  "hasSessionHeader": false,
+  "hasAuthHeader": false
+}
+[17/4/2026, 4:51:44 pm] [INFO] 🔍 [11:21:44.770] [SsoAuth:SessionService] Fetching session from Redis 
+📦 {
+  "session_id": "7af95682-a236-4e5f-a22b-4974dee506a0"
+}
+[17/4/2026, 4:51:44 pm] [INFO] 🔍 [11:21:44.773] [SsoAuth:SessionService] ✅ Session found 
+📦 {
+  "userId": 1,
+  "role": "SUPERUSER",
+  "tokenPreview": "eyJhbGciOi..."
+}
+[17/4/2026, 4:51:44 pm] [INFO] 🔍 [11:21:44.774] [SsoAuth:Middleware] Verifying JWT signature 
+[17/4/2026, 4:51:44 pm] [INFO] SUPERUSER
+[17/4/2026, 4:51:44 pm] [INFO] 🔍 [11:21:44.776] [SsoAuth:Middleware] Fetching user from database 
+📦 {
+  "keycloakId": "fc201f67-c778-46a9-b14c-a223b9e2094a",
+  "tenantId": 1,
+  "branchId": "1"
+}
+[17/4/2026, 4:51:44 pm] [INFO] 🔍 [11:21:44.777] [SsoAuth:UserService] Fetching user by Keycloak ID with tenant/branch 
+📦 {
+  "keycloakId": "fc201f67-c778-46a9-b14c-a223b9e2094a",
+  "tenantId": 1,
+  "branchId": "1"
+}
+[17/4/2026, 4:51:44 pm] [INFO] 🔍 [11:21:44.786] [SsoAuth:UserService] User fetch with tenant/branch result 
+📦 {
+  "found": true,
+  "userId": 1,
+  "role": "SUPERUSER"
+}
+[17/4/2026, 4:51:44 pm] [INFO] 🔍 [11:21:44.788] [SsoAuth:Middleware] ✅ User fetched from DB, role assigned 
+📦 {
+  "userId": 1,
+  "role": "SUPERUSER",
+  "status": "A"
+}
+[17/4/2026, 4:51:44 pm] [INFO] 🔍 [11:21:44.789] [SsoAuth:Middleware] ✅ Token valid, proceeding to next middleware... 
+[17/4/2026, 4:51:44 pm] [INFO] 1 1 SUPERUSER
+[17/4/2026, 4:51:44 pm] [INFO] 🔍 [11:21:44.791] [SsoAuth:Middleware] ✅ validateToken function completed 
+[17/4/2026, 4:51:44 pm] [INFO] ⚠️ Redis key not found: user:details:1:1:SUPERUSER
+[17/4/2026, 4:51:44 pm] [INFO] 🔹 SUPERUSER query: SELECT * FROM user 
+                    WHERE tenant_id = ? 
+                      AND role NOT IN ('SUPERUSER', 'DEV') 
+                      AND status = 'A'  -- ✅ Ensure this matches your DB
+                    ORDER BY username [1]
+[17/4/2026, 4:51:45 pm] [INFO] ✅ Returned 3 active users
+[17/4/2026, 4:51:45 pm] [INFO] ✅ Redis SET: user:details:1:1:SUPERUSER
+[17/4/2026, 4:51:45 pm] [INFO] [HTTP] 🌐 📥 Request received GET /api/user/UserDetails {"ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Sa"}
+[17/4/2026, 4:51:45 pm] [INFO] 🔍 [11:21:45.241] [SsoAuth:Middleware] 🔐 Validating token 
+📦 {
+  "hasSessionCookie": true,
+  "hasSessionHeader": false,
+  "hasAuthHeader": false
+}
+[17/4/2026, 4:51:45 pm] [INFO] 🔍 [11:21:45.242] [SsoAuth:SessionService] Fetching session from Redis 
+📦 {
+  "session_id": "7af95682-a236-4e5f-a22b-4974dee506a0"
+}
+[17/4/2026, 4:51:45 pm] [INFO] 🔍 [11:21:45.245] [SsoAuth:SessionService] ✅ Session found 
+📦 {
+  "userId": 1,
+  "role": "SUPERUSER",
+  "tokenPreview": "eyJhbGciOi..."
+}
+[17/4/2026, 4:51:45 pm] [INFO] 🔍 [11:21:45.246] [SsoAuth:Middleware] Verifying JWT signature 
+[17/4/2026, 4:51:45 pm] [INFO] SUPERUSER
+[17/4/2026, 4:51:45 pm] [INFO] 🔍 [11:21:45.248] [SsoAuth:Middleware] Fetching user from database 
+📦 {
+  "keycloakId": "fc201f67-c778-46a9-b14c-a223b9e2094a",
+  "tenantId": 1,
+  "branchId": "1"
+}
+[17/4/2026, 4:51:45 pm] [INFO] 🔍 [11:21:45.249] [SsoAuth:UserService] Fetching user by Keycloak ID with tenant/branch 
+📦 {
+  "keycloakId": "fc201f67-c778-46a9-b14c-a223b9e2094a",
+  "tenantId": 1,
+  "branchId": "1"
+}
+[17/4/2026, 4:51:45 pm] [INFO] 🔍 [11:21:45.263] [SsoAuth:UserService] User fetch with tenant/branch result 
+📦 {
+  "found": true,
+  "userId": 1,
+  "role": "SUPERUSER"
+}
+[17/4/2026, 4:51:45 pm] [INFO] 🔍 [11:21:45.264] [SsoAuth:Middleware] ✅ User fetched from DB, role assigned 
+📦 {
+  "userId": 1,
+  "role": "SUPERUSER",
+  "status": "A"
+}
+[17/4/2026, 4:51:45 pm] [INFO] 🔍 [11:21:45.265] [SsoAuth:Middleware] ✅ Token valid, proceeding to next middleware... 
+[17/4/2026, 4:51:45 pm] [INFO] 1 1 SUPERUSER
+[17/4/2026, 4:51:45 pm] [INFO] 🔍 [11:21:45.267] [SsoAuth:Middleware] ✅ validateToken function completed 
+[17/4/2026, 5:28:47 pm] [INFO] [HTTP] 🌐 📥 Request received GET /api/user/UserDetails {"ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Sa"}
+[17/4/2026, 5:28:47 pm] [INFO] 🔍 [11:58:47.302] [SsoAuth:Middleware] 🔐 Validating token 
+📦 {
+  "hasSessionCookie": true,
+  "hasSessionHeader": false,
+  "hasAuthHeader": false
+}
+[17/4/2026, 5:28:47 pm] [INFO] 🔍 [11:58:47.302] [SsoAuth:SessionService] Fetching session from Redis 
+📦 {
+  "session_id": "7af95682-a236-4e5f-a22b-4974dee506a0"
+}
+[17/4/2026, 5:28:47 pm] [INFO] 🔍 [11:58:47.305] [SsoAuth:Middleware] 🔐 Validating token 
+📦 {
+  "hasSessionCookie": true,
+  "hasSessionHeader": true,
+  "hasAuthHeader": false
+}
+[17/4/2026, 5:28:47 pm] [INFO] 🔍 [11:58:47.306] [SsoAuth:SessionService] Fetching session from Redis 
+📦 {
+  "session_id": "7af95682-a236-4e5f-a22b-4974dee506a0"
+}
+[17/4/2026, 5:28:47 pm] [INFO] 🔍 [11:58:47.308] [SsoAuth:SessionService] ✅ Session found 
+📦 {
+  "userId": 1,
+  "role": "SUPERUSER",
+  "tokenPreview": "eyJhbGciOi..."
+}
+[17/4/2026, 5:28:47 pm] [INFO] 🔍 [11:58:47.309] [SsoAuth:SessionService] ✅ Session found 
+📦 {
+  "userId": 1,
+  "role": "SUPERUSER",
+  "tokenPreview": "eyJhbGciOi..."
+}
+[17/4/2026, 5:28:47 pm] [INFO] 🔍 [11:58:47.310] [SsoAuth:Middleware] Verifying JWT signature 
+[17/4/2026, 5:28:47 pm] [INFO] 🔍 [11:58:47.312] [SsoAuth:Middleware] JWT verify error: TokenExpiredError 
+[17/4/2026, 5:28:47 pm] [INFO] 🔍 [11:58:47.313] [SsoAuth:Middleware] Token expired, attempting refresh 
+[17/4/2026, 5:28:47 pm] [INFO] 🔍 [11:58:47.314] [SsoAuth:Middleware] 🔄 Attempting token refresh 
+[17/4/2026, 5:28:47 pm] [INFO] 🔍 [11:58:47.315] [SsoAuth:SessionService] Fetching session from Redis 
+📦 {
+  "session_id": "7af95682-a236-4e5f-a22b-4974dee506a0"
+}
+[17/4/2026, 5:28:47 pm] [INFO] 🔍 [11:58:47.316] [SsoAuth:Middleware] Verifying JWT signature 
+[17/4/2026, 5:28:47 pm] [INFO] 🔍 [11:58:47.318] [SsoAuth:Middleware] JWT verify error: TokenExpiredError 
+[17/4/2026, 5:28:47 pm] [INFO] 🔍 [11:58:47.319] [SsoAuth:Middleware] Token expired, attempting refresh 
+[17/4/2026, 5:28:47 pm] [INFO] 🔍 [11:58:47.320] [SsoAuth:Middleware] 🔄 Attempting token refresh 
+[17/4/2026, 5:28:47 pm] [INFO] 🔍 [11:58:47.321] [SsoAuth:SessionService] Fetching session from Redis 
+📦 {
+  "session_id": "7af95682-a236-4e5f-a22b-4974dee506a0"
+}
+[17/4/2026, 5:28:47 pm] [INFO] 🔍 [11:58:47.323] [SsoAuth:SessionService] ✅ Session found 
+📦 {
+  "userId": 1,
+  "role": "SUPERUSER",
+  "tokenPreview": "eyJhbGciOi..."
+}
+[17/4/2026, 5:28:47 pm] [INFO] 🔍 [11:58:47.324] [SsoAuth:SessionService] ✅ Session found 
+📦 {
+  "userId": 1,
+  "role": "SUPERUSER",
+  "tokenPreview": "eyJhbGciOi..."
+}
+[17/4/2026, 5:28:47 pm] [INFO] 🔍 [11:58:47.324] [SsoAuth:Middleware] Calling Keycloak refresh 
+[17/4/2026, 5:28:47 pm] [INFO] 🔍 [11:58:47.325] [SsoAuth:Keycloak] Refreshing token 
+📦 {
+  "realm": "DreamHouse",
+  "clientId": "mydreamhouse.in",
+  "refreshToken": "eyJhbGciOiJIUzUxMiIs..."
+}
+[17/4/2026, 5:28:47 pm] [INFO] 🔍 [11:58:47.368] [SsoAuth:Middleware] Calling Keycloak refresh 
+[17/4/2026, 5:28:47 pm] [INFO] 🔍 [11:58:47.368] [SsoAuth:Keycloak] Refreshing token 
+📦 {
+  "realm": "DreamHouse",
+  "clientId": "mydreamhouse.in",
+  "refreshToken": "eyJhbGciOiJIUzUxMiIs..."
+}
+[17/4/2026, 5:28:48 pm] [INFO] 🔍 [11:58:48.427] [SsoAuth:Keycloak] ✅ Token refreshed 
+📦 {
+  "newExpiresIn": 3600,
+  "hasNewRefreshToken": true
+}
+[17/4/2026, 5:28:48 pm] [INFO] 🔍 [11:58:48.432] [SsoAuth:Middleware] ✅ Token refreshed successfully 
+[17/4/2026, 5:28:48 pm] [INFO] undefined undefined undefined
+[17/4/2026, 5:28:48 pm] [INFO] ⚠️ Redis key not found: user:details:undefined:undefined:undefined
+[17/4/2026, 5:28:48 pm] [ERROR] ❌ userDetails Error: Access denied: Insufficient privileges {}
+[17/4/2026, 5:28:48 pm] [ERROR] ❌ Error: {"statusCode":403,"isOperational":true,"errors":null}
+[17/4/2026, 5:28:48 pm] [WARN] [HTTP] ⚠️ 📤 Request completed GET /api/user/UserDetails (user:1) {"status":403,"duration_ms":1154}
+[17/4/2026, 5:28:48 pm] [INFO] [HTTP] 🌐 📥 Request received GET /api/user/UserDetails {"ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Sa"}
+[17/4/2026, 5:28:48 pm] [INFO] 🔍 [11:58:48.647] [SsoAuth:Middleware] 🔐 Validating token 
+📦 {
+  "hasSessionCookie": true,
+  "hasSessionHeader": false,
+  "hasAuthHeader": false
+}
+[17/4/2026, 5:28:48 pm] [INFO] 🔍 [11:58:48.648] [SsoAuth:SessionService] Fetching session from Redis 
+📦 {
+  "session_id": "7af95682-a236-4e5f-a22b-4974dee506a0"
+}
+[17/4/2026, 5:28:48 pm] [INFO] 🔍 [11:58:48.650] [SsoAuth:SessionService] ✅ Session found 
+📦 {
+  "userId": 1,
+  "role": "SUPERUSER",
+  "tokenPreview": "eyJhbGciOi..."
+}
+[17/4/2026, 5:28:48 pm] [INFO] 🔍 [11:58:48.651] [SsoAuth:Middleware] Verifying JWT signature 
+[17/4/2026, 5:28:48 pm] [INFO] SUPERUSER
+[17/4/2026, 5:28:48 pm] [INFO] 🔍 [11:58:48.654] [SsoAuth:Middleware] Fetching user from database 
+📦 {
+  "keycloakId": "fc201f67-c778-46a9-b14c-a223b9e2094a",
+  "tenantId": 1,
+  "branchId": "1"
+}
+[17/4/2026, 5:28:48 pm] [INFO] 🔍 [11:58:48.656] [SsoAuth:UserService] Fetching user by Keycloak ID with tenant/branch 
+📦 {
+  "keycloakId": "fc201f67-c778-46a9-b14c-a223b9e2094a",
+  "tenantId": 1,
+  "branchId": "1"
+}
+[17/4/2026, 5:28:48 pm] [INFO] 🔍 [11:58:48.710] [SsoAuth:UserService] User fetch with tenant/branch result 
+📦 {
+  "found": true,
+  "userId": 1,
+  "role": "SUPERUSER"
+}
+[17/4/2026, 5:28:48 pm] [INFO] 🔍 [11:58:48.711] [SsoAuth:Middleware] ✅ User fetched from DB, role assigned 
+📦 {
+  "userId": 1,
+  "role": "SUPERUSER",
+  "status": "A"
+}
+[17/4/2026, 5:28:48 pm] [INFO] 🔍 [11:58:48.713] [SsoAuth:Middleware] ✅ Token valid, proceeding to next middleware... 
+[17/4/2026, 5:28:48 pm] [INFO] 1 1 SUPERUSER
+[17/4/2026, 5:28:48 pm] [INFO] 🔍 [11:58:48.715] [SsoAuth:Middleware] ✅ validateToken function completed 
+[17/4/2026, 5:28:48 pm] [INFO] ⚠️ Redis key not found: user:details:1:1:SUPERUSER
+[17/4/2026, 5:28:48 pm] [INFO] 🔹 SUPERUSER query: SELECT * FROM user 
+                    WHERE tenant_id = ? 
+                      AND role NOT IN ('SUPERUSER', 'DEV') 
+                      AND status = 'A'  -- ✅ Ensure this matches your DB
+                    ORDER BY username [1]
+[17/4/2026, 5:28:48 pm] [INFO] ✅ Returned 3 active users
+[17/4/2026, 5:28:48 pm] [INFO] ✅ Redis SET: user:details:1:1:SUPERUSER
+[17/4/2026, 5:28:49 pm] [INFO] 🔍 [11:58:49.206] [SsoAuth:Keycloak] ✅ Token refreshed 
+📦 {
+  "newExpiresIn": 3600,
+  "hasNewRefreshToken": true
+}
+[17/4/2026, 5:28:49 pm] [INFO] 🔍 [11:58:49.209] [SsoAuth:Middleware] ✅ Token refreshed successfully 
+[17/4/2026, 5:28:49 pm] [INFO] 🔍 [11:58:49.213] [SsoAuth:Route] 📍 GET /me called 
+📦 {
+  "sessionId": "7af95682-a236-4e5f-a22b-4974dee506a0",
+  "userId": 1
+}
+[17/4/2026, 5:28:49 pm] [INFO] userdata {"user_id":1,"username":"DHADMIN","role":"SUPERUSER","tenant_id":1,"tenant_name":"Dream House Pvt Ltd","tenant_domain":"dreamhouse.com","tenant_app_name":"Dream House ERP","tenant_app_logo":"uploads/logos/dreamhouse.png","tenant_app_font":"Poppins","tenant_app_themes":0,"is_active":1,"created_at":"2026-02-17T14:38:37.000Z","created_by":null,"updated_at":"2026-03-30T16:07:20.000Z","updated_by":null,"head_branch":"1"}
+[17/4/2026, 5:28:49 pm] [INFO] 🔍 [11:58:49.235] [SsoAuth:Route] User found 
+📦 {
+  "userId": 1,
+  "role": "SUPERUSER"
+}
+[17/4/2026, 5:28:49 pm] [INFO] 🔍 [11:58:49.238] [SsoAuth:Route] Branches loaded 
+📦 {
+  "count": 1
+}
+[17/4/2026, 5:28:49 pm] [INFO] 🔍 [11:58:49.239] [SsoAuth:Route] ✅ Sending user data 
+[17/4/2026, 5:31:26 pm] [INFO] [HTTP] 🌐 📥 Request received GET /api/user/UserDetails {"ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Sa"}
+[17/4/2026, 5:31:26 pm] [INFO] 🔍 [12:01:26.366] [SsoAuth:Middleware] 🔐 Validating token 
+📦 {
+  "hasSessionCookie": true,
+  "hasSessionHeader": false,
+  "hasAuthHeader": false
+}
+[17/4/2026, 5:31:26 pm] [INFO] 🔍 [12:01:26.367] [SsoAuth:SessionService] Fetching session from Redis 
+📦 {
+  "session_id": "7af95682-a236-4e5f-a22b-4974dee506a0"
+}
+[17/4/2026, 5:31:26 pm] [INFO] 🔍 [12:01:26.369] [SsoAuth:SessionService] ✅ Session found 
+📦 {
+  "userId": 1,
+  "role": "SUPERUSER",
+  "tokenPreview": "eyJhbGciOi..."
+}
+[17/4/2026, 5:31:26 pm] [INFO] 🔍 [12:01:26.370] [SsoAuth:Middleware] Verifying JWT signature 
+[17/4/2026, 5:31:26 pm] [INFO] SUPERUSER
+[17/4/2026, 5:31:26 pm] [INFO] 🔍 [12:01:26.373] [SsoAuth:Middleware] Fetching user from database 
+📦 {
+  "keycloakId": "fc201f67-c778-46a9-b14c-a223b9e2094a",
+  "tenantId": 1,
+  "branchId": "1"
+}
+[17/4/2026, 5:31:26 pm] [INFO] 🔍 [12:01:26.373] [SsoAuth:UserService] Fetching user by Keycloak ID with tenant/branch 
+📦 {
+  "keycloakId": "fc201f67-c778-46a9-b14c-a223b9e2094a",
+  "tenantId": 1,
+  "branchId": "1"
+}
+[17/4/2026, 5:31:26 pm] [INFO] 🔍 [12:01:26.383] [SsoAuth:UserService] User fetch with tenant/branch result 
+📦 {
+  "found": true,
+  "userId": 1,
+  "role": "SUPERUSER"
+}
+[17/4/2026, 5:31:26 pm] [INFO] 🔍 [12:01:26.384] [SsoAuth:Middleware] ✅ User fetched from DB, role assigned 
+📦 {
+  "userId": 1,
+  "role": "SUPERUSER",
+  "status": "A"
+}
+[17/4/2026, 5:31:26 pm] [INFO] 🔍 [12:01:26.385] [SsoAuth:Middleware] ✅ Token valid, proceeding to next middleware... 
+[17/4/2026, 5:31:26 pm] [INFO] 1 1 SUPERUSER
+[17/4/2026, 5:31:26 pm] [INFO] 🔍 [12:01:26.387] [SsoAuth:Middleware] ✅ validateToken function completed 
+[17/4/2026, 5:31:26 pm] [INFO] ⚠️ Redis key not found: user:details:1:1:SUPERUSER
+[17/4/2026, 5:31:26 pm] [INFO] 🔹 SUPERUSER query: SELECT * FROM user 
+                    WHERE tenant_id = ? 
+                      AND role NOT IN ('SUPERUSER', 'DEV') 
+                      AND status = 'A'  -- ✅ Ensure this matches your DB
+                    ORDER BY username [1]
+[17/4/2026, 5:31:26 pm] [INFO] ✅ Returned 3 active users
+[17/4/2026, 5:31:26 pm] [INFO] ✅ Redis SET: user:details:1:1:SUPERUSER
+[17/4/2026, 5:31:26 pm] [INFO] [HTTP] 🌐 📥 Request received GET /api/user/UserDetails {"ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Sa"}
+[17/4/2026, 5:31:26 pm] [INFO] 🔍 [12:01:26.464] [SsoAuth:Middleware] 🔐 Validating token 
+📦 {
+  "hasSessionCookie": true,
+  "hasSessionHeader": false,
+  "hasAuthHeader": false
+}
+[17/4/2026, 5:31:26 pm] [INFO] 🔍 [12:01:26.465] [SsoAuth:SessionService] Fetching session from Redis 
+📦 {
+  "session_id": "7af95682-a236-4e5f-a22b-4974dee506a0"
+}
+[17/4/2026, 5:31:26 pm] [INFO] 🔍 [12:01:26.467] [SsoAuth:SessionService] ✅ Session found 
+📦 {
+  "userId": 1,
+  "role": "SUPERUSER",
+  "tokenPreview": "eyJhbGciOi..."
+}
+[17/4/2026, 5:31:26 pm] [INFO] 🔍 [12:01:26.468] [SsoAuth:Middleware] Verifying JWT signature 
+[17/4/2026, 5:31:26 pm] [INFO] SUPERUSER
+[17/4/2026, 5:31:26 pm] [INFO] 🔍 [12:01:26.471] [SsoAuth:Middleware] Fetching user from database 
+📦 {
+  "keycloakId": "fc201f67-c778-46a9-b14c-a223b9e2094a",
+  "tenantId": 1,
+  "branchId": "1"
+}
+[17/4/2026, 5:31:26 pm] [INFO] 🔍 [12:01:26.472] [SsoAuth:UserService] Fetching user by Keycloak ID with tenant/branch 
+📦 {
+  "keycloakId": "fc201f67-c778-46a9-b14c-a223b9e2094a",
+  "tenantId": 1,
+  "branchId": "1"
+}
+[17/4/2026, 5:31:26 pm] [INFO] 🔍 [12:01:26.535] [SsoAuth:UserService] User fetch with tenant/branch result 
+📦 {
+  "found": true,
+  "userId": 1,
+  "role": "SUPERUSER"
+}
+[17/4/2026, 5:31:26 pm] [INFO] 🔍 [12:01:26.537] [SsoAuth:Middleware] ✅ User fetched from DB, role assigned 
+📦 {
+  "userId": 1,
+  "role": "SUPERUSER",
+  "status": "A"
+}
+[17/4/2026, 5:31:26 pm] [INFO] 🔍 [12:01:26.537] [SsoAuth:Middleware] ✅ Token valid, proceeding to next middleware... 
+[17/4/2026, 5:31:26 pm] [INFO] 1 1 SUPERUSER
+[17/4/2026, 5:31:26 pm] [INFO] 🔍 [12:01:26.539] [SsoAuth:Middleware] ✅ validateToken function completed 
+[17/4/2026, 5:33:31 pm] [INFO] [HTTP] 🌐 📥 Request received GET /api/user/FullUserList {"ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Sa"}
+[17/4/2026, 5:33:31 pm] [INFO] 🔍 [12:03:31.868] [SsoAuth:Middleware] 🔐 Validating token 
+📦 {
+  "hasSessionCookie": true,
+  "hasSessionHeader": false,
+  "hasAuthHeader": false
+}
+[17/4/2026, 5:33:31 pm] [INFO] 🔍 [12:03:31.868] [SsoAuth:SessionService] Fetching session from Redis 
+📦 {
+  "session_id": "7af95682-a236-4e5f-a22b-4974dee506a0"
+}
+[17/4/2026, 5:33:31 pm] [INFO] 🔍 [12:03:31.870] [SsoAuth:SessionService] ✅ Session found 
+📦 {
+  "userId": 1,
+  "role": "SUPERUSER",
+  "tokenPreview": "eyJhbGciOi..."
+}
+[17/4/2026, 5:33:31 pm] [INFO] 🔍 [12:03:31.871] [SsoAuth:Middleware] Verifying JWT signature 
+[17/4/2026, 5:33:31 pm] [INFO] SUPERUSER
+[17/4/2026, 5:33:31 pm] [INFO] 🔍 [12:03:31.874] [SsoAuth:Middleware] Fetching user from database 
+📦 {
+  "keycloakId": "fc201f67-c778-46a9-b14c-a223b9e2094a",
+  "tenantId": 1,
+  "branchId": "1"
+}
+[17/4/2026, 5:33:31 pm] [INFO] 🔍 [12:03:31.876] [SsoAuth:UserService] Fetching user by Keycloak ID with tenant/branch 
+📦 {
+  "keycloakId": "fc201f67-c778-46a9-b14c-a223b9e2094a",
+  "tenantId": 1,
+  "branchId": "1"
+}
+[17/4/2026, 5:33:31 pm] [INFO] 🔍 [12:03:31.878] [SsoAuth:UserService] User fetch with tenant/branch result 
+📦 {
+  "found": true,
+  "userId": 1,
+  "role": "SUPERUSER"
+}
+[17/4/2026, 5:33:31 pm] [INFO] 🔍 [12:03:31.879] [SsoAuth:Middleware] ✅ User fetched from DB, role assigned 
+📦 {
+  "userId": 1,
+  "role": "SUPERUSER",
+  "status": "A"
+}
+[17/4/2026, 5:33:31 pm] [INFO] 🔍 [12:03:31.880] [SsoAuth:Middleware] ✅ Token valid, proceeding to next middleware... 
+[17/4/2026, 5:33:31 pm] [ERROR] ❌ Error: {}
+[17/4/2026, 5:33:31 pm] [ERROR] 💥 Unknown Error: {}
+[17/4/2026, 5:33:31 pm] [INFO] 🔍 [12:03:31.885] [SsoAuth:Middleware] ✅ validateToken function completed 
+[17/4/2026, 5:33:31 pm] [WARN] [HTTP] ⚠️ 📤 Request completed GET /api/user/FullUserList (user:1) {"status":500,"duration_ms":20}
+[17/4/2026, 5:33:31 pm] [INFO] [HTTP] 🌐 📥 Request received GET /api/user/FullUserList {"ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Sa"}
+[17/4/2026, 5:33:31 pm] [INFO] 🔍 [12:03:31.891] [SsoAuth:Middleware] 🔐 Validating token 
+📦 {
+  "hasSessionCookie": true,
+  "hasSessionHeader": false,
+  "hasAuthHeader": false
+}
+[17/4/2026, 5:33:31 pm] [INFO] 🔍 [12:03:31.892] [SsoAuth:SessionService] Fetching session from Redis 
+📦 {
+  "session_id": "7af95682-a236-4e5f-a22b-4974dee506a0"
+}
+[17/4/2026, 5:33:31 pm] [INFO] 🔍 [12:03:31.893] [SsoAuth:SessionService] ✅ Session found 
+📦 {
+  "userId": 1,
+  "role": "SUPERUSER",
+  "tokenPreview": "eyJhbGciOi..."
+}
+[17/4/2026, 5:33:31 pm] [INFO] 🔍 [12:03:31.894] [SsoAuth:Middleware] Verifying JWT signature 
+[17/4/2026, 5:33:31 pm] [INFO] SUPERUSER
+[17/4/2026, 5:33:31 pm] [INFO] 🔍 [12:03:31.896] [SsoAuth:Middleware] Fetching user from database 
+📦 {
+  "keycloakId": "fc201f67-c778-46a9-b14c-a223b9e2094a",
+  "tenantId": 1,
+  "branchId": "1"
+}
+[17/4/2026, 5:33:31 pm] [INFO] 🔍 [12:03:31.897] [SsoAuth:UserService] Fetching user by Keycloak ID with tenant/branch 
+📦 {
+  "keycloakId": "fc201f67-c778-46a9-b14c-a223b9e2094a",
+  "tenantId": 1,
+  "branchId": "1"
+}
+[17/4/2026, 5:33:31 pm] [INFO] 🔍 [12:03:31.899] [SsoAuth:UserService] User fetch with tenant/branch result 
+📦 {
+  "found": true,
+  "userId": 1,
+  "role": "SUPERUSER"
+}
+[17/4/2026, 5:33:31 pm] [INFO] 🔍 [12:03:31.900] [SsoAuth:Middleware] ✅ User fetched from DB, role assigned 
+📦 {
+  "userId": 1,
+  "role": "SUPERUSER",
+  "status": "A"
+}
+[17/4/2026, 5:33:31 pm] [INFO] 🔍 [12:03:31.901] [SsoAuth:Middleware] ✅ Token valid, proceeding to next middleware... 
+[17/4/2026, 5:33:31 pm] [ERROR] ❌ Error: {}
+[17/4/2026, 5:33:31 pm] [ERROR] 💥 Unknown Error: {}
+[17/4/2026, 5:33:31 pm] [INFO] 🔍 [12:03:31.905] [SsoAuth:Middleware] ✅ validateToken function completed 
+[17/4/2026, 5:33:31 pm] [WARN] [HTTP] ⚠️ 📤 Request completed GET /api/user/FullUserList (user:1) {"status":500,"duration_ms":17}
+[17/4/2026, 5:34:44 pm] [INFO] 🛑 Shutting down Redis connection...
+[17/4/2026, 5:34:44 pm] [INFO] ✅ Redis connection closed gracefully

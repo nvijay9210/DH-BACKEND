@@ -4,6 +4,7 @@ const bcrypt = require("bcrypt");
 const { createUserBranch } = require("./UserBranchService");
 const { AppError } = require("../Logics/AppError");
 const { validateData } = require("../Middleware/ValidationMiddleware");
+const { createUser, deleteKeycloakUser, getUserId } = require("../Keycloak/User");
 
 /* ===============================
    Helper: Get User Branch Mapping
@@ -21,7 +22,6 @@ const getUserBranchById = async (tenant_id, branch_id, user_id) => {
    User Login
 =================================*/
 exports.login = async (Details) => {
-  // Example: Validate login data in service
   const validation = validateData('login', Details);
   if (!validation.isValid) {
     throw new AppError('Login validation failed', 400, validation.errors);
@@ -34,52 +34,41 @@ exports.login = async (Details) => {
 
     conn = await pool.getConnection();
 
+    // 🔥 JOIN userbranch to fetch branch_id dynamically
     const users = await conn.query(
       `SELECT u.*,
           t.is_active AS tenant_active,
+          ub.branch_id AS userbranch_branch_id,
           b.is_active AS branch_active
        FROM user u
        JOIN tenant t ON u.tenant_id = t.tenant_id
-       LEFT JOIN branch b ON u.branch_id = b.branch_id
-       WHERE u.User_name = ?`,
-      [validation.value.username] // Use validated data
+       LEFT JOIN userbranch ub ON u.user_id = ub.user_id AND u.tenant_id = ub.tenant_id
+       LEFT JOIN branch b ON ub.user_id = b.user_id
+       WHERE u.username = ?
+       ORDER BY ub.created_at DESC  -- Get most recent branch mapping first
+       LIMIT 1`,
+      [validation.value.username]
     );
 
     if (users.length === 0) throw new AppError("Invalid credentials", 401);
 
     const user = users[0];
 
-    // ✅ Password check (handle case if password is null/empty)
-    // if (user.Password) {
-    //   const isMatch = await bcrypt.compare(Details.Password, user.Password);
-    //   if (!isMatch) throw new AppError("Invalid credentials", 401);
-    // }
+    // ✅ Use branch_id from userbranch (fallback to user.branch_id if needed)
+    const finalBranchId = user.userbranch_branch_id || user.branch_id || null;
 
-    if (user.Status !== "Active")
+    if (user.status !== "A")
       throw new AppError("User account is deactivated", 403);
     if (user.tenant_active !== 1) throw new AppError("Tenant is inactive", 403);
-    if (user.branch_id && user.branch_active !== 1)
+    if (finalBranchId && user.branch_active !== 1)
       throw new AppError("Branch is inactive", 403);
-
-    // ✅ Fix: Use 'user' object, not undefined 'decoded'
-    const branchUser = await getUserBranchById(
-      user.tenant_id,
-      user.branch_id,
-      user.User_id
-    );
-
-    let assignedBranch = null;
-    if (branchUser && branchUser.length > 0) {
-      // ✅ Fix: Correct length check & array access
-      assignedBranch = branchUser[branchUser.length - 1];
-    }
 
     const token = jwt.sign(
       {
-        user_id: user.User_id,
-        username: user.User_name,
+        user_id: user.user_id,
+        username: user.username,
         tenant_id: user.tenant_id,
-        branch_id: assignedBranch?.branch_id || user.branch_id || null,
+        branch_id: finalBranchId,
         role: user.role,
       },
       jwt_key,
@@ -91,10 +80,10 @@ exports.login = async (Details) => {
       success: true,
       token,
       user: {
-        user_id: user.User_id,
-        username: user.User_name,
+        user_id: user.user_id,
+        username: user.username,
         tenant_id: user.tenant_id,
-        branch_id: assignedBranch?.branch_id || user.branch_id,
+        branch_id: finalBranchId,
         role: user.role,
       },
     };
@@ -110,56 +99,140 @@ exports.login = async (Details) => {
    User Logout
 =================================*/
 exports.logout = async () => {
-  return { Status: "Success", msg: "Logout successful" };
+  return { status: "Success", msg: "Logout successful" };
 };
 
-/* ===============================
-   User Details (Admin Only)
-=================================*/
-exports.userDetails = async (tenant_id, branch_id, currentUserRights) => {
-  console.log("Fetching user details for tenant:", tenant_id, "branch:", branch_id, "role:", currentUserRights);
+// Helper query with userbranch JOIN
+// const getUserQueryWithBranch = () => `
+//   SELECT 
+//     u.user_id, 
+//     u.username, 
+//     u.role, 
+//     u.status, 
+//     u.created_by, 
+//     u.created_at, 
+//     u.tenant_id
+    
+//   FROM user u
+//   LEFT JOIN userbranch ub ON u.user_id = ub.user_id AND u.tenant_id = ub.tenant_id
+// `;
+
+exports.userDetails = async (tenant_id, branch_id, currentUserrole) => {
   let conn;
+
   try {
     conn = await pool.getConnection();
 
-    if (!["Admin", "Super User"].includes(currentUserRights)) {
-      throw new AppError("Access denied: Admin privileges required", 403);
+    // 🔐 Role validation
+    if (!["ADMIN", "SUPERUSER", "DEV"].includes(currentUserrole)) {
+      throw new AppError("Access denied: Insufficient privileges", 403);
     }
 
-    const rows = await conn.query(
-      `SELECT User_id, User_name, role, Status, Created_by, Created_date, tenant_id, branch_id 
-       FROM user 
-       WHERE tenant_id = ? AND branch_id = ?
-       ORDER BY User_name`,
-      [tenant_id, branch_id]
-    );
-    return rows;
+    // ✅ Base query with branch mapping
+    const baseQuery = `
+      SELECT 
+        u.*, 
+        GROUP_CONCAT(ub.branch_id) AS branch_ids
+      FROM user u
+      LEFT JOIN userbranch ub ON u.user_id = ub.user_id
+    `;
+
+    let query = "";
+    let params = [];
+
+    // 🧠 Role-based filtering
+    if (currentUserrole === "SUPERUSER") {
+      query = `
+        ${baseQuery}
+        WHERE u.tenant_id = ?
+          AND u.role NOT IN ('SUPERUSER', 'DEV')
+          AND u.status = 'A'
+        GROUP BY u.user_id
+        ORDER BY u.username
+      `;
+      params = [tenant_id];
+
+      console.log("🔹 SUPERUSER query");
+    } 
+    else if (currentUserrole === "DEV") {
+      query = `
+        ${baseQuery}
+        WHERE u.tenant_id = ?
+          AND u.role <> 'DEV'
+          AND u.status = 'A'
+        GROUP BY u.user_id
+        ORDER BY u.username
+      `;
+      params = [tenant_id];
+
+      console.log("🔹 DEV query");
+    } 
+    else {
+      // ADMIN / Branch scoped
+      query = `
+        ${baseQuery}
+        WHERE u.tenant_id = ?
+          AND (ub.branch_id = ? OR u.user_id = ?)
+          AND u.status = 'A'
+        GROUP BY u.user_id
+        ORDER BY u.username
+      `;
+      params = [tenant_id, branch_id, branch_id];
+
+      console.log("🔹 ADMIN / Branch-scoped query");
+    }
+
+    // 🚀 Execute query
+    const rows = await conn.query(query, params);
+
+    // 🔄 Convert branch_ids string → array
+    const formattedRows = rows.map((row) => ({
+      ...row,
+      branch_ids: row.branch_ids
+        ? row.branch_ids.split(",").map((id) => Number(id))
+        : [],
+    }));
+
+    console.log(`✅ Returned ${formattedRows.length} active users`);
+
+    return formattedRows;
+
   } catch (err) {
-    console.error("❌ userDetails Error:", err);
+    console.error("❌ userDetails Error:", err.message, {
+      tenant_id,
+      branch_id,
+      currentUserrole,
+    });
     throw err;
   } finally {
     if (conn) conn.release();
   }
 };
 
-/* ===============================
-   User List (Admin Only)
-=================================*/
-exports.userList = async (tenant_id, branch_id, currentUserRights) => {
+exports.userList = async (tenant_id, branch_id, currentUserrole) => {
   let conn;
   try {
     conn = await pool.getConnection();
 
-    if (!["Admin", "Super User"].includes(currentUserRights)) {
-      throw new AppError("Access denied: Admin privileges required", 403);
+    if (!["ADMIN", "SUPERUSER"].includes(currentUserrole)) {
+      throw new AppError("Access denied: ADMIN privileges required", 403);
     }
 
     const rows = await conn.query(
-      `SELECT User_id, User_name, role, Status, Created_date 
-       FROM user 
-       WHERE tenant_id = ? AND branch_id = ? 
-       ORDER BY User_name`,
-      [tenant_id, branch_id]
+      `SELECT 
+         u.user_id, 
+         u.username, 
+         u.role, 
+         u.status, 
+         u.created_at
+         
+       FROM user u
+       LEFT JOIN userbranch ub ON u.user_id = ub.user_id AND u.tenant_id = ub.tenant_id
+       WHERE u.tenant_id = ? 
+         AND (ub.branch_id = ? OR u.branch_id = ?)
+       GROUP BY u.user_id
+       ORDER BY u.username`,
+      [tenant_id, branch_id, branch_id]
     );
     return rows;
   } catch (err) {
@@ -170,16 +243,26 @@ exports.userList = async (tenant_id, branch_id, currentUserRights) => {
   }
 };
 
+exports.getAllUserBranches = async (conn, tenant_id, user_id) => {
+  const rows = await conn.query(
+    `SELECT branch_id 
+     FROM userbranch 
+     WHERE tenant_id = ? AND user_id = ? AND is_active != 0`,
+    [tenant_id, user_id]
+  );
+  return rows.map(r => r.branch_id);
+};
+
 /* ===============================
    Full User List (Dropdown)
 =================================*/
 exports.fullUserList = async (tenant_id, branch_id) => {
   try {
     const rows = await pool.query(
-      `SELECT User_name 
+      `SELECT username 
        FROM user 
-       WHERE tenant_id = ? AND branch_id = ? AND Status = 'Active'
-       ORDER BY User_name`,
+       WHERE tenant_id = ? AND branch_id = ? AND status = 'A'
+       ORDER BY username`,
       [tenant_id, branch_id]
     );
     return rows;
@@ -196,20 +279,20 @@ exports.userAccess = async (
   Details,
   tenant_id,
   branch_id,
-  currentUserRights
+  currentUserrole
 ) => {
   let conn;
   try {
     conn = await pool.getConnection();
 
-    if (!["Admin", "Super User"].includes(currentUserRights)) {
-      throw new AppError("Access denied: Admin privileges required", 403);
+    if (!["ADMIN", "SUPERUSER"].includes(currentUserrole)) {
+      throw new AppError("Access denied: ADMIN privileges required", 403);
     }
 
     const result = await conn.query(
       `UPDATE user 
-       SET role = ?, Status = ?, Updated_date = NOW()
-       WHERE User_name = ? AND tenant_id = ?`,
+       SET role = ?, status = ?, updated_at = NOW()
+       WHERE username = ? AND tenant_id = ?`,
       [Details.role, Details.status, Details.username, tenant_id]
     );
 
@@ -225,34 +308,34 @@ exports.userAccess = async (
 };
 
 /* ===============================
-   Admin Password Change
+   ADMIN password_hash Change
 =================================*/
 exports.adminPassChange = async (
   Details,
   tenant_id,
   branch_id,
-  currentUserRights
+  currentUserrole
 ) => {
   let conn;
   try {
     conn = await pool.getConnection();
 
-    if (!["Admin", "Super User"].includes(currentUserRights)) {
-      throw new AppError("Access denied: Admin privileges required", 403);
+    if (!["ADMIN", "SUPERUSER"].includes(currentUserrole)) {
+      throw new AppError("Access denied: ADMIN privileges required", 403);
     }
 
-    const hashedPassword = await bcrypt.hash(Details.Password, 10);
+    const hashedPassword = await bcrypt.hash(Details.password_hash, 10);
 
     const result = await conn.query(
       `UPDATE user 
-       SET Password = ?, Updated_date = NOW()
-       WHERE User_name = ? AND tenant_id = ?`,
+       SET password_hash = ?, updated_at = NOW()
+       WHERE username = ? AND tenant_id = ?`,
       [hashedPassword, Details.username, tenant_id]
     );
 
     if (result.affectedRows === 0) throw new AppError("User not found", 404);
 
-    return { success: true, message: "Password changed successfully" };
+    return { success: true, message: "password_hash changed successfully" };
   } catch (err) {
     console.error("❌ adminPassChange Error:", err);
     throw err;
@@ -270,35 +353,35 @@ exports.newUser = async (Details, tenant_id, branch_id, createdBy) => {
     conn = await pool.getConnection();
 
     // 🔐 Validate password exists
-    if (!Details?.Password || typeof Details.Password !== 'string') {
-      throw new AppError("Password is required", 400);
+    if (!Details?.password_hash || typeof Details.password_hash !== 'string') {
+      throw new AppError("password_hash is required", 400);
     }
 
     // 🔐 Optional: Enforce password strength
-    if (Details.Password.length < 8) {
-      throw new AppError("Password must be at least 8 characters", 400);
+    if (Details.password_hash.length < 8) {
+      throw new AppError("password_hash must be at least 8 characters", 400);
     }
 
     // Check for existing username (case-insensitive)
     const existing = await conn.query(
-      `SELECT User_id FROM user WHERE LOWER(User_name) = LOWER(?) AND tenant_id = ?`,
+      `SELECT user_id FROM user WHERE LOWER(username) = LOWER(?) AND tenant_id = ?`,
       [Details.username, tenant_id]
     );
 
     if (existing.length > 0) throw new AppError("Username already exists", 409);
 
     // ✅ Now safe to hash
-    const hashedPassword = await bcrypt.hash(Details.Password.trim(), 10);
+    const hashedPassword = await bcrypt.hash(Details.password_hash.trim(), 10);
 
     const result = await conn.query(
       `INSERT INTO user 
-       (User_name, Password, role, Status, Created_by, Created_date, tenant_id, branch_id) 
+       (username, password_hash, role, status, created_by, created_at, tenant_id, branch_id) 
        VALUES (?, ?, ?, ?, ?, NOW(), ?, ?)`,
       [
-        Details.User_name?.toUpperCase(),
+        Details.username?.toUpperCase(),
         hashedPassword,
         Details.role,
-        Details.Status,
+        Details.status,
         createdBy,
         tenant_id,
         branch_id,
@@ -323,6 +406,8 @@ exports.newUser = async (Details, tenant_id, branch_id, createdBy) => {
 exports.addUser = async (details,tenant_id,branch_id,created_by, req) => {
   let conn,keycloakdata;
 
+  console.log('addUser called with:', { details, tenant_id, branch_id, created_by });
+
   try {
     conn = await pool.getConnection();
 
@@ -330,29 +415,29 @@ exports.addUser = async (details,tenant_id,branch_id,created_by, req) => {
     await conn.beginTransaction();
 
      keycloakdata = await createUser(req);
-    // console.log('keycloakdata:',keycloakdata)
+    console.log('keycloakdata:',keycloakdata)
     details.keycloak_id = keycloakdata.id;
 
     const safe = (val) => (val === undefined ? null : val);
 
     const sql = `
       INSERT INTO user 
-      (tenant_id, first_name, last_name, email, phone_number, role, status,
-       password_hash, created_by, keycloak_id, username, user_photo, id_card_photo, 
-       aadhaar_number, address, district, city, state, country, pincode)
-      VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+      (tenant_id, first_name, last_name,dateofbirth, email, phone_number, role, status,
+       password_hash, keycloak_id, username, user_photo, id_card_photo, 
+       aadhaar_number, address, district, city, state, country, pincode,created_by)
+      VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
     `;
 
     const values = [
       safe(tenant_id),
       safe(details.first_name?.toUpperCase()),
       safe(details.last_name?.toUpperCase()),
+      safe(details.dateofbirth),
       safe(details.email),
       safe(details.phone_number),
       safe(details.role),
       safe(details.status) || "A",
       safe(details.password_hash),
-      safe(details.created_by),
       safe(details.keycloak_id),
       safe(details.username),
       safe(details.user_photo),
@@ -364,6 +449,7 @@ exports.addUser = async (details,tenant_id,branch_id,created_by, req) => {
       safe(details.state),
       safe(details.country),
       safe(details.pincode),
+      safe(created_by)
     ];
 
     if (values.length !== 20) {
@@ -407,11 +493,199 @@ exports.addUser = async (details,tenant_id,branch_id,created_by, req) => {
       const token = req.cookies.access_token;
       const realm = req.cookies.realm;
 
-      await deleteUser(token, realm, keycloakdata.id);
+      await deleteKeycloakUser(token, realm, keycloakdata.id);
     }
 
     console.error("Transaction failed, rolled back:", err.message);
     throw err;
+  } finally {
+    if (conn) conn.release();
+  }
+};
+
+/**
+ * ============================================================================
+ * UPDATE USER - With Keycloak Password Sync & Transaction Safety
+ * ============================================================================
+ */
+exports.updateUser = async (details, tenant_id, branch_id, updated_by, req) => {
+  let conn;
+  let passwordChanged = false;
+
+  console.log('updateUser called with:', { 
+    user_id: details.user_id, 
+    tenant_id, 
+    updated_fields: Object.keys(details),
+    password_provided: !!details.password_hash 
+  });
+
+  try {
+    conn = await pool.getConnection();
+    await conn.beginTransaction();
+
+    // 🔍 Step 1: Fetch existing user
+    const existingUser = await conn.query(
+      `SELECT user_id, keycloak_id, username, password_hash, user_photo, id_card_photo, status 
+       FROM user 
+       WHERE user_id = ? AND tenant_id = ?`,
+      [details.user_id, tenant_id]
+    );
+
+    if (!existingUser || existingUser.length === 0) {
+      throw new AppError("User not found or unauthorized", 404);
+    }
+
+    const currentUser = existingUser[0];
+    const safe = (val) => (val === undefined || val === "" ? null : val);
+
+    // 🔐 Step 2: Password check
+    if (details.password_hash && details.password_hash !== currentUser.password_hash) {
+      passwordChanged = true;
+      console.log('🔐 Password change detected for user:', currentUser.username);
+    }
+
+    // 🗂️ Step 3: File handling
+    const user_photo = safe(details.user_photo) || currentUser.user_photo;
+    const id_card_photo = safe(details.id_card_photo) || currentUser.id_card_photo;
+
+    // 📝 Step 4: Dynamic update
+    const updateFields = [];
+    const updateValues = [];
+
+    const fieldMap = {
+      first_name: (v) => safe(v?.toUpperCase()),
+      last_name: (v) => safe(v?.toUpperCase()),
+      dateofbirth: (v) => safe(v),
+      email: (v) => safe(v),
+      phone_number: (v) => safe(v),
+      role: (v) => safe(v),
+      status: (v) => safe(v) || "A",
+      password_hash: (v) => safe(v),
+      username: (v) => safe(v),
+      user_photo: () => user_photo,
+      id_card_photo: () => id_card_photo,
+      aadhaar_number: (v) => safe(v),
+      address: (v) => safe(v),
+      district: (v) => safe(v),
+      city: (v) => safe(v),
+      state: (v) => safe(v),
+      country: (v) => safe(v),
+      pincode: (v) => safe(v),
+      updated_by: () => safe(updated_by),
+    };
+
+    for (const [key, transformer] of Object.entries(fieldMap)) {
+      if (details[key] !== undefined) {
+        if (key === 'password_hash' && !passwordChanged) continue;
+
+        updateFields.push(`${key} = ?`);
+        updateValues.push(transformer(details[key]));
+      }
+    }
+
+    updateFields.push(`updated_at = NOW()`);
+
+    if (updateFields.length === 0) {
+      await conn.rollback();
+      return { affectedRows: 0, message: "No changes detected" };
+    }
+
+    updateValues.push(details.user_id, tenant_id);
+
+    const updateSql = `
+      UPDATE user 
+      SET ${updateFields.join(', ')} 
+      WHERE user_id = ? AND tenant_id = ?
+    `;
+
+    const updateResult = await conn.query(updateSql, updateValues);
+
+    if (updateResult.affectedRows === 0) {
+      throw new AppError("Failed to update user", 500);
+    }
+
+    // =====================================================
+    // 🔥 FIXED STEP 5 (Branch Mapping - MariaDB Safe)
+    // =====================================================
+    let branchIds = details.branch_ids;
+
+    if (typeof branchIds === "string") {
+      branchIds = branchIds
+        .split(",")
+        .map((id) => Number(id.trim()))
+        .filter((id) => !isNaN(id));
+    }
+
+    // Remove duplicates
+    if (Array.isArray(branchIds)) {
+      branchIds = [...new Set(branchIds)];
+    }
+
+    // Delete old
+    await conn.query(
+      `DELETE FROM userbranch WHERE user_id = ?`,
+      [details.user_id]
+    );
+
+    // Insert new (FIXED)
+    if (Array.isArray(branchIds) && branchIds.length > 0) {
+      const values = [];
+      const placeholders = [];
+
+      for (const bid of branchIds) {
+        placeholders.push("(?, ?, ?, ?)");
+        values.push(
+          tenant_id,
+          Number(bid),
+          details.user_id,
+          safe(updated_by)
+        );
+      }
+
+      const insertSql = `
+        INSERT INTO userbranch (tenant_id, branch_id, user_id, created_by)
+        VALUES ${placeholders.join(", ")}
+      `;
+
+      await conn.query(insertSql, values);
+    }
+
+    // 🔐 Step 6: Keycloak sync
+    if (passwordChanged && currentUser.keycloak_id) {
+      try {
+        const adminToken = req.cookies?.access_token || req.headers?.authorization?.replace('Bearer ', '');
+        const realm = req.cookies?.realm || process.env.KEYCLOAK_REALM;
+
+        if (!adminToken || !realm) {
+          throw new Error("Missing Keycloak credentials");
+        }
+
+        await setUserPassword(adminToken, realm, currentUser.username, details.password_hash);
+
+      } catch (kcErr) {
+        throw new AppError(`Keycloak sync failed: ${kcErr.message}`, 502);
+      }
+    }
+
+    // ✅ Commit
+    await conn.commit();
+
+    return {
+      affectedRows: updateResult.affectedRows,
+      user_id: details.user_id,
+      message: "User updated successfully",
+      password_changed: passwordChanged,
+    };
+
+  } catch (err) {
+    if (conn) {
+      await conn.rollback();
+      console.log('🔄 Transaction rolled back:', err.message);
+    }
+
+    console.error("❌ updateUser failed:", err.message);
+    throw err;
+
   } finally {
     if (conn) conn.release();
   }
@@ -424,32 +698,37 @@ exports.deleteUser = async (
   targetUserId,
   tenant_id,
   branch_id,
-  currentUserRights
+  currentUserrole,
+  token,realm
 ) => {
   let conn;
   try {
     conn = await pool.getConnection();
 
-    if (!["Admin", "Super User"].includes(currentUserRights)) {
-      throw new AppError("Access denied: Admin privileges required", 403);
+    if (!["ADMIN", "SUPERUSER"].includes(currentUserrole)) {
+      throw new AppError("Access denied: ADMIN privileges required", 403);
     }
 
     // Verify user exists in tenant
     const existing = await conn.query(
-      `SELECT User_id FROM user WHERE User_id = ? AND tenant_id = ?`,
+      `SELECT user_id,username FROM user WHERE user_id = ? AND tenant_id = ?`,
       [targetUserId, tenant_id]
     );
 
     if (existing.length === 0) throw new AppError("User not found", 404);
 
+    const keycloakdata=await getUserId(token, realm, existing[0].username);
+
     const result = await conn.query(
-      `UPDATE user SET Status = 'Inactive', Updated_date = NOW() 
-       WHERE User_id = ? AND tenant_id = ?`,
+      `UPDATE user SET status = 'IA', updated_at = NOW() 
+       WHERE user_id = ? AND tenant_id = ?`,
       [targetUserId, tenant_id]
     );
 
     if (result.affectedRows === 0)
       throw new AppError("Failed to deactivate user", 500);
+
+    await deleteKeycloakUser(token, realm, keycloakdata.id)
 
     return { success: true, message: "User deactivated successfully" };
   } catch (err) {
@@ -478,8 +757,8 @@ exports.switchBranch = async (tenant_id, branch_id, currentUser) => {
       throw new AppError("Invalid or inactive branch", 400);
     }
 
-    if (currentUser.role !== "Super User") {
-      throw new AppError("Access denied: Super User privileges required", 403);
+    if (currentUser.role !== "SUPERUSER") {
+      throw new AppError("Access denied: SUPERUSER privileges required", 403);
     }
 
     const newToken = jwt.sign(
@@ -497,6 +776,28 @@ exports.switchBranch = async (tenant_id, branch_id, currentUser) => {
     return newToken;
   } catch (err) {
     console.error("❌ switchBranch Error:", err);
+    throw err;
+  } finally {
+    if (conn) conn.release();
+  }
+};
+
+exports.updateUserPassword = async (password, username) => {
+  let conn;
+  try {
+    conn = await pool.getConnection();
+
+    const result = await conn.query(
+      `UPDATE user SET 
+          password_hash=?
+       WHERE username=?`,
+      [password, username],
+    );
+
+    if (result.affectedRows === 0) throw new AppError("Query error", 500);
+
+    return result.affectedRows;
+  } catch (err) {
     throw err;
   } finally {
     if (conn) conn.release();

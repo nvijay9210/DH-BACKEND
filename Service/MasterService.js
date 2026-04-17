@@ -7,7 +7,7 @@ const { AppError } = require("../Logics/AppError");
 exports.labourList = async (Labour_Details,tenant_id, branch_id) => {
   try {
     await pool.query(
-      "INSERT INTO mas_labour_Details (Labour_Details, Created_by, created_datetime, Salary, Ratio,tenant_id, branch_id) VALUES (?, ?, ?, ?, ?,?, ?)",
+      "INSERT INTO mas_labour_Details (Labour_Details, created_by, created_datetime, Salary, Ratio,tenant_id, branch_id) VALUES (?, ?, ?, ?, ?,?, ?)",
       [
         Labour_Details.Labour_Details,
         Labour_Details.username,
@@ -36,7 +36,7 @@ exports.labourList = async (Labour_Details,tenant_id, branch_id) => {
 exports.materialList = async (Material,tenant_id, branch_id) => {
   try {
     await pool.query(
-      "INSERT INTO mas_material_list (Material_name, Created_by, created_datetime,tenant_id, branch_id) VALUES (?, ?, ?,?, ?)",
+      "INSERT INTO mas_material_list (Material_name, created_by, created_datetime,tenant_id, branch_id) VALUES (?, ?, ?,?, ?)",
       [Material.Material_name, Material.username, Material.createdDate,tenant_id,branch_id]
     );
     console.log("✅ Material saved to database");

@@ -15,7 +15,7 @@ const log = (label, message, data = null) => {
 // ✅ 1. Add User
 async function addUser(token, realm, userData) {
   log("ADD_USER", "Starting", { realm, username: userData.username });
-  const url = `${KEYCLOAK_BASE_URL}/admin/realms/${realm}/users`;
+  const url = `${KEYCLOAK_BASE_URL}/ADMIN/realms/${realm}/users`;
 
   const payload = {
     username: userData.username,
@@ -75,7 +75,7 @@ async function addUser(token, realm, userData) {
 // ✅ 2. Get User ID by Username
 async function getUserIdByUsername(token, realm, username) {
   log("GET_USER_ID", "Fetching user ID", { realm, username });
-  const url = `${KEYCLOAK_BASE_URL}/admin/realms/${realm}/users?username=${username}`;
+  const url = `${KEYCLOAK_BASE_URL}/ADMIN/realms/${realm}/users?username=${username}`;
 
   try {
     const response = await axios.get(url, {
@@ -101,7 +101,7 @@ async function getUserIdByUsername(token, realm, username) {
 // ✅ Get Full User by Username
 async function getUserByUsername(token, realm, username) {
   log("GET_USER", "Fetching full user", { realm, username });
-  const url = `${KEYCLOAK_BASE_URL}/admin/realms/${realm}/users?username=${username}`;
+  const url = `${KEYCLOAK_BASE_URL}/ADMIN/realms/${realm}/users?username=${username}`;
 
   try {
     const response = await axios.get(url, {
@@ -124,8 +124,8 @@ async function getUserByUsername(token, realm, username) {
 // ✅ 3. Assign Realm Role to User
 async function assignRealmRoleToUser(token, realm, userId, roleName) {
   log("ASSIGN_ROLE", "Assigning role", { userId, roleName });
-  const roleUrl = `${KEYCLOAK_BASE_URL}/admin/realms/${realm}/roles/${roleName}`;
-  const assignUrl = `${KEYCLOAK_BASE_URL}/admin/realms/${realm}/users/${userId}/role-mappings/realm`;
+  const roleUrl = `${KEYCLOAK_BASE_URL}/ADMIN/realms/${realm}/roles/${roleName}`;
+  const assignUrl = `${KEYCLOAK_BASE_URL}/ADMIN/realms/${realm}/users/${userId}/role-mappings/realm`;
 
   try {
     const roleRes = await axios.get(roleUrl, {
@@ -153,8 +153,8 @@ async function assignRealmRoleToUser(token, realm, userId, roleName) {
 // ✅ 4. Add User to Group
 async function addUserToGroup(token, realm, userId, groupName) {
   log("ADD_TO_GROUP", "Adding user to group", { userId, groupName });
-  const searchUrl = `${KEYCLOAK_BASE_URL}/admin/realms/${realm}/groups?search=${groupName}`;
-  const addUrl = `${KEYCLOAK_BASE_URL}/admin/realms/${realm}/users/${userId}/groups`;
+  const searchUrl = `${KEYCLOAK_BASE_URL}/ADMIN/realms/${realm}/groups?search=${groupName}`;
+  const addUrl = `${KEYCLOAK_BASE_URL}/ADMIN/realms/${realm}/users/${userId}/groups`;
 
   try {
     const groupRes = await axios.get(searchUrl, {
@@ -181,7 +181,7 @@ async function addUserToGroup(token, realm, userId, groupName) {
   }
 }
 
-// ✅ 5. Reset User Password
+// ✅ 5. Reset User password_hash
 async function resetUserPassword(
   token,
   realm,
@@ -190,7 +190,7 @@ async function resetUserPassword(
   temporary = false
 ) {
   log("RESET_PASSWORD", "Resetting password", { userId, temporary });
-  const url = `${KEYCLOAK_BASE_URL}/admin/realms/${realm}/users/${userId}/reset-password`;
+  const url = `${KEYCLOAK_BASE_URL}/ADMIN/realms/${realm}/users/${userId}/reset-password`;
 
   try {
     await axios.put(
@@ -204,7 +204,7 @@ async function resetUserPassword(
       }
     );
 
-    log("RESET_PASSWORD", "✅ Password reset successful");
+    log("RESET_PASSWORD", "✅ password_hash reset successful");
     return true;
   } catch (error) {
     log("RESET_PASSWORD", "❌ Failed to reset password", {
@@ -217,7 +217,7 @@ async function resetUserPassword(
 // ✅ 6. Create Group in Realm
 async function createGroup(token, realm, groupName, attributes = {}) {
   log("CREATE_GROUP", "Creating group", { groupName, attributes });
-  const endpoint = `${KEYCLOAK_BASE_URL}/admin/realms/${realm}/groups`;
+  const endpoint = `${KEYCLOAK_BASE_URL}/ADMIN/realms/${realm}/groups`;
   const payload = { name: groupName, attributes };
 
   try {
@@ -260,7 +260,7 @@ async function deleteUserByUsername(token, realm, username) {
       return false;
     }
 
-    const url = `${KEYCLOAK_BASE_URL}/admin/realms/${realm}/users/${userId}`;
+    const url = `${KEYCLOAK_BASE_URL}/ADMIN/realms/${realm}/users/${userId}`;
     await axios.delete(url, { headers: { Authorization: `Bearer ${token}` } });
 
     log("DELETE_USER_BY_USERNAME", "✅ User deleted", { username, userId });
@@ -280,7 +280,7 @@ const deleteUser = async (token, realm, userId) => {
   if (!realm) throw new AppError("Realm is required", 400);
   if (!userId) throw new AppError("User ID is required", 400);
 
-  const url = `${KEYCLOAK_BASE_URL}/admin/realms/${realm}/users/${userId}`;
+  const url = `${KEYCLOAK_BASE_URL}/ADMIN/realms/${realm}/users/${userId}`;
 
   try {
     const response = await axios.delete(url, {
@@ -322,7 +322,7 @@ const deleteUser = async (token, realm, userId) => {
 const updateUserInKeycloak = async (token, realm, userId, userData) => {
   // console.log(token,realm,userId,userData)
   log("UPDATE_USER", "Updating user", { userId, userData });
-  const url = `${KEYCLOAK_BASE_URL}/admin/realms/${realm}/users/${userId}`;
+  const url = `${KEYCLOAK_BASE_URL}/ADMIN/realms/${realm}/users/${userId}`;
 
   try {
     const response = await axios.put(url, userData, {
@@ -356,7 +356,7 @@ const updateGroupAttributes = async (token, realm, groupId, attributes) => {
     groupId,
     attributes,
   });
-  const url = `${KEYCLOAK_BASE_URL}/admin/realms/${realm}/groups/${groupId}`;
+  const url = `${KEYCLOAK_BASE_URL}/ADMIN/realms/${realm}/groups/${groupId}`;
   await axios.put(
     url,
     { attributes },
@@ -373,7 +373,7 @@ const updateGroupAttributes = async (token, realm, groupId, attributes) => {
 // ✅ Delete Group
 const deleteKeycloakGroup = async (token, realm, groupId) => {
   log("DELETE_GROUP", "Deleting group", { groupId });
-  const url = `${KEYCLOAK_BASE_URL}/admin/realms/${realm}/groups/${groupId}`;
+  const url = `${KEYCLOAK_BASE_URL}/ADMIN/realms/${realm}/groups/${groupId}`;
   const response = await axios.delete(url, {
     headers: { Authorization: `Bearer ${token}` },
   });
@@ -385,7 +385,7 @@ const deleteKeycloakGroup = async (token, realm, groupId) => {
 // ✅ Get Group ID by Name
 const getGroupIdByName = async (token, realm, groupName) => {
   log("GET_GROUP_ID", "Searching group", { groupName });
-  const url = `${KEYCLOAK_BASE_URL}/admin/realms/${realm}/groups`;
+  const url = `${KEYCLOAK_BASE_URL}/ADMIN/realms/${realm}/groups`;
   const response = await axios.get(url, {
     params: { search: groupName },
     headers: { Authorization: `Bearer ${token}` },
@@ -400,7 +400,7 @@ const getGroupIdByName = async (token, realm, groupName) => {
 // ✅ Get User by Email
 async function getKeycloakUserIdByEmail(token, realm, email) {
   log("GET_USER_BY_EMAIL", "Fetching user by email", { email });
-  const url = `${KEYCLOAK_BASE_URL}/admin/realms/${realm}/users`;
+  const url = `${KEYCLOAK_BASE_URL}/ADMIN/realms/${realm}/users`;
 
   try {
     const response = await axios.get(url, {
@@ -426,7 +426,7 @@ async function getKeycloakUserIdByEmail(token, realm, email) {
 // ✅ Get User Groups
 async function getUserGroups(token, realm, userId) {
   log("GET_USER_GROUPS", "Fetching groups", { userId });
-  const url = `${KEYCLOAK_BASE_URL}/admin/realms/${realm}/users/${userId}/groups`;
+  const url = `${KEYCLOAK_BASE_URL}/ADMIN/realms/${realm}/users/${userId}/groups`;
 
   try {
     const response = await axios.get(url, {
@@ -538,10 +538,10 @@ const keycloakLogin = async (username, password, realm, clientId) => {
   }
 };
 
-// ✅ Reset Password (admin)
+// ✅ Reset password_hash (ADMIN)
 async function resetKeycloakPassword({ userId, realm, newPassword, token }) {
-  log("RESET_KEYCLOAK_PASSWORD", "Admin password reset", { userId });
-  const url = `${KEYCLOAK_BASE_URL}/admin/realms/${realm}/users/${userId}/reset-password`;
+  log("RESET_KEYCLOAK_PASSWORD", "ADMIN password reset", { userId });
+  const url = `${KEYCLOAK_BASE_URL}/ADMIN/realms/${realm}/users/${userId}/reset-password`;
 
   await axios.put(
     url,
@@ -553,7 +553,7 @@ async function resetKeycloakPassword({ userId, realm, newPassword, token }) {
       },
     }
   );
-  log("RESET_KEYCLOAK_PASSWORD", "✅ Password reset by admin");
+  log("RESET_KEYCLOAK_PASSWORD", "✅ password_hash reset by ADMIN");
 }
 
 // ✅ Get Client Token (for testing)

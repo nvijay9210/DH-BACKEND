@@ -16,7 +16,7 @@ exports.createProject = async (data, tenant_id, branch_id) => {
       Project_Estimation_Cost, Project_start_date,
       Estimated_end_date, Site_location,
       Project_status, Contractor, Site_supervisor,
-      Photo, Created_by, CREATED_DATETIME)
+      Photo, created_by, CREATED_DATETIME)
       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())
     `;
     const result = await conn.query(query, [
@@ -336,7 +336,7 @@ exports.projectDetailsService = async (details, tenant_id, branch_id) => {
       (tenant_id, branch_id, Project_name, Project_type, Project_cost, Margin,
       Project_Estimation_Cost, Project_start_date, Estimated_end_date,
       Site_location, Project_Status, Contractor, Site_supervisor,
-      Photo, Created_by, CREATED_DATETIME)
+      Photo, created_by, CREATED_DATETIME)
       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())`,
       [
         tenant_id,
@@ -720,11 +720,11 @@ exports.getProjectFinancials = async (conn, project_id, tenant_id, branch_id, pr
 =================================*/
 exports.getDashboardSummary = async (tenant_id, branch_id) => {
   try {
-    // Total Projects & Active Projects
+    // Total Projects & A Projects
     const projectStats = await pool.query(
       `SELECT 
          COUNT(*) as total_projects,
-         SUM(CASE WHEN Project_status = 'Active' THEN 1 ELSE 0 END) as active_projects
+         SUM(CASE WHEN Project_status = 'A' THEN 1 ELSE 0 END) as active_projects
        FROM project_list
        WHERE tenant_id = ? AND branch_id = ?`,
       [tenant_id, branch_id]

@@ -11,19 +11,30 @@ const { AppError } = require("../Logics/AppError");
 const { UAParser } = require("ua-parser-js");
 const { randomUUID } = require("crypto");
 const jwt = require("jsonwebtoken");
-const {pool} = require("../config/db");
+const { pool } = require("../config/db");
 const { getTenantById } = require("../Service/TenantService");
 const { createDebugLogger } = require("../utils/Debugger");
 const { updateUserPassword } = require("../Service/UserService");
-const { sendOTP, canSendOTP, setOtpCooldown, verifyOTP } = require("../utils/Otp");
+const {
+  sendOTP,
+  canSendOTP,
+  setOtpCooldown,
+  verifyOTP,
+} = require("../utils/Otp");
 const passwordHash = require("../Logics/PasswordHash");
 // ✅ Import centralized Redis client & helpers
 const {
-  redisClient,        // Raw ioredis instance
-  setEx, get, del, exists, ttl, incrWithExpiry, // Helper functions
+  redisClient, // Raw ioredis instance
+  setEx,
+  get,
+  del,
+  exists,
+  ttl,
+  incrWithExpiry, // Helper functions
   checkRedisHealth,
-  gracefulShutdown: redisGracefulShutdown
+  gracefulShutdown: redisGracefulShutdown,
 } = require("../config/loginredis");
+const logger = require("../Logs/Logger");
 
 const router = express.Router();
 router.use(cookieParser());
@@ -37,7 +48,7 @@ const debug = createDebugLogger("SsoAuth", "DEBUG_AUTH");
 // 1. CONFIGURATION & CONSTANTS
 // ============================================================================
 const isProduction = process.env.NODE_ENV === "production";
-const ROLE_PRIORITY = ["Super User", "Admin", "Manager"];
+const ROLE_PRIORITY = ["SUPERUSER", "ADMIN", "Manager"];
 const CONFIG = {
   KEYCLOAK: {
     BASE_URL: process.env.KEYCLOAK_BASE_URL,
@@ -82,7 +93,7 @@ async function getUserByKeycloakId(keycloakId) {
       SELECT
         u.user_id,
         u.keycloak_id,
-        u.user_name,
+        u.username,
         u.role,
         u.status,
         u.failed_attempt_count,
@@ -121,7 +132,7 @@ async function getUserByKeycloakIdWithTenant(keycloakId, tenantId, branchId) {
       SELECT
         u.user_id,
         u.keycloak_id,
-        u.user_name,
+        u.username,
         u.role,
         u.status,
         u.failed_attempt_count,
@@ -130,7 +141,7 @@ async function getUserByKeycloakIdWithTenant(keycloakId, tenantId, branchId) {
       FROM user u
       WHERE u.keycloak_id = ?
       AND u.tenant_id = ?
-      AND u.status = 'Active'
+      AND u.status = 'A'
       LIMIT 1
       `,
       [keycloakId, tenantId],
@@ -573,15 +584,15 @@ const SessionService = {
     await setEx(
       `session:${session_id}`,
       Math.floor(CONFIG.COOKIES.EXPIRY.REFRESH / 1000),
-      sessionData
+      sessionData,
     );
 
-    console.log('SessionData:',sessionData)
-    
+    console.log("SessionData:", sessionData);
+
     await setEx(
       `api_count:${session_id}`,
       Math.floor(CONFIG.COOKIES.EXPIRY.REFRESH / 1000),
-      0
+      0,
     );
 
     debug.log("SessionService", "✅ Session stored in Redis", {
@@ -599,7 +610,7 @@ const SessionService = {
       debug.log("SessionService", "⚠️ No session_id found, skipping destroy");
       return;
     }
-    
+
     // ✅ Use del helper for multiple keys
     await del(`session:${session_id}`, `api_count:${session_id}`);
     debug.log("SessionService", "🗑️ Redis keys deleted");
@@ -782,7 +793,7 @@ const ContextService = {
     });
 
     const branches =
-      role === "Super User"
+      role === "SUPERUSER"
         ? await getAllBranchByTenantId(dbUser.tenant_id, conn)
         : await getBranchByTenantIdAndUserId(
             dbUser.tenant_id,
@@ -790,12 +801,12 @@ const ContextService = {
             conn,
           );
 
-    if (role !== "Super User" && (!branches || branches.length === 0)) {
-      debug.error("ContextService", "No branches assigned to non-admin user");
+    if (role !== "SUPERUSER" && (!branches || branches.length === 0)) {
+      debug.error("ContextService", "No branches assigned to non-ADMIN user");
       throw new Error("No branches assigned");
     }
 
-    console.log('branches',branches)
+    console.log("branches", branches);
 
     const branchData = branches?.map((b) => ({
       branch_id: Number(b.branch_id),
@@ -805,7 +816,7 @@ const ContextService = {
 
     const context = {
       user_id: Number(dbUser.user_id),
-      username: dbUser.user_name,
+      username: dbUser.username,
       role,
       tenant_id: Number(tenant.tenant_id),
       tenant_name: tenant.tenant_name,
@@ -866,12 +877,12 @@ const attemptRefresh = async (req, res, next) => {
 
     session.access_token = tokens.access_token;
     session.refresh_token = tokens.refresh_token;
-    
+
     // ✅ Use setEx helper to update session in Redis
     await setEx(
       `session:${session_id}`,
       Math.floor(CONFIG.COOKIES.EXPIRY.REFRESH / 1000),
-      session
+      session,
     );
 
     req.access_token = tokens.access_token;
@@ -925,8 +936,18 @@ const validateToken = async (req, res, next) => {
       req.tokenData = jwt.verify(token, CONFIG.KEYCLOAK.PUBLIC_KEY, {
         algorithms: ["RS256"],
       });
+      const roles = req.tokenData?.realm_access?.roles || [];
+
+      const allowedRoles = ["SUPERUSER", "DEV", "ADMIN"];
+
+      const role =
+        roles.find((r) => allowedRoles.includes(r.toUpperCase())) || null;
+
+      console.log(role);
       req.session = session;
       req.user = req.tokenData;
+      req.username=req.tokenData.preferred_username;
+      req.role = req.role;
       req.user_id = session.user_id;
       req.tenant_id = session.tenant_id;
       req.branch_id = session.branch_id || null;
@@ -994,7 +1015,7 @@ router.get("/me", validateToken, async (req, res) => {
   try {
     conn = await pool.getConnection();
     const [user] = await conn.query(
-      `SELECT u.user_id, u.user_name, u.role, t.* FROM user u JOIN tenant t ON t.tenant_id = u.tenant_id WHERE u.user_id = ?`,
+      `SELECT u.user_id, u.username, u.role, t.* FROM user u JOIN tenant t ON t.tenant_id = u.tenant_id WHERE u.user_id = ?`,
       [user_id],
     );
     if (!user) {
@@ -1009,7 +1030,7 @@ router.get("/me", validateToken, async (req, res) => {
     });
 
     const branches =
-      user.role === "Admin"
+      user.role === "ADMIN"
         ? await conn.query(
             `SELECT branch_id, branch_name, branch_code FROM branch WHERE tenant_id = ?`,
             [user.tenant_id],
@@ -1098,7 +1119,7 @@ router.post("/login", async (req, res) => {
       role: dbUser.role,
     });
 
-    if (dbUser.status !== "Active") {
+    if (dbUser.status !== "A") {
       debug.error("Route", "User account inactive", { userId: dbUser.user_id });
       return res.status(403).json({ message: "User account is inactive" });
     }
@@ -1266,7 +1287,7 @@ const getUserDataByUsername = async (username) => {
     const rows = await conn.query(
       `SELECT 
          u.tenant_id,
-         u.user_name,
+         u.username,
          u.phone_number,
          u.email,
          u.status,
@@ -1276,8 +1297,8 @@ const getUserDataByUsername = async (username) => {
          t.timezone 
        FROM user u 
        LEFT JOIN tenant t ON t.tenant_id = u.tenant_id 
-       WHERE u.user_name = ? AND u.status = ? AND t.is_active = ?`,
-      [username, "Active", "1"],
+       WHERE u.username = ? AND u.status = ? AND t.is_active = ?`,
+      [username, "A", "1"],
     );
     return rows[0] || null;
   } catch (err) {
@@ -1367,7 +1388,7 @@ router.post("/forgettenpassword", async (req, res, next) => {
         length: 6,
         expiryMinutes: 10,
         tenant_id,
-        timezone: userData?.time_zone
+        timezone: userData?.time_zone,
       });
 
       await setOtpCooldown({ username, tenant_id });
@@ -1518,78 +1539,177 @@ router.post("/verify-otp", async (req, res, next) => {
 });
 
 // --- POST /reset-password ---
+// router.post("/reset-password", async (req, res, next) => {
+//   debug.log("Route", "📍 POST /reset-password called", {
+//     username: req.body.username,
+//   });
+
+//   try {
+//     let { username, newPassword, host, tenant_id, bypassToken } = req.body;
+
+//     tenant_id=req.tenant_id
+
+//     if (!username || !newPassword) {
+//       return res
+//         .status(400)
+//         .json({ message: "Username and newPassword required" });
+//     }
+
+//     const tenantConfig = CONFIG.HOST_REALM_CLIENT[host];
+//     if (!tenantConfig) {
+//       return res.status(400).json({ error: MESSAGES.INVALID_HOST });
+//     }
+//     const { realm, clientId } = tenantConfig;
+
+//     const bypassKey = `bypass:${tenant_id}:${username}`;
+//     // ✅ Use get helper to retrieve bypass data
+//     const bypassDataRaw = await get(bypassKey);
+
+//     if (!bypassDataRaw) {
+//       return res.status(401).json({
+//         message: "Session expired. Please start the reset process again.",
+//         step: "otp",
+//       });
+//     }
+
+//     const bypassData =
+//       typeof bypassDataRaw === "string"
+//         ? JSON.parse(bypassDataRaw)
+//         : bypassDataRaw;
+
+//     if (
+//       bypassToken &&
+//       bypassData.bypassToken &&
+//       bypassToken !== bypassData.bypassToken
+//     ) {
+//       return res.status(403).json({ message: "Invalid verification token" });
+//     }
+
+//     if (Date.now() > bypassData.expiresAt) {
+//       // ✅ Use del helper
+//       await del(bypassKey);
+//       return res.status(401).json({
+//         message: "Verification expired. Please request a new reset link.",
+//         step: "otp",
+//       });
+//     }
+
+//     if (
+//       bypassData.tenant_id &&
+//       tenant_id &&
+//       bypassData.tenant_id !== tenant_id
+//     ) {
+//       return res.status(403).json({ message: "Tenant mismatch" });
+//     }
+
+//     // Rate limiting
+//     const resetAttemptsKey = `reset_attempts:${tenant_id}:${username}`;
+//     const attempts = await incrWithExpiry(resetAttemptsKey, 3600);
+
+//     // if (attempts > 3) {
+//     //   return res
+//     //     .status(429)
+//     //     .json({ message: "Too many reset attempts. Please wait." });
+//     // }
+
+//     // Proceed with password reset
+//     debug.log("Route", "Authenticating as Keycloak ADMIN");
+//     const tokenRes = await keycloakLogin(
+//       CONFIG.KEYCLOAK.ADMIN_USER,
+//       CONFIG.KEYCLOAK.ADMIN_PASS,
+//       realm,
+//       clientId,
+//     );
+//     const adminToken = tokenRes.access_token;
+
+//     debug.log("Route", "Fetching user from Keycloak");
+//     const userRes = await axios.get(
+//       `${CONFIG.KEYCLOAK.BASE_URL}/admin/realms/${realm}/users?username=${username}`,
+//       { headers: { Authorization: `Bearer ${adminToken}` } },
+//     );
+
+//     const user = userRes.data[0];
+//     if (!user) {
+//       return res.status(404).json({ message: "User not found" });
+//     }
+
+//     debug.log("Route", "Resetting password in Keycloak");
+//     await axios.put(
+//       `${CONFIG.KEYCLOAK.BASE_URL}/admin/realms/${realm}/users/${user.id}/reset-password`,
+//       { type: "password", value: newPassword, temporary: false },
+//       {
+//         headers: {
+//           Authorization: `Bearer ${adminToken}`,
+//           "Content-Type": "application/json",
+//         },
+//       },
+//     );
+
+//     // const userData=await getUserByKeycloakId(user.id)
+//     const newHashedPassword = passwordHash.encryptPassword(newPassword);
+
+//     const result = await updateUserPassword(newHashedPassword, username);
+
+//     if (!result) {
+//       return res
+//         .status(400)
+//         .json({ message: "Error updating password in database" });
+//     }
+
+//     // ✅ Cleanup using del helper
+//     await del(bypassKey, `reset_attempts:${tenant_id}:${username}`);
+
+//     debug.log("Route", "✅ Password reset successful", { username });
+//     return res.status(200).json({ message: "Password updated successfully" });
+//   } catch (err) {
+//     debug.error("Route", "Password reset failed", err);
+//     next(new AppError(err.response?.data?.error || err.message, 500));
+//   }
+// });
+
 router.post("/reset-password", async (req, res, next) => {
-  debug.log("Route", "📍 POST /reset-password called", {
-    username: req.body.username,
+  // ✅ Use logger.logWithMeta (no manual timestamp!)
+  logger.logWithMeta('info', '📍 POST /reset-password called', {
+    module: 'SsoAuth:Route',
+    emoji: '🔐',
+    url: req.originalUrl,
+    method: req.method,
+    username: req.body.username, // Don't log passwords!
+    tenantId: req.tenant_id,
   });
 
   try {
-    const { username, newPassword, host, tenant_id, bypassToken } = req.body;
+    let { username, newPassword, host, tenant_id } = req.body;
+    tenant_id = req.tenant_id || tenant_id; // Fallback
 
     if (!username || !newPassword) {
-      return res
-        .status(400)
-        .json({ message: "Username and newPassword required" });
+      logger.warn('⚠️ Missing required fields', {
+        module: 'SsoAuth:Route',
+        username: !!username,
+        newPassword: !!newPassword,
+      });
+      return res.status(400).json({ message: "Username and newPassword required" });
     }
 
     const tenantConfig = CONFIG.HOST_REALM_CLIENT[host];
     if (!tenantConfig) {
+      logger.error('❌ Invalid host configuration', {
+        module: 'SsoAuth:Route',
+        host,
+        available_hosts: Object.keys(CONFIG.HOST_REALM_CLIENT),
+      });
       return res.status(400).json({ error: MESSAGES.INVALID_HOST });
     }
     const { realm, clientId } = tenantConfig;
 
-    const bypassKey = `bypass:${tenant_id}:${username}`;
-    // ✅ Use get helper to retrieve bypass data
-    const bypassDataRaw = await get(bypassKey);
-
-    if (!bypassDataRaw) {
-      return res.status(401).json({
-        message: "Session expired. Please start the reset process again.",
-        step: "otp",
-      });
-    }
-
-    const bypassData = typeof bypassDataRaw === 'string' 
-      ? JSON.parse(bypassDataRaw) 
-      : bypassDataRaw;
-
-    if (
-      bypassToken &&
-      bypassData.bypassToken &&
-      bypassToken !== bypassData.bypassToken
-    ) {
-      return res.status(403).json({ message: "Invalid verification token" });
-    }
-
-    if (Date.now() > bypassData.expiresAt) {
-      // ✅ Use del helper
-      await del(bypassKey);
-      return res.status(401).json({
-        message: "Verification expired. Please request a new reset link.",
-        step: "otp",
-      });
-    }
-
-    if (
-      bypassData.tenant_id &&
-      tenant_id &&
-      bypassData.tenant_id !== tenant_id
-    ) {
-      return res.status(403).json({ message: "Tenant mismatch" });
-    }
-
-    // Rate limiting
-    const resetAttemptsKey = `reset_attempts:${tenant_id}:${username}`;
-    const attempts = await incrWithExpiry(resetAttemptsKey, 3600);
+    // 🔐 Admin login
+    logger.debug('🔑 Authenticating as Keycloak ADMIN', {
+      module: 'SsoAuth:Keycloak',
+      realm,
+      clientId,
+      admin_user: CONFIG.KEYCLOAK.ADMIN_USER, // Safe: just username
+    });
     
-    // if (attempts > 3) {
-    //   return res
-    //     .status(429)
-    //     .json({ message: "Too many reset attempts. Please wait." });
-    // }
-
-    // Proceed with password reset
-    debug.log("Route", "Authenticating as Keycloak admin");
     const tokenRes = await keycloakLogin(
       CONFIG.KEYCLOAK.ADMIN_USER,
       CONFIG.KEYCLOAK.ADMIN_PASS,
@@ -1598,18 +1718,50 @@ router.post("/reset-password", async (req, res, next) => {
     );
     const adminToken = tokenRes.access_token;
 
-    debug.log("Route", "Fetching user from Keycloak");
+    // 👤 Fetch user from Keycloak
+    logger.debug('🔍 Fetching user from Keycloak', {
+      module: 'SsoAuth:Route',
+      username,
+      realm,
+    });
+    
     const userRes = await axios.get(
-      `${CONFIG.KEYCLOAK.BASE_URL}/admin/realms/${realm}/users?username=${username}`,
-      { headers: { Authorization: `Bearer ${adminToken}` } },
+      `${CONFIG.KEYCLOAK.BASE_URL}/admin/realms/${realm}/users?username=${encodeURIComponent(username)}`,
+      { 
+        headers: { 
+          Authorization: `Bearer ${adminToken}`,
+          'Content-Type': 'application/json',
+        },
+        // ✅ Add timeout + better error handling
+        timeout: 10000,
+      },
     );
 
-    const user = userRes.data[0];
+    // ✅ Replace console.log with logger
+    logger.debug('📦 Keycloak user search result', {
+      module: 'SsoAuth:Keycloak',
+      found: userRes.data?.length > 0,
+      user_id: userRes.data?.[0]?.id,
+      count: userRes.data?.length,
+    });
+
+    const user = userRes.data?.[0];
     if (!user) {
+      logger.warn('⚠️ User not found in Keycloak', {
+        module: 'SsoAuth:Route',
+        username,
+        realm,
+      });
       return res.status(404).json({ message: "User not found" });
     }
 
-    debug.log("Route", "Resetting password in Keycloak");
+    // 🔁 Reset password in Keycloak
+    logger.debug('🔄 Resetting password in Keycloak', {
+      module: 'SsoAuth:Keycloak',
+      user_id: user.id,
+      realm,
+    });
+    
     await axios.put(
       `${CONFIG.KEYCLOAK.BASE_URL}/admin/realms/${realm}/users/${user.id}/reset-password`,
       { type: "password", value: newPassword, temporary: false },
@@ -1618,28 +1770,54 @@ router.post("/reset-password", async (req, res, next) => {
           Authorization: `Bearer ${adminToken}`,
           "Content-Type": "application/json",
         },
+        timeout: 10000,
       },
     );
 
-    // const userData=await getUserByKeycloakId(user.id)
-    const newHashedPassword=passwordHash.encryptPassword(newPassword);
-
+    // 🔐 Update local DB password
+    const newHashedPassword = passwordHash.encryptPassword(newPassword);
     const result = await updateUserPassword(newHashedPassword, username);
 
     if (!result) {
-      return res
-        .status(400)
-        .json({ message: "Error updating password in database" });
+      logger.error('❌ Failed to update password in database', {
+        module: 'SsoAuth:Route',
+        username,
+      });
+      return res.status(400).json({ message: "Error updating password in database" });
     }
 
-    // ✅ Cleanup using del helper
-    await del(bypassKey, `reset_attempts:${tenant_id}:${username}`);
-
-    debug.log("Route", "✅ Password reset successful", { username });
+    logger.info('✅ Password reset successful', {
+      module: 'SsoAuth:Route',
+      emoji: '🎉',
+      username,
+      tenantId: tenant_id,
+    });
+    
     return res.status(200).json({ message: "Password updated successfully" });
+    
   } catch (err) {
-    debug.error("Route", "Password reset failed", err);
-    next(new AppError(err.response?.data?.error || err.message, 500));
+    // ✅ Proper error logging with details
+    const errorDetails = {
+      module: 'SsoAuth:Route',
+      emoji: '💥',
+      url: req.originalUrl,
+      method: req.method,
+      username: req.body.username,
+      error_message: err.message,
+      error_code: err.code,
+      error_status: err.response?.status,
+      error_response: err.response?.data,
+      keycloak_url: err.config?.url?.substring(0, 100), // Safe: truncate
+      stack: process.env.NODE_ENV === 'development' ? err.stack : undefined,
+    };
+    
+    logger.error('❌ Password reset failed', errorDetails);
+    
+    // ✅ Send clean error to client
+    next(new AppError(
+      err.response?.data?.error || err.response?.data?.message || err.message || 'Password reset failed',
+      err.response?.status === 403 ? 403 : 500
+    ));
   }
 });
 
@@ -1666,7 +1844,7 @@ router.post("/register", async (req, res, next) => {
     }
     const { realm, clientId } = tenantConfig;
 
-    debug.log("Route", "Authenticating as Keycloak admin");
+    debug.log("Route", "Authenticating as Keycloak ADMIN");
     const tokenRes = await keycloakLogin(
       CONFIG.KEYCLOAK.ADMIN_USER,
       CONFIG.KEYCLOAK.ADMIN_PASS,

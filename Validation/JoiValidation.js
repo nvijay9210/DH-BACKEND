@@ -45,7 +45,7 @@ const userValidation = {
       "string.max": "Username cannot exceed 30 characters",
     }),
     password: Joi.string().min(1).required().messages({
-      "string.empty": "Password is required",
+      "string.empty": "password_hash is required",
     }),
     host: Joi.string().min(1).required().messages({
       "string.empty": "Host is required",
@@ -63,41 +63,41 @@ const userValidation = {
       "string.max": "Last name cannot exceed 50 characters",
     }),
 
-    full_name: Joi.string().max(50).allow(null, "").messages({
-      "string.max": "Full name cannot exceed 50 characters",
-    }),
+    // full_name: Joi.string().max(50).allow(null, "").messages({
+    //   "string.max": "Full name cannot exceed 50 characters",
+    // }),
 
-    keycloak_id: Joi.string().max(50).required().messages({
-      "any.required": "Keycloak ID is required",
-      "string.max": "Keycloak ID cannot exceed 50 characters",
-    }),
+    // keycloak_id: Joi.string().max(50).required().messages({
+    //   "any.required": "Keycloak ID is required",
+    //   "string.max": "Keycloak ID cannot exceed 50 characters",
+    // }),
 
-    username: Joi.string().max(50).required().messages({
-      "any.required": "Username is required",
-      "string.max": "Username cannot exceed 50 characters",
-    }),
+    // username: Joi.string().max(50).required().messages({
+    //   "any.required": "Username is required",
+    //   "string.max": "Username cannot exceed 50 characters",
+    // }),
 
     email: Joi.string().email().max(255).allow(null, "").messages({
       "string.email": "Invalid email format",
       "string.max": "Email cannot exceed 255 characters",
     }),
 
-    phone_number: Joi.string().max(15).required().messages({
-      "any.required": "Phone number is required",
-      "string.max": "Phone number cannot exceed 15 characters",
-    }),
+    // phone_number: Joi.string().max(15).required().messages({
+    //   "any.required": "Phone number is required",
+    //   "string.max": "Phone number cannot exceed 15 characters",
+    // }),
 
-    password_hash: Joi.string().max(100).required().messages({
-      "any.required": "Password is required",
-      "string.max": "Password cannot exceed 100 characters",
-    }),
+    // password_hash: Joi.string().max(100).required().messages({
+    //   "any.required": "password_hash is required",
+    //   "string.max": "password_hash cannot exceed 100 characters",
+    // }),
 
-    created_by: Joi.string().max(20).required().messages({
-      "any.required": "Created by is required",
-      "string.max": "Created by cannot exceed 20 characters",
-    }),
+    // created_by: Joi.string().max(20).required().messages({
+    //   "any.required": "Created by is required",
+    //   "string.max": "Created by cannot exceed 20 characters",
+    // }),
 
-    updated_by: Joi.string().max(20).allow(null, ""),
+    // updated_by: Joi.string().max(20).allow(null, ""),
 
     user_photo: Joi.string().max(255).allow(null, ""),
 
@@ -117,19 +117,19 @@ const userValidation = {
 
     pincode: Joi.string().max(10).allow(null, ""),
 
-    role: Joi.string()
-      .valid("Admin", "SuperUser")
-      .required()
-      .messages({
-        "any.only":
-          "Role must be one of: Admin, Superuser",
-      }),
+    // role: Joi.string()
+    //   .valid("ADMIN", "SuperUser")
+    //   .required()
+    //   .messages({
+    //     "any.only":
+    //       "Role must be one of: ADMIN, Superuser",
+    //   }),
 
     status: Joi.string().valid("A", "IA").default("A").messages({
-      "any.only": "Status must be either A (Active) or IA (Inactive)",
+      "any.only": "status must be either A (A) or IA (Inactive)",
     }),
 
-    last_login: Joi.date().allow(null),
+    last_login: Joi.date().allow(null), 
 
     city: Joi.string().max(30).allow(null, ""),
 
@@ -140,12 +140,12 @@ const userValidation = {
 
   // Update user validation
   updateUser: Joi.object({
-    User_name: Joi.string().min(1).max(30).optional(),
+    username: Joi.string().min(1).max(30).optional(),
     role: Joi.string()
-      .valid("Super User", "Admin", "User", "Manager")
+      .valid("SUPERUSER", "ADMIN", "User", "Manager")
       .optional(),
-    Status: Joi.string().valid("Active", "Inactive").optional(),
-    Updated_by: Joi.string().max(30).optional(),
+    status: Joi.string().valid("A", "Inactive").optional(),
+    updated_by: Joi.string().max(30).optional(),
   })
     .min(1)
     .messages({
@@ -157,7 +157,7 @@ const userValidation = {
     user_id: Joi.number().integer().positive().optional(),
     branch_id: Joi.number().integer().positive().optional(),
     role: Joi.string()
-      .valid("Super User", "Admin", "User", "Manager")
+      .valid("SUPERUSER", "ADMIN", "User", "Manager")
       .optional(),
   }).min(1),
 };
@@ -338,7 +338,7 @@ const orderValidation = {
         Remarks: Joi.string().max(200).optional(),
         Paid: Joi.number().integer().min(0).optional(),
         Balance: Joi.number().integer().min(0).optional(),
-        Status: Joi.string().max(50).optional(),
+        status: Joi.string().max(50).optional(),
         Site_supervisor: Joi.string().max(100).optional(),
         Photos: Joi.string().max(255).optional(),
         Payment_Date: dateValidation.optional(),
@@ -379,7 +379,7 @@ const orderValidation = {
         Photos: Joi.string().max(255).allow(null).optional(),
         Paid: Joi.number().integer().min(0).optional(),
         Balance: Joi.number().integer().min(0).optional(),
-        Status: Joi.string().max(50).optional(),
+        status: Joi.string().max(50).optional(),
         Payment_Date: dateValidation.optional(),
       }).min(2), // id + at least one field
     )
@@ -407,7 +407,7 @@ const materialValidation = {
     Material_List: Joi.string().min(1).max(100).required(),
     Stock_List: Joi.number().integer().min(0).optional(),
     Material_Used: Joi.number().integer().positive().required(),
-    Created_by: Joi.string().max(100).optional(),
+    created_by: Joi.string().max(100).optional(),
     CREATED_DATETIME: dateValidation.optional(),
     LAST_UPDATED_BY: Joi.string().max(100).optional(),
     LAST_UPDATED_DATETIME: dateValidation.optional(),
@@ -440,8 +440,8 @@ const materialValidation = {
     Photos: Joi.string().max(255).optional(),
     Paid: Joi.number().integer().min(0).optional(),
     Balance: Joi.number().integer().min(0).optional(),
-    Status: Joi.string().max(50).optional(),
-    Created_by: Joi.string().max(100).optional(),
+    status: Joi.string().max(50).optional(),
+    created_by: Joi.string().max(100).optional(),
     CREATED_DATETIME: dateValidation.optional(),
     LAST_UPDATED_BY: Joi.string().max(100).optional(),
     LAST_UPDATED_DATETIME: dateValidation.optional(),
@@ -487,9 +487,9 @@ const labourValidation = {
     work_verified_by: Joi.string().max(100).optional(),
     Paid: Joi.number().integer().min(0).optional(),
     Balance: Joi.number().integer().min(0).optional(),
-    Status: Joi.string().max(50).optional(),
+    status: Joi.string().max(50).optional(),
     Check_list: Joi.number().integer().optional(),
-    Created_by: Joi.string().max(100).optional(),
+    created_by: Joi.string().max(100).optional(),
     CREATED_DATETIME: dateValidation.optional(),
     LAST_UPDATED_BY: Joi.string().max(100).optional(),
     LAST_UPDATED_DATETIME: dateValidation.optional(),
@@ -512,7 +512,7 @@ const labourValidation = {
     work_verified_by: Joi.string().max(100).optional(),
     Paid: Joi.number().integer().min(0).optional(),
     Balance: Joi.number().integer().min(0).optional(),
-    Status: Joi.string().max(50).optional(),
+    status: Joi.string().max(50).optional(),
     Check_list: Joi.number().integer().optional(),
     LAST_UPDATED_BY: Joi.string().max(100).optional(),
     LAST_UPDATED_DATETIME: dateValidation.optional(),
@@ -552,7 +552,7 @@ const paymentValidation = {
     Project_id: Joi.number().integer().positive().optional(),
     Payment_date: dateValidation.required(),
     Amount: Joi.number().precision(2).positive().required(),
-    Created_by: Joi.string().max(50).optional(),
+    created_by: Joi.string().max(50).optional(),
     Created_Datetime: dateValidation.optional(),
     //tenant_id: commonFields.tenant_id,
     //branch_id: commonFields.branch_id
@@ -563,7 +563,7 @@ const paymentValidation = {
     Project_id: Joi.number().integer().positive().optional(),
     Payment_date: dateValidation.optional(),
     Amount: Joi.number().precision(2).positive().optional(),
-    Updated_by: Joi.string().max(50).optional(),
+    updated_by: Joi.string().max(50).optional(),
     Updated_datetime: dateValidation.optional(),
   }).min(1),
 
@@ -584,7 +584,7 @@ const paymentValidation = {
     Material_amount: Joi.string().max(50).optional(),
     Payment_Date: dateValidation.optional(),
     Amount: Joi.number().integer().min(0).optional(),
-    Created_by: Joi.string().max(50).optional(),
+    created_by: Joi.string().max(50).optional(),
     Created_Datetime: dateValidation.optional(),
     //tenant_id: commonFields.tenant_id,
     //branch_id: commonFields.branch_id
@@ -647,7 +647,7 @@ const userBranchValidation = {
     branch_id: Joi.number().integer().positive().required(),
     user_id: Joi.number().integer().positive().required(),
     //tenant_id: commonFields.tenant_id,
-    created_by: Joi.string().max(30).default("admin"),
+    created_by: Joi.string().max(30).default("ADMIN"),
   }),
 
   updateUserBranch: Joi.object({

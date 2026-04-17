@@ -11,7 +11,7 @@ exports.materialList = async (Material, tenant_id, branch_id) => {
   try {
     conn = await pool.getConnection();
     const result = await conn.query(
-      "INSERT INTO mas_material_list (tenant_id, branch_id, Material_name, Created_by, created_datetime) VALUES (?, ?, ?, ?, ?)",
+      "INSERT INTO mas_material_list (tenant_id, branch_id, Material_name, created_by, created_datetime) VALUES (?, ?, ?, ?, ?)",
       [
         tenant_id,
         branch_id,
@@ -60,7 +60,7 @@ exports.materialUsed = async (Mat_Used, tenant_id, branch_id) => {
     `;
     const insertQuery = `
       INSERT INTO materials_used
-      (tenant_id, branch_id, Project_id, Project_name, Date, Material_List, Material_Used, Created_by, CREATED_DATETIME)
+      (tenant_id, branch_id, Project_id, Project_name, Date, Material_List, Material_Used, created_by, CREATED_DATETIME)
       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
     `;
     for (const details of Mat_Used) {
@@ -336,7 +336,7 @@ exports.measurementDetails = async (
       Remarks,
       Paid,
       Balance,
-      Status,
+      status,
       currentDate,
     } = material_report;
 
@@ -352,7 +352,7 @@ exports.measurementDetails = async (
       `INSERT INTO daily_process_details
       (tenant_id, branch_id, Project_id, Project_name, DATE, Measurement, Units, Nos,
       Length, Breadth, D_H, Quantity, Rate, Amount, Remarks, Photos, Paid, Balance,
-      Status, CREATED_BY, CREATED_DATETIME)
+      status, CREATED_BY, CREATED_DATETIME)
       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
       [
         tenant_id,
@@ -373,7 +373,7 @@ exports.measurementDetails = async (
         photoPath,
         Paid,
         safeBalance,     // ✅ Single value
-        Status,
+        status,
         username,
         currentDate,
       ]
@@ -421,7 +421,7 @@ exports.updateMaterial = async (materialUpdates, tenant_id, branch_id) => {
       SET
         Project_id = ?, Project_name = ?, Date = ?, Measurement = ?, Units = ?,
         Nos = ?, Length = ?, Breadth = ?, D_H = ?, Quantity = ?, Rate = ?,
-        Amount = ?, Remarks = ?, Paid = ?, Balance = ?, Status = ?,
+        Amount = ?, Remarks = ?, Paid = ?, Balance = ?, status = ?,
         LAST_UPDATED_BY = ?, LAST_UPDATED_DATETIME = ?
       WHERE Dailyprocess_id = ? AND tenant_id = ? AND branch_id = ?
     `;
@@ -450,7 +450,7 @@ exports.updateMaterial = async (materialUpdates, tenant_id, branch_id) => {
         Remarks,
         Paid,
         Balance,
-        Status,
+        status,
         Dailyprocess_id,
       } = materialUpdate;
 
@@ -470,7 +470,7 @@ exports.updateMaterial = async (materialUpdates, tenant_id, branch_id) => {
         Remarks,
         Paid,
         safe(Balance),
-        Status,
+        status,
         username || 'SYSTEM',
         formattedUpdateDate || new Date(),
         Dailyprocess_id,

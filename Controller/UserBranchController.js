@@ -31,7 +31,7 @@ exports.createUserBranch = async (req, res) => {
 
 exports.getUserBranches = async (req, res) => {
   const tenant_id = req.tenant_id;
-  const currentUserRights = req.role;
+  const currentUserrole = req.role;
   const { user_id, branch_id } = req.query;
   const cacheKey = `userbranch:list:${tenant_id}:${user_id || 'all'}:${branch_id || 'all'}`;
 
@@ -51,7 +51,7 @@ exports.getUserBranches = async (req, res) => {
   
   data = await userBranchService.getUserBranches(
     tenant_id,
-    currentUserRights,
+    currentUserrole,
     filters
   );
 
@@ -87,7 +87,7 @@ exports.getUserBranchById = async (req, res) => {
 exports.updateUserBranch = async (req, res) => {
   const tenant_id = req.tenant_id;
   const { branch_id, user_id } = req.params;
-  const currentUserRights = req.role;
+  const currentUserrole = req.role;
   const updatedBy = req.user.given_name;
   
   const result = await userBranchService.updateUserBranch(
@@ -95,7 +95,7 @@ exports.updateUserBranch = async (req, res) => {
     tenant_id,
     branch_id,
     user_id,
-    currentUserRights,
+    currentUserrole,
     updatedBy
   );
 
@@ -112,9 +112,9 @@ exports.updateUserBranch = async (req, res) => {
 exports.deleteUserBranch = async (req, res) => {
   const tenant_id = req.tenant_id;
   const { branch_id, user_id } = req.params;
-  const currentUserRights = req.role;
+  const currentUserrole = req.role;
   
-  await userBranchService.deleteUserBranch(tenant_id, branch_id, user_id, currentUserRights);
+  await userBranchService.deleteUserBranch(tenant_id, branch_id, user_id, currentUserrole);
 
   // Invalidate cache
   await RedisService.delete(`userbranch:${branch_id}:${user_id}:${tenant_id}`);
@@ -129,7 +129,7 @@ exports.deleteUserBranch = async (req, res) => {
 exports.getBranchesByUser = async (req, res) => {
   const tenant_id = req.tenant_id;
   const user_id = req.params.user_id;
-  const currentUserRights = req.role;
+  const currentUserrole = req.role;
   const requestUserId = req.user.user_id;
   const cacheKey = `userbranch:branches:${user_id}:${tenant_id}`;
 
@@ -146,7 +146,7 @@ exports.getBranchesByUser = async (req, res) => {
   data = await userBranchService.getBranchesByUser(
     tenant_id,
     user_id,
-    currentUserRights,
+    currentUserrole,
     requestUserId
   );
 
@@ -163,7 +163,7 @@ exports.getBranchesByUser = async (req, res) => {
 exports.getUsersByBranch = async (req, res) => {
   const tenant_id = req.tenant_id;
   const branch_id = req.params.branch_id;
-  const currentUserRights = req.role;
+  const currentUserrole = req.role;
   const cacheKey = `userbranch:users:${branch_id}:${tenant_id}`;
 
   // Check cache
@@ -176,7 +176,7 @@ exports.getUsersByBranch = async (req, res) => {
     });
   }
 
-  data = await userBranchService.getUsersByBranch(tenant_id, branch_id, currentUserRights);
+  data = await userBranchService.getUsersByBranch(tenant_id, branch_id, currentUserrole);
 
   // Cache for 1 hour
   await RedisService.create(cacheKey, data, RedisTime);

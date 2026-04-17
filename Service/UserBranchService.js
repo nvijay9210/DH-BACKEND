@@ -9,7 +9,7 @@ exports.createUserBranch = async (
   tenant_id,
   branch_id,
   createdBy,
-  userId = 0
+  userId = 0,
 ) => {
   // 🔐 Validate required parameters
   if (!tenant_id || !branch_id || !createdBy) {
@@ -17,34 +17,34 @@ exports.createUserBranch = async (
       tenant_id,
       branch_id,
       createdBy,
-      userId
+      userId,
     });
     throw new AppError("Invalid parameters for user-branch mapping", 400);
   }
 
   let conn;
   userId = userId ?? Details?.user_id;
-  
+
   try {
     conn = await pool.getConnection();
-    
+
     const existing = await conn.query(
       `SELECT 1 FROM userbranch
        WHERE tenant_id = ? AND branch_id = ? AND user_id = ?`,
-      [tenant_id, branch_id, userId]
+      [tenant_id, branch_id, userId],
     );
-    
+
     if (existing.length > 0) {
       throw new AppError("User is already mapped to this branch", 409);
     }
-    
+
     const result = await conn.query(
       `INSERT INTO userbranch
        (tenant_id, branch_id, user_id, created_by)
        VALUES (?, ?, ?, ?)`,
-      [tenant_id, branch_id, userId, createdBy]  // ✅ Now createdBy is defined
+      [tenant_id, branch_id, userId, createdBy], // ✅ Now createdBy is defined
     );
-    
+
     console.log("✅ User-Branch mapping created successfully");
     return {
       success: true,
@@ -62,25 +62,25 @@ exports.createUserBranch = async (
 };
 
 /* ===============================
-   Get All User-Branch Mappings (Admin Only)
+   Get All User-Branch Mappings (ADMIN Only)
 =================================*/
 exports.getUserBranches = async (
   tenant_id,
   branch_id,
-  currentUserRights,
-  filters = {}
+  currentUserrole,
+  filters = {},
 ) => {
   let conn;
   try {
     conn = await pool.getConnection();
-    if (currentUserRights !== "Admin" && currentUserRights !== "Super User") {
-      throw new AppError("Access denied: Admin privileges required", 403);
+    if (currentUserrole !== "ADMIN" && currentUserrole !== "SUPERUSER") {
+      throw new AppError("Access denied: ADMIN privileges required", 403);
     }
-    let query = `SELECT ub.*, u.User_name, b.branch_name
+    let query = `SELECT ub.*, u.username, b.branch_name
     FROM userbranch ub
-    LEFT JOIN user u ON ub.user_id = u.User_id
+    LEFT JOIN user u ON ub.user_id = u.user_id
     LEFT JOIN branch b ON ub.branch_id = b.branch_id
-    WHERE ub.tenant_id = ?`;
+    WHERE ub.tenant_id = ? and b.is_active=1`;
     let params = [tenant_id];
     if (filters.user_id) {
       query += ` AND ub.user_id = ?`;
@@ -111,12 +111,12 @@ exports.getUserBranchById = async (tenant_id, branch_id, user_id) => {
   try {
     conn = await pool.getConnection();
     const result = await conn.query(
-      `SELECT ub.*, u.User_name, b.branch_name
+      `SELECT ub.*, u.username, b.branch_name
       FROM userbranch ub
-      LEFT JOIN user u ON ub.user_id = u.User_id
+      LEFT JOIN user u ON ub.user_id = u.user_id
       LEFT JOIN branch b ON ub.branch_id = b.branch_id
-      WHERE ub.tenant_id = ? AND ub.branch_id = ? AND ub.user_id = ?`,
-      [tenant_id, branch_id, user_id]
+      WHERE ub.tenant_id = ? AND ub.branch_id = ? AND ub.user_id = ? and b.is_active=1`,
+      [tenant_id, branch_id, user_id],
     );
     if (!result[0] || result[0].length === 0) {
       throw new AppError("User-Branch mapping not found", 404);
@@ -140,19 +140,19 @@ exports.updateUserBranch = async (
   tenant_id,
   branch_id,
   user_id,
-  currentUserRights,
-  updatedBy
+  currentUserrole,
+  updatedBy,
 ) => {
   let conn;
   try {
     conn = await pool.getConnection();
-    if (currentUserRights !== "Admin" && currentUserRights !== "Super User") {
-      throw new AppError("Access denied: Admin privileges required", 403);
+    if (currentUserrole !== "ADMIN" && currentUserrole !== "SUPERUSER") {
+      throw new AppError("Access denied: ADMIN privileges required", 403);
     }
     const existing = await conn.query(
       `SELECT 1 FROM userbranch
-      WHERE tenant_id = ? AND branch_id = ? AND user_id = ?`,
-      [tenant_id, branch_id, user_id]
+      WHERE tenant_id = ? AND branch_id = ? AND user_id = ? and b.is_active=1`,
+      [tenant_id, branch_id, user_id],
     );
     if (existing[0].length === 0) {
       throw new AppError("User-Branch mapping not found", 404);
@@ -161,7 +161,7 @@ exports.updateUserBranch = async (
       `UPDATE userbranch
       SET update_by = ?, updated_at = CURRENT_TIMESTAMP
       WHERE tenant_id = ? AND branch_id = ? AND user_id = ?`,
-      [updatedBy, tenant_id, branch_id, user_id]
+      [updatedBy, tenant_id, branch_id, user_id],
     );
     if (result[0].affectedRows === 0) {
       throw new AppError("Failed to update user-branch mapping", 500);
@@ -188,18 +188,18 @@ exports.deleteUserBranch = async (
   tenant_id,
   branch_id,
   user_id,
-  currentUserRights
+  currentUserrole,
 ) => {
   let conn;
   try {
     conn = await pool.getConnection();
-    if (currentUserRights !== "Admin" && currentUserRights !== "Super User") {
-      throw new AppError("Access denied: Admin privileges required", 403);
+    if (currentUserrole !== "ADMIN" && currentUserrole !== "SUPERUSER") {
+      throw new AppError("Access denied: ADMIN privileges required", 403);
     }
     const result = await conn.query(
       `DELETE FROM userbranch
-      WHERE tenant_id = ? AND branch_id = ? AND user_id = ?`,
-      [tenant_id, branch_id, user_id]
+      WHERE tenant_id = ? AND branch_id = ? AND user_id = ? and b.is_active=1`,
+      [tenant_id, branch_id, user_id],
     );
     if (result[0].affectedRows === 0) {
       throw new AppError("User-Branch mapping not found", 404);
@@ -225,17 +225,17 @@ exports.deleteUserBranch = async (
 exports.getBranchesByUser = async (
   tenant_id,
   user_id,
-  currentUserRights,
-  requestUserId
+  currentUserrole,
+  requestUserId,
 ) => {
   let conn;
   try {
     conn = await pool.getConnection();
-    if (currentUserRights !== "Admin" && currentUserRights !== "Super User") {
+    if (currentUserrole !== "ADMIN" && currentUserrole !== "SUPERUSER") {
       if (user_id !== requestUserId) {
         throw new AppError(
           "Access denied: You can only view your own branch assignments",
-          403
+          403,
         );
       }
     }
@@ -243,9 +243,9 @@ exports.getBranchesByUser = async (
       `SELECT ub.*, b.branch_name, b.branch_code, b.city, b.state
       FROM userbranch ub
       INNER JOIN branch b ON ub.branch_id = b.branch_id
-      WHERE ub.tenant_id = ? AND ub.user_id = ?
+      WHERE ub.tenant_id = ? AND ub.user_id = ? and b.is_active=?
       ORDER BY b.branch_name`,
-      [tenant_id, user_id]
+      [tenant_id, user_id, 1],
     );
     return result[0];
   } catch (err) {
@@ -261,20 +261,20 @@ exports.getBranchesByUser = async (
 /* ===============================
    Get Users Assigned to Branch
 =================================*/
-exports.getUsersByBranch = async (tenant_id, branch_id, currentUserRights) => {
+exports.getUsersByBranch = async (tenant_id, branch_id, currentUserrole) => {
   let conn;
   try {
     conn = await pool.getConnection();
-    if (currentUserRights !== "Admin" && currentUserRights !== "Super User") {
-      throw new AppError("Access denied: Admin privileges required", 403);
+    if (currentUserrole !== "ADMIN" && currentUserrole !== "SUPERUSER") {
+      throw new AppError("Access denied: ADMIN privileges required", 403);
     }
     const result = await conn.query(
-      `SELECT ub.*, u.User_name, u.role, u.Status, u.Created_date
+      `SELECT ub.*, u.username, u.role, u.status, u.created_at
       FROM userbranch ub
-      INNER JOIN user u ON ub.user_id = u.User_id
-      WHERE ub.tenant_id = ? AND ub.branch_id = ?
-      ORDER BY u.User_name`,
-      [tenant_id, branch_id]
+      INNER JOIN user u ON ub.user_id = u.user_id
+      WHERE ub.tenant_id = ? AND ub.branch_id = ? and b.is_active=?
+      ORDER BY u.username`,
+      [tenant_id, branch_id, 1],
     );
     return result[0];
   } catch (err) {

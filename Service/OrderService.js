@@ -15,7 +15,7 @@ exports.order = async (orders, tenant_id, branch_id) => {
       INSERT INTO Order_Details
       (tenant_id, branch_id, Project_id, Project_name, Material_Name, Quantity, Unit,
       Order_date, Delivery_Date, Supplier_name, Supplier_Contact, Rate, Amount,
-      Payment_Date, Paid, Balance, Status, Created_by, CREATED_DATETIME)
+      Payment_Date, Paid, Balance, status, created_by, CREATED_DATETIME)
       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `;
     const selectQuery = `
@@ -48,7 +48,7 @@ exports.order = async (orders, tenant_id, branch_id) => {
         Payment_Date,
         Paid,
         Balance,
-        Status,
+        status,
         username,
         datetime,
       } = order;
@@ -69,7 +69,7 @@ exports.order = async (orders, tenant_id, branch_id) => {
         Payment_Date,
         Paid,
         Balance,
-        Status,
+        status,
         username,
         datetime,
       ]);
@@ -138,7 +138,7 @@ exports.updateOrder = async (orders, tenant_id, branch_id) => {
       UPDATE Order_Details
       SET Material_Name=?, Quantity=?, Unit=?, Order_date=?, Delivery_Date=?,
       Supplier_name=?, Supplier_Contact=?, Rate=?, Amount=?, Payment_Date=?,
-      Paid=?, Balance=?, Status=?, LAST_UPDATED_BY=?, LAST_UPDATED_DATETIME=?
+      Paid=?, Balance=?, status=?, LAST_UPDATED_BY=?, LAST_UPDATED_DATETIME=?
       WHERE Order_id = ? AND tenant_id = ? AND branch_id = ?
     `;
     const selectQuery = `
@@ -167,7 +167,7 @@ exports.updateOrder = async (orders, tenant_id, branch_id) => {
         Payment_Date,
         Paid,
         Balance,
-        Status,
+        status,
         Order_id,
         LAST_UPDATED_BY,
         LAST_UPDATED_DATETIME,
@@ -228,7 +228,7 @@ exports.updateOrder = async (orders, tenant_id, branch_id) => {
         Payment_Date != null ? convert(Payment_Date) : null,
         Paid,
         Balance,
-        Status,
+        status,
         LAST_UPDATED_BY,
         LAST_UPDATED_DATETIME,
         Order_id,
@@ -395,7 +395,7 @@ exports.materialPaymentSelected = async (payments, tenant_id, branch_id) => {
       const newStatus = newBalance === 0 ? "Paid" : "Partial";
       await conn.query(
         `UPDATE order_details
-        SET Paid = ?, Balance = ?, Status = ?, Payment_Date = ?
+        SET Paid = ?, Balance = ?, status = ?, Payment_Date = ?
         WHERE Order_id = ? AND tenant_id = ? AND branch_id = ?`,
         [
           newPaid,
@@ -410,7 +410,7 @@ exports.materialPaymentSelected = async (payments, tenant_id, branch_id) => {
       await conn.query(
         `INSERT INTO material_payments
         (tenant_id, branch_id, Project_id, Material_name, Supplier_name,
-        Payment_Date, Material_amount, Amount, Created_by, Created_Datetime)
+        Payment_Date, Material_amount, Amount, created_by, Created_Datetime)
         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
         [
           tenant_id,

@@ -76,8 +76,8 @@ async function testUserCrud() {
   const createResp = await client.post("/user/NewUser", {
     username,
     password: "password123",
-    role: "Admin",
-    status: "Active",
+    role: "ADMIN",
+    status: "A",
   });
   console.log("Created user id", createResp.data.userId);
 
@@ -89,7 +89,7 @@ async function testUserCrud() {
   await client.put("/user/UserAccess", {
     username,
     role: "Operator",
-    status: "Active",
+    status: "A",
   });
   console.log("Updated user access");
 
@@ -179,7 +179,7 @@ async function testOrderModule() {
         Paid: 0,
         Balance: 250,
         Status: "Ordered",
-        Created_by: "DHADMIN",
+        created_by: "DHADMIN",
         CREATED_DATETIME: now,
       },
     ],

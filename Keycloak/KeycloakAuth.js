@@ -586,7 +586,7 @@ router.post("/login", async (req, res) => {
     }
 
     /* ===============================
-       🚫 Check Account Status
+       🚫 Check Account status
     =============================== */
     if (dbUser.status !== "A") {
       return res.status(403).json({
@@ -892,7 +892,7 @@ router.post("/refresh-token", async (req, res, next) => {
 //   }
 // });
 
-// Forgot Password
+// Forgot password_hash
 router.post("/forgettenpassword", async (req, res, next) => {
   // log("FORGOT_PASSWORD", "Forgot password request", req.body);
 
@@ -912,7 +912,7 @@ router.post("/forgettenpassword", async (req, res, next) => {
 
     const { realm, clientId } = tenantConfig;
 
-    // Keycloak admin login to fetch user
+    // Keycloak ADMIN login to fetch user
     const tokenRes = await keycloakLogin(
       process.env.VIEW_USER_USERNAME,
       process.env.VIEW_USER_PASS,
@@ -987,9 +987,9 @@ router.post("/forgettenpassword", async (req, res, next) => {
   }
 });
 
-// Reset Password
+// Reset password_hash
 router.post("/reset-password", async (req, res, next) => {
-  log("RESET_PASSWORD_ROUTE", "Password reset request", req.body);
+  log("RESET_PASSWORD_ROUTE", "password_hash reset request", req.body);
   try {
     const { username, newPassword, host } = req.body;
     const HOST_REALM_CLIENT = JSON.parse(process.env.HOST_REALM_CLIENT);
@@ -1012,7 +1012,7 @@ router.post("/reset-password", async (req, res, next) => {
     const adminToken = tokenResponse.access_token;
 
     const userResponse = await axios.get(
-      `${process.env.KEYCLOAK_BASE_URL}/admin/realms/${realm}/users?username=${username}`,
+      `${process.env.KEYCLOAK_BASE_URL}/ADMIN/realms/${realm}/users?username=${username}`,
       { headers: { Authorization: `Bearer ${adminToken}` } }
     );
 
@@ -1022,7 +1022,7 @@ router.post("/reset-password", async (req, res, next) => {
       return res.status(404).json({ message: "User not found" });
     }
 
-    const resetUrl = `${process.env.KEYCLOAK_BASE_URL}/admin/realms/${realm}/users/${user.id}/reset-password`;
+    const resetUrl = `${process.env.KEYCLOAK_BASE_URL}/ADMIN/realms/${realm}/users/${user.id}/reset-password`;
     await axios.put(
       resetUrl,
       { type: "password", value: newPassword, temporary: false },
@@ -1034,8 +1034,8 @@ router.post("/reset-password", async (req, res, next) => {
       }
     );
 
-    log("RESET_PASSWORD_ROUTE", "✅ Password reset successful");
-    return res.status(200).json({ message: "Password updated successfully" });
+    log("RESET_PASSWORD_ROUTE", "✅ password_hash reset successful");
+    return res.status(200).json({ message: "password_hash updated successfully" });
   } catch (err) {
     log("RESET_PASSWORD_ROUTE", "💥 Error", {
       error: err.response?.data || err.message,

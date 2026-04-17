@@ -32,8 +32,8 @@ const branchAccessMiddleware = (operation = 'create') => {
       }
 
       // 🔑 Role-Based Access Control
-      // ✅ Super User: Full access
-      if (user.role === "Super User") {
+      // ✅ SUPERUSER: Full access
+      if (user.role === "SUPERUSER") {
         if (operation === 'create' && requestedBranch && requestedUser) {
           const exists = await checkDuplicateMapping(
             requestedBranch, 
@@ -51,8 +51,8 @@ const branchAccessMiddleware = (operation = 'create') => {
         return next();
       }
 
-      // ✅ Admin: Tenant-scoped access
-      if (user.role === "Admin") {
+      // ✅ ADMIN: Tenant-scoped access
+      if (user.role === "ADMIN") {
         // Validate tenant match
         if (req.body.tenant_id && Number(req.body.tenant_id) !== Number(user.tenant_id)) {
           return res.status(403).json({ 

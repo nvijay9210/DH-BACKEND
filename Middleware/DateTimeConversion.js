@@ -41,11 +41,11 @@ const DATE_ONLY_FIELDS = [
   'created_datetime',
   
   // user
-  'Created_date',
-  'Updated_date',
+  'created_at',
+  'updated_at',
   
   // project_status
-  'Created_date',
+  'created_at',
   
   // daily_process_details, labour_worked_details, materials_used, order_details
   'CREATED_DATETIME',

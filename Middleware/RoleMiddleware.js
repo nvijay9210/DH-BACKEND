@@ -26,7 +26,7 @@ exports.checkRole = (allowedRoles) => {
  * Superuser-only access
  */
 exports.requireSuperuser = (req, res, next) => {
-  exports.checkRole(["Super User", "Admin"])(req, res, next);
+  exports.checkRole(["SUPERUSER", "ADMIN"])(req, res, next);
 };
 
 /**
@@ -37,7 +37,7 @@ exports.isSelfOrSuperuser = (req, res, next) => {
     const user = req.user;
     const targetUserId = parseInt(req.params.user_id);
 
-    if (user.role === "Super User" || user.role === "Admin") {
+    if (user.role === "SUPERUSER" || user.role === "ADMIN") {
       return next();
     }
     if (user.user_id === targetUserId) {
