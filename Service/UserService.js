@@ -452,9 +452,9 @@ exports.addUser = async (details,tenant_id,branch_id,created_by, req) => {
       safe(created_by)
     ];
 
-    if (values.length !== 20) {
+    if (values.length !== 21) {
       throw new Error(
-        `Value count mismatch: Expected 20, got ${values.length}`,
+        `Value count mismatch: Expected 21, got ${values.length}`,
       );
     }
 

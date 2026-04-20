@@ -33,7 +33,7 @@ app.use(
   cors({
     origin: [
       "http://localhost:5173", // Vite
-      "http://localhost:3000", // CRA
+      "http://localhost:3501", // CRA
       "https://yourdomain.com", // Production frontend
     ],
     methods: ["GET", "POST", "PUT", "DELETE"],
