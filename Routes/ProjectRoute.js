@@ -29,6 +29,10 @@ router.put(
   validateRequest('updateProject'),
   asyncHandler(projectController.updateProject)
 );
+router.post(
+  "/deleteProject",
+  asyncHandler(projectController.deleteProject)
+);
 
 // // Get All Projects
 // router.get(

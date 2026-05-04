@@ -1,13 +1,13 @@
 const projectService = require("../Service/ProjectService");
 const RedisService = require("../Service/RedisService");
-const RedisTime=process.env.RedisTime
+const RedisTime = process.env.RedisTime;
 
 exports.createProject = async (req, res) => {
   const { tenant_id, branch_id } = req;
   const result = await projectService.createProject(
     req.body,
     tenant_id,
-    branch_id
+    branch_id,
   );
 
   // Invalidate list caches
@@ -119,10 +119,7 @@ exports.getIndividualProjectSpended = async (req, res) => {
     });
   }
 
-  data = await projectService.getIndividualProjectSpended(
-    tenant_id,
-    branch_id
-  );
+  data = await projectService.getIndividualProjectSpended(tenant_id, branch_id);
 
   // Cache for 1 hour
   await RedisService.create(cacheKey, data, RedisTime);
@@ -148,10 +145,7 @@ exports.getIndividualProjectTotal = async (req, res) => {
     });
   }
 
-  data = await projectService.getIndividualProjectTotal(
-    tenant_id,
-    branch_id
-  );
+  data = await projectService.getIndividualProjectTotal(tenant_id, branch_id);
 
   // Cache for 1 hour
   await RedisService.create(cacheKey, data, RedisTime);
@@ -174,11 +168,7 @@ exports.getProjectById = async (req, res) => {
     return res.status(200).json({ success: true, data });
   }
 
-  data = await projectService.getProjectById(
-    projectId,
-    tenant_id,
-    branch_id
-  );
+  data = await projectService.getProjectById(projectId, tenant_id, branch_id);
 
   // Cache for 1 hour
   await RedisService.create(cacheKey, data, RedisTime);
@@ -205,7 +195,7 @@ exports.projectDetailsController = async (req, res) => {
   const data = await projectService.projectDetailsService(
     details,
     tenant_id,
-    branch_id
+    branch_id,
   );
 
   res.status(200).json({ success: true, data });
@@ -241,7 +231,7 @@ exports.IndividualProjectSpended = async (req, res) => {
   const { tenant_id, branch_id } = req;
   const data = await projectService.IndividualProjectSpended(
     tenant_id,
-    branch_id
+    branch_id,
   );
 
   res.status(200).json({ success: true, data });
@@ -251,7 +241,7 @@ exports.IndividualProjectTotal = async (req, res) => {
   const { tenant_id, branch_id } = req;
   const data = await projectService.IndividualProjectTotal(
     tenant_id,
-    branch_id
+    branch_id,
   );
 
   res.status(200).json({ success: true, data });
@@ -262,7 +252,7 @@ exports.FetchProjectEdit = async (req, res) => {
   const data = await projectService.FetchProjectEdit(
     req.body,
     tenant_id,
-    branch_id
+    branch_id,
   );
 
   res.status(200).json({ success: true, data });
@@ -275,7 +265,7 @@ exports.EditProject_Details = async (req, res) => {
   const data = await projectService.EditProject_Details(
     details,
     tenant_id,
-    branch_id
+    branch_id,
   );
 
   res.status(200).json({ success: true, data });
@@ -300,7 +290,10 @@ exports.getProjectFinancialSummary = async (req, res) => {
       });
     }
 
-    data = await projectService.getProjectFinancialSummary(tenant_id, branch_id);
+    data = await projectService.getProjectFinancialSummary(
+      tenant_id,
+      branch_id,
+    );
 
     // Cache for 30 minutes (financial data changes frequently)
     await RedisService.create(cacheKey, data, 1800);
@@ -408,7 +401,7 @@ exports.getMonthlyTrendData = async (req, res) => {
       project_id,
       tenant_id,
       branch_id,
-      parseInt(months)
+      parseInt(months),
     );
 
     // Cache for 10 minutes
@@ -428,24 +421,54 @@ exports.getMonthlyTrendData = async (req, res) => {
    Dashboard: Invalidate Cache on Data Change
    Call this after create/update/delete operations
 =================================*/
-exports.invalidateDashboardCache = async (tenant_id, branch_id, project_id = null) => {
+exports.invalidateDashboardCache = async (
+  tenant_id,
+  branch_id,
+  project_id = null,
+) => {
   try {
     const patterns = [
       `dashboard:financials:${tenant_id}:${branch_id}`,
       `dashboard:summary:${tenant_id}:${branch_id}`,
       `dashboard:comparison:${tenant_id}:${branch_id}`,
     ];
-    
+
     if (project_id) {
-      patterns.push(`dashboard:trend:${project_id}:${tenant_id}:${branch_id}:*`);
+      patterns.push(
+        `dashboard:trend:${project_id}:${tenant_id}:${branch_id}:*`,
+      );
     }
-    
+
     for (const pattern of patterns) {
       await RedisService.deleteByPattern(pattern);
     }
-    
+
     console.log("✅ Dashboard cache invalidated");
   } catch (error) {
     console.error("❌ invalidateDashboardCache Error:", error);
+  }
+};
+exports.deleteProject = async (req, res) => {
+  const { tenant_id, branch_id } = req;
+  const { project_id } = req.body;
+  try {
+    const data = await projectService.deleteProject(
+      project_id,
+      tenant_id,
+      branch_id,
+    );
+    if (data.affectedRows === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "Project not found or already deleted",
+      });
+    }
+    console.log({success:true,message:"✅ Project deleted Successfully"});
+  } catch (error) {
+    console.error("❌ invalidateDashboardCache Error:", error);
+      res.status(500).json({
+      success: false,
+      message: error.message || "Failed to delete project data",
+    });
   }
 };
