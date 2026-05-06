@@ -947,10 +947,12 @@ const validateToken = async (req, res, next) => {
       req.session = session;
       req.user = req.tokenData;
       req.username=req.tokenData.preferred_username;
-      req.role = req.role;
+      req.role = role;
       req.user_id = session.user_id;
       req.tenant_id = session.tenant_id;
       req.branch_id = session.branch_id || null;
+
+      console.log('ROLE:',req.role)
 
       const keycloakId = req.tokenData.sub;
       debug.log("Middleware", "Fetching user from database", {
@@ -959,26 +961,27 @@ const validateToken = async (req, res, next) => {
         branchId: req.branch_id,
       });
 
-      const userData = await getUserByKeycloakIdWithTenant(
-        keycloakId,
-        req.tenant_id,
-        req.branch_id,
-      );
-      if (!userData) {
-        debug.error("Middleware", "User not found in database", {
-          keycloakId,
-          tenantId: req.tenant_id,
-        });
-        return next(new AppError("User not found or inactive in system", 401));
-      }
+      // const userData = await getUserByKeycloakIdWithTenant(
+      //   keycloakId,
+      //   req.tenant_id,
+      //   req.branch_id,
+      // );
+      // if (!userData) {
+      //   debug.error("Middleware", "User not found in database", {
+      //     keycloakId,
+      //     tenantId: req.tenant_id,
+      //   });
+      //   return next(new AppError("User not found or inactive in system", 401));
+      // }
 
-      req.role = userData.role;
-      req.userStatus = userData.status;
-      debug.log("Middleware", "✅ User fetched from DB, role assigned", {
-        userId: userData.user_id,
-        role: userData.role,
-        status: userData.status,
-      });
+      // req.role = userData.role;
+      // req.userStatus = userData.status||'A';
+      req.userStatus = 'A';
+      // debug.log("Middleware", "✅ User fetched from DB, role assigned", {
+      //   userId: userData.user_id,
+      //   role: userData.role,
+      //   status: userData.status,
+      // });
       debug.log(
         "Middleware",
         "✅ Token valid, proceeding to next middleware...",
@@ -1124,7 +1127,7 @@ router.post("/login", async (req, res) => {
       return res.status(403).json({ message: "User account is inactive" });
     }
 
-    await UserService.resetFailedAttempts(dbUser.user_id, conn);
+    // await UserService.resetFailedAttempts(dbUser.user_id, conn);
     debug.log("Route", "Building user context");
 
     const userContext = await ContextService.build(

@@ -10,7 +10,7 @@ const mariadb = require("mariadb");
 // ============================================================================
 // 🔹 DEBUG CONFIG (Simple toggle)
 // ============================================================================
-const DEBUG = process.env.DEBUG_DB === "true" || process.env.NODE_ENV === "development";
+const DEBUG = process.env.DEBUG_DB === "true";
 
 const log = (type, msg, data = null) => {
   if (!DEBUG) return;

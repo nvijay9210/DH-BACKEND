@@ -31,7 +31,7 @@ const logger = require("./Logs/Logger"); // ✅ Optional: if using logger
 })();
 
 const server = app.listen(PORT, () => {
-  logger.info(`🚀 Server running on port ${PORT}`, {
+  console.log(`🚀 Server running on port ${PORT}`, {
     env: process.env.NODE_ENV,
     pid: process.pid,
   });
