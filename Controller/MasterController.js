@@ -13,7 +13,7 @@ exports.labourList = async (req, res) => {
   }
 
   data = await masterService.labourList(details,tenant_id, branch_id);
-  
+  await RedisService.deleteByPattern(`master:labour:list:*`);
   await RedisService.create(cacheKey, data, REDIS_DATA_TTL);
   res.status(200).json({ success: true, data });
 };
@@ -30,7 +30,7 @@ exports.materialList = async (req, res) => {
   }
 
   data = await masterService.materialList(details,tenant_id, branch_id);
-  
+  await RedisService.deleteByPattern(`master:material:list:*`);
   await RedisService.create(cacheKey, data, REDIS_DATA_TTL);
   res.status(200).json({ success: true, data });
 };
@@ -46,7 +46,7 @@ exports.contractorList = async (req, res) => {
   }
 
   data = await masterService.contractorList(details,tenant_id, branch_id);
-  
+  await RedisService.deleteByPattern(`master:contractor:list:*`);
   await RedisService.create(cacheKey, data, REDIS_DATA_TTL);
   res.status(200).json({ success: true, data });
 };
@@ -62,7 +62,7 @@ exports.supplierList = async (req, res) => {
   }
 
   data = await masterService.supplierList(details,tenant_id, branch_id);
-  
+  await RedisService.deleteByPattern(`master:supplier:*`);
   await RedisService.create(cacheKey, data, REDIS_DATA_TTL);
   res.status(200).json({ success: true, data });
 };
@@ -77,7 +77,7 @@ exports.fetchMaterial = async (req, res) => {
   }
 
   data = await masterService.fetchMaterial(tenant_id, branch_id);
-  
+  await RedisService.deleteByPattern(`master:material:*`);
   await RedisService.create(cacheKey, data, REDIS_DATA_TTL);
   res.status(200).json({ success: true, data });
 };
@@ -92,7 +92,7 @@ exports.fetchLabour = async (req, res) => {
   }
 
   data = await masterService.fetchLabour(tenant_id, branch_id);
-  
+  await RedisService.deleteByPattern(`master:labour:*`);
   await RedisService.create(cacheKey, data, REDIS_DATA_TTL);
   res.status(200).json({ success: true, data });
 };
@@ -107,7 +107,7 @@ exports.fetchContractor = async (req, res) => {
   }
 
   data = await masterService.fetchContractor(tenant_id, branch_id);
-  
+  await RedisService.deleteByPattern(`master:contractor:*`);
   await RedisService.create(cacheKey, data, REDIS_DATA_TTL);
   res.status(200).json({ success: true, data });
 };
@@ -122,7 +122,7 @@ exports.fetchSupplier = async (req, res) => {
   }
 
   data = await masterService.fetchSupplier(tenant_id, branch_id);
-  
+  await RedisService.deleteByPattern(`master:supplier:*`);
   await RedisService.create(cacheKey, data, REDIS_DATA_TTL);
   res.status(200).json({ success: true, data });
 };
