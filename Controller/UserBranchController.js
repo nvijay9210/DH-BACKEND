@@ -1,6 +1,6 @@
 const userBranchService = require("../Service/UserBranchService");
 const RedisService = require("../Service/RedisService");
-const RedisTime=process.env.RedisTime
+const REDIS_DATA_TTL=process.env.REDIS_DATA_TTL
 
 exports.createUserBranch = async (req, res) => {
   const { branch_id, user_id } = req.body;
@@ -56,7 +56,7 @@ exports.getUserBranches = async (req, res) => {
   );
 
   // Cache for 1 hour
-  await RedisService.create(cacheKey, data, RedisTime);
+  await RedisService.create(cacheKey, data, REDIS_DATA_TTL);
 
   res.status(200).json({
     success: true,
@@ -79,7 +79,7 @@ exports.getUserBranchById = async (req, res) => {
   data = await userBranchService.getUserBranchById(tenant_id, branch_id, user_id);
 
   // Cache for 1 hour
-  await RedisService.create(cacheKey, data, RedisTime);
+  await RedisService.create(cacheKey, data, REDIS_DATA_TTL);
   
   res.status(200).json({ success: true, data });
 };
@@ -151,7 +151,7 @@ exports.getBranchesByUser = async (req, res) => {
   );
 
   // Cache for 1 hour
-  await RedisService.create(cacheKey, data, RedisTime);
+  await RedisService.create(cacheKey, data, REDIS_DATA_TTL);
 
   res.status(200).json({
     success: true,
@@ -179,7 +179,7 @@ exports.getUsersByBranch = async (req, res) => {
   data = await userBranchService.getUsersByBranch(tenant_id, branch_id, currentUserrole);
 
   // Cache for 1 hour
-  await RedisService.create(cacheKey, data, RedisTime);
+  await RedisService.create(cacheKey, data, REDIS_DATA_TTL);
 
   res.status(200).json({
     success: true,

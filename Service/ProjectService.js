@@ -1,4 +1,4 @@
-const { pool } = require("../config/db");
+const { pool } = require("../Config/db");
 const { deleteFile } = require("../utils/UploadFile");
 const { AppError } = require("../Logics/AppError");
 

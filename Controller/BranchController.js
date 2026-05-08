@@ -1,6 +1,6 @@
 const branchService = require("../Service/BranchService");
 const RedisService = require("../Service/RedisService");
-const RedisTime=process.env.RedisTime
+const REDIS_DATA_TTL=process.env.REDIS_DATA_TTL
 
 /* =========================================
    Create Branch
@@ -78,7 +78,7 @@ exports.getBranches = async (req, res) => {
   data = await branchService.getBranches(tenant_id);
 
   // Cache for 1 hour
-  await RedisService.create(cacheKey, data, RedisTime);
+  await RedisService.create(cacheKey, data, REDIS_DATA_TTL);
 
   res.status(200).json({
     success: true,
@@ -107,7 +107,7 @@ exports.getBranchById = async (req, res) => {
   data = await branchService.getBranchById(branch_id, tenant_id);
 
   // Cache for 1 hour
-  await RedisService.create(cacheKey, data, RedisTime);
+  await RedisService.create(cacheKey, data, REDIS_DATA_TTL);
 
   res.status(200).json({
     success: true,

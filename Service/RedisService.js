@@ -1,4 +1,4 @@
-const redis = require("../config/redis");
+const { redisClient: redis } = require("../Config/redis");
 
 class RedisService {
   /**
@@ -35,7 +35,7 @@ class RedisService {
         console.log(`⚠️ Redis key not found: ${key}`);
         return null;
       }
-      // console.log(`✅ Redis GET: ${key}`,value);
+      console.log(`✅ Redis GET: ${key}`,value);
       return JSON.parse(value);
     } catch (error) {
       console.error(`❌ Redis GET error for key ${key}:`, error);

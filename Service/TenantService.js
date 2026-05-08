@@ -1,4 +1,4 @@
-const { pool } = require("../config/db");
+const { pool } = require("../Config/db");
 const { AppError } = require("../Logics/AppError");
 
 /* ================= CREATE TENANT ================= */

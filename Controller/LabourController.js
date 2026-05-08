@@ -1,6 +1,6 @@
 const labourService = require("../Service/LabourService");
 const RedisService = require("../Service/RedisService");
-const RedisTime=process.env.RedisTime
+const REDIS_DATA_TTL=process.env.REDIS_DATA_TTL
 
 exports.labourDetails = async (req, res) => {
   const { tenant_id, branch_id } = req;
@@ -14,7 +14,7 @@ exports.labourDetails = async (req, res) => {
 
   data = await labourService.labourDetails(details, tenant_id, branch_id);
   
-  await RedisService.create(cacheKey, data, RedisTime);
+  await RedisService.create(cacheKey, data, REDIS_DATA_TTL);
   res.status(200).json({ success: true, data });
 };
 
@@ -49,7 +49,7 @@ exports.labourDelete = async (req, res) => {
 exports.fetchLabourUpdate = async (req, res) => {
   const { tenant_id, branch_id } = req;
   const details = req.body;
-  const cacheKey = `labour:update:${details.Id}:${tenant_id}:${branch_id}`;
+  const cacheKey = `labour:update:${details.Id}:${tenant_id}:${branch_id}:${details.date}`;
 
   let data = await RedisService.read(cacheKey);
   if (data) {
@@ -58,7 +58,7 @@ exports.fetchLabourUpdate = async (req, res) => {
 
   data = await labourService.fetchLabourUpdate(details, tenant_id, branch_id);
   
-  await RedisService.create(cacheKey, data, RedisTime);
+  await RedisService.create(cacheKey, data, REDIS_DATA_TTL);
   res.status(200).json({ success: true, data });
 };
 
@@ -74,7 +74,7 @@ exports.labourReports = async (req, res) => {
 
   data = await labourService.labourReports(details, tenant_id, branch_id);
   
-  await RedisService.create(cacheKey, data, RedisTime);
+  await RedisService.create(cacheKey, data, REDIS_DATA_TTL);
   res.status(200).json({ success: true, data });
 };
 
@@ -83,14 +83,14 @@ exports.labourPayment = async (req, res) => {
   const details = req.body;
   const cacheKey = `labour:payment:${details.Id}:${tenant_id}:${branch_id}`;
 
-  let data = await RedisService.read(cacheKey);
-  if (data) {
-    return res.status(200).json({ success: true, data });
-  }
+  // let data = await RedisService.read(cacheKey);
+  // if (data) {
+  //   return res.status(200).json({ success: true, data });
+  // }
 
-  data = await labourService.labourPayment(details, tenant_id, branch_id);
+  let data = await labourService.labourPayment(details, tenant_id, branch_id);
   
-  await RedisService.create(cacheKey, data, RedisTime);
+  // await RedisService.create(cacheKey, data, REDIS_DATA_TTL);
   res.status(200).json({ success: true, data });
 };
 
@@ -128,7 +128,7 @@ exports.allLabourPayment = async (req, res) => {
 
   data = await labourService.allLabourPayment(details, tenant_id, branch_id);
   
-  await RedisService.create(cacheKey, data, RedisTime);
+  await RedisService.create(cacheKey, data, REDIS_DATA_TTL);
   res.status(200).json({ success: true, data });
 };
 
@@ -143,7 +143,7 @@ exports.fetchContractorPay = async (req, res) => {
 
   data = await labourService.fetchContractorPay(tenant_id, branch_id);
   
-  await RedisService.create(cacheKey, data, RedisTime);
+  await RedisService.create(cacheKey, data, REDIS_DATA_TTL);
   res.status(200).json({ success: true, data });
 };
 
@@ -159,7 +159,7 @@ exports.contractorReport = async (req, res) => {
 
   data = await labourService.contractorReport(details, tenant_id, branch_id);
   
-  await RedisService.create(cacheKey, data, RedisTime);
+  await RedisService.create(cacheKey, data, REDIS_DATA_TTL);
   res.status(200).json({ success: true, data });
 };
 

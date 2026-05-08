@@ -1,4 +1,4 @@
-const { pool } = require("../config/db");
+const { pool } = require("../Config/db");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const { createUserBranch } = require("./UserBranchService");

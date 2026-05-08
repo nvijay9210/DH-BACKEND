@@ -11,7 +11,7 @@ const { AppError } = require("../Logics/AppError");
 const { UAParser } = require("ua-parser-js");
 const { randomUUID } = require("crypto");
 const jwt = require("jsonwebtoken");
-const { pool } = require("../config/db");
+const { pool } = require("../Config/db");
 const { getTenantById } = require("../Service/TenantService");
 const { createDebugLogger } = require("../utils/Debugger");
 const { updateUserPassword } = require("../Service/UserService");
@@ -33,7 +33,7 @@ const {
   incrWithExpiry, // Helper functions
   checkRedisHealth,
   gracefulShutdown: redisGracefulShutdown,
-} = require("../config/loginredis");
+} = require("../Config/loginredis");
 const logger = require("../Logs/Logger");
 
 const router = express.Router();

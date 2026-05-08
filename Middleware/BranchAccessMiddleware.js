@@ -1,4 +1,4 @@
-const { pool } = require("../config/db");
+const { pool } = require("../Config/db");
 
 /**
  * Branch Access Middleware for CREATE & UPDATE operations

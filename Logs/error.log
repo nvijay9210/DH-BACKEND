@@ -4,3 +4,73 @@
 [17/4/2026, 5:33:31 pm] [ERROR] 💥 Unknown Error: {}
 [17/4/2026, 5:33:31 pm] [ERROR] ❌ Error: {}
 [17/4/2026, 5:33:31 pm] [ERROR] 💥 Unknown Error: {}
+[6/5/2026, 7:31:40 pm] [ERROR] ❌ [14:01:40.953] [SsoAuth:Middleware] Invalid token invalid signature
+[6/5/2026, 7:31:40 pm] [ERROR]    📋 Stack: at D:\BRIGHTON\DREAM HOUSE\BACKEND\node_modules\jsonwebtoken\verify.js:171:19
+[6/5/2026, 7:31:41 pm] [ERROR] ❌ Error: {"statusCode":401,"isOperational":true,"errors":null}
+[7/5/2026, 8:38:57 pm] [ERROR] ❌ [15:08:57.889] [SsoAuth:Keycloak] ❌ Login failed {"status":401,"error":{"error":"invalid_grant","error_description":"Invalid user credentials"}}
+[7/5/2026, 8:38:58 pm] [ERROR] ❌ [15:08:58.036] [SsoAuth:Route] Login failed Invalid user credentials
+[7/5/2026, 8:38:58 pm] [ERROR]    📋 Stack: at keycloakLogin (D:\BRIGHTON\DREAM HOUSE\BACKEND\Keycloak\SSOAuth.js:354:11)
+[7/5/2026, 8:39:04 pm] [ERROR] ❌ [15:09:04.605] [SsoAuth:Keycloak] ❌ Login failed {"status":401,"error":{"error":"invalid_grant","error_description":"Invalid user credentials"}}
+[7/5/2026, 8:39:04 pm] [ERROR] ❌ [15:09:04.609] [SsoAuth:Route] Login failed Invalid user credentials
+[7/5/2026, 8:39:04 pm] [ERROR]    📋 Stack: at keycloakLogin (D:\BRIGHTON\DREAM HOUSE\BACKEND\Keycloak\SSOAuth.js:354:11)
+[7/5/2026, 9:03:06 pm] [ERROR] ❌ Redis SET error for key order:update:2026-05-07:2026-05-07:1:1:1: {}
+[7/5/2026, 9:03:07 pm] [ERROR] ❌ Redis SET error for key order:update:2026-05-07:2026-05-07:1:1:1: {}
+[7/5/2026, 9:03:07 pm] [ERROR] ❌ Redis SET error for key master:material:fetch:1:1: {}
+[7/5/2026, 9:03:08 pm] [ERROR] ❌ Redis SET error for key master:material:fetch:1:1: {}
+[7/5/2026, 9:03:10 pm] [ERROR] ❌ Redis SET error for key labour:update:1:1:1: {}
+[7/5/2026, 9:03:10 pm] [ERROR] ❌ Redis SET error for key labour:update:1:1:1: {}
+[7/5/2026, 9:03:11 pm] [ERROR] ❌ Redis SET error for key master:contractor:fetch:1:1: {}
+[7/5/2026, 9:03:11 pm] [ERROR] ❌ Redis SET error for key master:labour:fetch:1:1: {}
+[7/5/2026, 9:03:13 pm] [ERROR] ❌ Redis SET error for key master:contractor:fetch:1:1: {}
+[7/5/2026, 9:03:14 pm] [ERROR] ❌ Redis SET error for key master:labour:fetch:1:1: {}
+[7/5/2026, 9:03:16 pm] [ERROR] ❌ Redis SET error for key labour:update:1:1:1: {}
+[7/5/2026, 9:05:49 pm] [ERROR] ❌ Redis GET error for key dashboard:financials:1:1: {}
+[7/5/2026, 9:05:49 pm] [ERROR] ❌ Redis SET error for key dashboard:financials:1:1: {}
+[7/5/2026, 9:05:49 pm] [ERROR] ❌ Redis SET error for key dashboard:summary:1:1: {}
+[7/5/2026, 9:05:50 pm] [ERROR] ❌ Redis SET error for key labour:contractor:pay:1:1: {}
+[7/5/2026, 9:05:50 pm] [ERROR] ❌ Redis SET error for key payment:material:fetch:1:1: {}
+[7/5/2026, 9:05:51 pm] [ERROR] ❌ Redis GET error for key dashboard:financials:1:1: {}
+[7/5/2026, 9:05:51 pm] [ERROR] ❌ Redis SET error for key dashboard:summary:1:1: {}
+[7/5/2026, 9:05:51 pm] [ERROR] ❌ Redis SET error for key dashboard:financials:1:1: {}
+[7/5/2026, 9:05:51 pm] [ERROR] ❌ Redis SET error for key labour:contractor:pay:1:1: {}
+[7/5/2026, 9:05:51 pm] [ERROR] ❌ Redis SET error for key payment:material:fetch:1:1: {}
+[7/5/2026, 9:05:58 pm] [ERROR] ❌ Redis SET error for key master:material:fetch:1:1: {}
+[7/5/2026, 9:05:58 pm] [ERROR] ❌ Redis SET error for key master:contractor:fetch:1:1: {}
+[7/5/2026, 9:05:58 pm] [ERROR] ❌ Redis SET error for key master:labour:fetch:1:1: {}
+[7/5/2026, 9:05:58 pm] [ERROR] ❌ Redis SET error for key master:supplier:fetch:1:1: {}
+[7/5/2026, 9:05:59 pm] [ERROR] ❌ Redis SET error for key master:material:fetch:1:1: {}
+[7/5/2026, 9:06:00 pm] [ERROR] ❌ Redis SET error for key master:supplier:fetch:1:1: {}
+[7/5/2026, 9:06:00 pm] [ERROR] ❌ Redis SET error for key master:labour:fetch:1:1: {}
+[7/5/2026, 9:06:01 pm] [ERROR] ❌ Redis SET error for key master:contractor:fetch:1:1: {}
+[7/5/2026, 9:08:41 pm] [ERROR] ❌ Redis SET error for key material:stock:1:1: {}
+[7/5/2026, 9:08:41 pm] [ERROR] ❌ Redis SET error for key material:stock:1:1: {}
+[7/5/2026, 9:13:18 pm] [ERROR] ❌ Redis SET error for key dashboard:financials:1:1: {}
+[7/5/2026, 9:13:18 pm] [ERROR] ❌ Redis SET error for key dashboard:summary:1:1: {}
+[7/5/2026, 9:13:18 pm] [ERROR] ❌ Redis SET error for key labour:contractor:pay:1:1: {}
+[7/5/2026, 9:13:19 pm] [ERROR] ❌ Redis SET error for key payment:material:fetch:1:1: {}
+[7/5/2026, 9:13:19 pm] [ERROR] ❌ Redis SET error for key labour:contractor:pay:1:1: {}
+[7/5/2026, 9:13:19 pm] [ERROR] ❌ Redis SET error for key payment:material:fetch:1:1: {}
+[7/5/2026, 9:13:20 pm] [ERROR] ❌ Redis SET error for key dashboard:financials:1:1: {}
+[7/5/2026, 9:13:20 pm] [ERROR] ❌ Redis SET error for key dashboard:summary:1:1: {}
+[7/5/2026, 9:53:44 pm] [ERROR] ❌ labourPaymentUpdate Error: {"name":"SqlError","sqlMessage":"Truncated incorrect datetime value: '2026-05-01T00:00:00.000Z'","sql":"\n        UPDATE labour_worked_details\n        SET Paid = Total, status = 'Paid', Balance = 0, Payment_Date = ?\n        WHERE tenant_id = ? AND branch_id = ? AND Project_id = ?\n        AND Contractor = ? AND status != 'Paid' AND Date BETWEEN ? AND ?\n       ...","fatal":false,"errno":1292,"sqlState":"22007","code":"ER_TRUNCATED_WRONG_VALUE"}
+[7/5/2026, 9:53:44 pm] [ERROR] ❌ Error: {"statusCode":500,"isOperational":true,"errors":{"name":"SqlError","sqlMessage":"Truncated incorrect datetime value: '2026-05-01T00:00:00.000Z'","sql":"\n        UPDATE labour_worked_details\n        SET Paid = Total, status = 'Paid', Balance = 0, Payment_Date = ?\n        WHERE tenant_id = ? AND branch_id = ? AND Project_id = ?\n        AND Contractor = ? AND status != 'Paid' AND Date BETWEEN ? AND ?\n       ...","fatal":false,"errno":1292,"sqlState":"22007","code":"ER_TRUNCATED_WRONG_VALUE"}}
+[7/5/2026, 9:56:06 pm] [ERROR] ❌ labourPaymentUpdate Error: {"name":"SqlError","sqlMessage":"Truncated incorrect datetime value: '2026-05-01T00:00:00.000Z'","sql":"\n        UPDATE labour_worked_details\n        SET Paid = Total, status = 'Paid', Balance = 0, Payment_Date = ?\n        WHERE tenant_id = ? AND branch_id = ? AND Project_id = ?\n        AND Contractor = ? AND status != 'Paid' AND Date BETWEEN ? AND ?\n       ...","fatal":false,"errno":1292,"sqlState":"22007","code":"ER_TRUNCATED_WRONG_VALUE"}
+[7/5/2026, 9:56:07 pm] [ERROR] ❌ Error: {"statusCode":500,"isOperational":true,"errors":{"name":"SqlError","sqlMessage":"Truncated incorrect datetime value: '2026-05-01T00:00:00.000Z'","sql":"\n        UPDATE labour_worked_details\n        SET Paid = Total, status = 'Paid', Balance = 0, Payment_Date = ?\n        WHERE tenant_id = ? AND branch_id = ? AND Project_id = ?\n        AND Contractor = ? AND status != 'Paid' AND Date BETWEEN ? AND ?\n       ...","fatal":false,"errno":1292,"sqlState":"22007","code":"ER_TRUNCATED_WRONG_VALUE"}}
+[8/5/2026, 12:24:50 pm] [ERROR] ❌ Redis error: connect ECONNREFUSED 127.0.0.1:6379
+[8/5/2026, 12:24:52 pm] [ERROR] ❌ Redis connection error: {"message":"connect ECONNREFUSED 127.0.0.1:6379","code":"ECONNREFUSED"}
+[8/5/2026, 12:24:59 pm] [ERROR] ❌ Redis connection error: {"message":"connect ECONNREFUSED 127.0.0.1:6379","code":"ECONNREFUSED"}
+[8/5/2026, 12:24:59 pm] [ERROR] ❌ Redis error: connect ECONNREFUSED 127.0.0.1:6379
+[8/5/2026, 12:25:01 pm] [ERROR] ❌ Redis error: connect ECONNREFUSED 127.0.0.1:6379
+[8/5/2026, 12:25:02 pm] [ERROR] ❌ Redis connection error: {"message":"connect ECONNREFUSED 127.0.0.1:6379","code":"ECONNREFUSED"}
+[8/5/2026, 12:25:04 pm] [ERROR] ❌ Redis connection error: {"message":"connect ECONNREFUSED 127.0.0.1:6379","code":"ECONNREFUSED"}
+[8/5/2026, 12:25:05 pm] [ERROR] ❌ Redis error: connect ECONNREFUSED 127.0.0.1:6379
+[8/5/2026, 12:25:06 pm] [ERROR] Redis health check failed: {}
+[8/5/2026, 12:25:07 pm] [ERROR] ❌ Redis error: connect ECONNREFUSED 127.0.0.1:6379
+[8/5/2026, 12:25:07 pm] [ERROR] ❌ Redis connection error: {"message":"connect ECONNREFUSED 127.0.0.1:6379","code":"ECONNREFUSED"}
+[8/5/2026, 12:25:09 pm] [ERROR] ❌ Redis connection error: {"message":"connect ECONNREFUSED 127.0.0.1:6379","code":"ECONNREFUSED"}
+[8/5/2026, 12:25:09 pm] [ERROR] ❌ Redis error: connect ECONNREFUSED 127.0.0.1:6379
+[8/5/2026, 12:25:10 pm] [ERROR] ❌ Redis error: connect ECONNREFUSED 127.0.0.1:6379
+[8/5/2026, 12:25:11 pm] [ERROR] ❌ Redis connection error: {"message":"connect ECONNREFUSED 127.0.0.1:6379","code":"ECONNREFUSED"}
+[8/5/2026, 12:25:12 pm] [ERROR] ❌ Redis connection error: {"message":"connect ECONNREFUSED 127.0.0.1:6379","code":"ECONNREFUSED"}
+[8/5/2026, 12:25:12 pm] [ERROR] ❌ Redis error: connect ECONNREFUSED 127.0.0.1:6379
+[8/5/2026, 12:25:13 pm] [ERROR] ❌ Redis error: connect ECONNREFUSED 127.0.0.1:6379

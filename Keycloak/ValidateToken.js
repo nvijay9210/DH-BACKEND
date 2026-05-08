@@ -5,8 +5,8 @@ const qs = require("qs");
 const { AppError } = require("../Logics/AppError");
 const { getUserByKeycloakId } = require("../Service/UserService");
 const { getBranchByTenantIdAndUserId } = require("../Service/BranchService");
-const pool = require("../config/db");
-const redis = require("./Redis");
+const pool = require("../Config/db");
+const redis = require("../Config/redis");
 
 // Store refresh token temporarily
 let globalRefreshToken = null;

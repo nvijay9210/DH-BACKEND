@@ -1,6 +1,6 @@
 const paymentService = require("../Service/PaymentService");
 const RedisService = require("../Service/RedisService");
-const RedisTime=process.env.RedisTime
+const REDIS_DATA_TTL=process.env.REDIS_DATA_TTL
 
 exports.newPayment = async (req, res) => {
   const { tenant_id, branch_id } = req;
@@ -25,7 +25,7 @@ exports.fetchPaymentUpdate = async (req, res) => {
 
   data = await paymentService.fetchPaymentUpdate(details, tenant_id, branch_id);
 
-  await RedisService.create(cacheKey, data, RedisTime);
+  await RedisService.create(cacheKey, data, REDIS_DATA_TTL);
   res.status(200).json({ success: true, data });
 };
 
@@ -80,7 +80,7 @@ exports.clientPaymentReport = async (req, res) => {
     branch_id
   );
 
-  await RedisService.create(cacheKey, data, RedisTime);
+  await RedisService.create(cacheKey, data, REDIS_DATA_TTL);
   res.status(200).json({ success: true, data });
 };
 
@@ -142,7 +142,7 @@ exports.materialsPaymentView = async (req, res) => {
     branch_id
   );
 
-  await RedisService.create(cacheKey, data, RedisTime);
+  await RedisService.create(cacheKey, data, REDIS_DATA_TTL);
   res.status(200).json({ success: true, data });
 };
 
@@ -158,7 +158,7 @@ exports.allMaterialPayment = async (req, res) => {
 
   data = await paymentService.allMaterialPayment(details, tenant_id, branch_id);
 
-  await RedisService.create(cacheKey, data, RedisTime);
+  await RedisService.create(cacheKey, data, REDIS_DATA_TTL);
   res.status(200).json({ success: true, data });
 };
 
@@ -178,7 +178,7 @@ exports.fetchMaterialBalance = async (req, res) => {
     branch_id
   );
 
-  await RedisService.create(cacheKey, data, RedisTime);
+  await RedisService.create(cacheKey, data, REDIS_DATA_TTL);
   res.status(200).json({ success: true, data });
 };
 
@@ -193,6 +193,6 @@ exports.fetchMaterialPay = async (req, res) => {
 
   data = await paymentService.fetchMaterialPay(tenant_id, branch_id);
 
-  await RedisService.create(cacheKey, data, RedisTime);
+  await RedisService.create(cacheKey, data, REDIS_DATA_TTL);
   res.status(200).json({ success: true, data });
 };

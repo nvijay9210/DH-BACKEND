@@ -1,7 +1,7 @@
 // utils/Otp.js
 const twilio = require("twilio");
 // ✅ Use helpers from centralized Redis config
-const { get, setEx, del, incr, expire } = require("../config/loginredis");
+const { get, setEx, del, incr, expire } = require("../Config/loginredis");
 
 // Twilio client setup
 const client = twilio(

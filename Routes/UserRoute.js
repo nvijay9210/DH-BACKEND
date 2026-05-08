@@ -6,7 +6,7 @@ const authMiddleware = require("../Middleware/AuthMiddleware");
 const { validateIds } = require("../Middleware/ContextMiddleware");
 const ssoAuth = require("../Keycloak/SSOAuth");
 const { validateRequest } = require("../Middleware/ValidationMiddleware");
-const { pool } = require("../config/db");
+const { pool } = require("../Config/db");
 const { default: axios } = require("axios");
 const { dynamicUpload } = require("../utils/UploadFile");
 
