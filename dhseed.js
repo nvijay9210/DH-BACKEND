@@ -10,7 +10,7 @@ const DB_CONFIG = {
     host: '127.0.0.1',
     user: 'root',           // Your MySQL username
     password: 'root',           // Your MySQL password
-    database: 'demodreamhouse',
+    database: 'dreamhouse',
     port: 3306,
     multipleStatements: true
 };

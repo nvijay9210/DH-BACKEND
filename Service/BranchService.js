@@ -103,7 +103,7 @@ exports.updateBranch = async (branch_id, tenant_id, details, username) => {
 
     const result = await conn.query(
       `UPDATE branch
-       SET branch_name = ?, address = ?, city = ?, state = ?, pincode = ?, 
+       SET branch_name = ?, address = ?, city = ?, state = ?, pincode = ?, branch_code=?,
            email = ?, phone = ?, updated_by = ?, updated_at = NOW()
        WHERE branch_id = ? AND tenant_id = ?`,
       [
@@ -112,6 +112,7 @@ exports.updateBranch = async (branch_id, tenant_id, details, username) => {
         details.city,
         details.state,
         details.pincode,
+        details.branch_code,
         details.email,
         details.phone,
         username,

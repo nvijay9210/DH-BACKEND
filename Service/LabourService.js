@@ -150,8 +150,8 @@ exports.fetchLabourUpdate = async (Details, tenant_id, branch_id) => {
   try {
     conn = await pool.getConnection();
     const labour = await conn.query(
-      "SELECT * FROM labour_worked_details WHERE Project_id = ? AND Date = ? AND tenant_id=? AND branch_id=?;",
-      [Details.Id, Details.date, tenant_id, branch_id]
+      "SELECT * FROM labour_worked_details WHERE Project_id = ? AND Date BETWEEN ? AND ? AND tenant_id=? AND branch_id=?;",
+      [Details.Id, Details.startDate, Details.endDate, tenant_id, branch_id]
     );
     // Convert BigInt values to strings or numbers
     const labourWithConvertedBigInt = labour.map((row) => {

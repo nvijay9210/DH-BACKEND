@@ -10,7 +10,7 @@ exports.order = async (req, res) => {
   // Cache order and invalidate lists
   if (data.id) {
     await RedisService.create(`order:${data.id}:${tenant_id}:${branch_id}`, data, REDIS_DATA_TTL);
-    await RedisService.deleteByPattern(`order:list:*`);
+    await RedisService.deleteByPattern(`order:${tenant_id}:${branch_id}:*`);
   }
   
   res.status(200).json({ success: true, data });
@@ -23,8 +23,8 @@ exports.updateOrder = async (req, res) => {
   
   // Update cache
   if (details.Id) {
-    await RedisService.update(`order:${details.Id}:${tenant_id}:${branch_id}`, data, 3600);
-    await RedisService.deleteByPattern(`order:list:*`);
+    await RedisService.update(`order:${tenant_id}:${branch_id}:${details.Id}:`, data, 3600);
+    await RedisService.deleteByPattern(`order:${tenant_id}:${branch_id}:*`);
   }
   
   res.status(200).json({ success: true, data });
@@ -47,7 +47,7 @@ exports.orderDelete = async (req, res) => {
 exports.fetchOrderUpdate = async (req, res) => {
   const { tenant_id, branch_id } = req;
   const details = req.body;
-  const cacheKey = `order:update:${details.start_date}:${details.end_date}:${details.Id}:${tenant_id}:${branch_id}`;
+  const cacheKey = `order:update:${tenant_id}:${branch_id}:${details.start_date}:${details.end_date}:${details.Id}`;
 
   // Check cache
   let data = await RedisService.read(cacheKey);

@@ -28,8 +28,7 @@ exports.login = async (req, res) => {
 
 exports.logout = async (req, res) => {
   res.clearCookie("token");
-  await userService.logout(req.body);
-  res.status(200).json({ success: true, msg: "Logout successful" });
+  return await userService.logout(req, res);
 };
 
 exports.userDetails = async (req, res) => {

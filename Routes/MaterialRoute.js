@@ -16,6 +16,11 @@ router.put(
 
   asyncHandler(materialController.editMaterialUsed)
 );
+router.post(
+  "/DeleteMaterialUsed",
+
+  asyncHandler(materialController.DeleteMaterialUsed)
+);
 
 // Measurement Details
 router.post(

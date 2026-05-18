@@ -5,6 +5,7 @@ const { createUserBranch } = require("./UserBranchService");
 const { AppError } = require("../Logics/AppError");
 const { validateData } = require("../Middleware/ValidationMiddleware");
 const { createUser, deleteKeycloakUser, getUserId } = require("../Keycloak/User");
+const RedisService = require("./RedisService");
 
 /* ===============================
    Helper: Get User Branch Mapping
@@ -98,10 +99,49 @@ exports.login = async (Details) => {
 /* ===============================
    User Logout
 =================================*/
-exports.logout = async () => {
-  return { status: "Success", msg: "Logout successful" };
-};
 
+exports.logout = async (req, res) => {
+  try {
+    // Correct cookie name
+    const sessionId = req.cookies?.session_id;
+
+    // Delete Redis session
+    if (sessionId) {
+      await RedisService.delete(`session:${sessionId}`);
+      await RedisService.delete(`api_count:${sessionId}`);
+    }
+
+    const cookieOptions = {
+      httpOnly: true,
+      secure: false,
+      sameSite: "lax",
+      path: "/",
+    };
+
+    // Clear cookies
+    res.clearCookie("session_id", cookieOptions);
+    res.clearCookie("access_token", cookieOptions);
+    res.clearCookie("refresh_token", cookieOptions);
+    res.clearCookie("clientId", cookieOptions);
+    res.clearCookie("realm", cookieOptions);
+    res.clearCookie("user_id", cookieOptions);
+
+    console.log("✅ Logout completed");
+
+    return res.status(200).json({
+      status: "Success",
+      msg: "Logout successful",
+    });
+  } catch (error) {
+    console.error("Logout Error:", error);
+
+    return res.status(500).json({
+      status: "Error",
+      msg: "Logout failed",
+      error: error.message,
+    });
+  }
+};
 // Helper query with userbranch JOIN
 // const getUserQueryWithBranch = () => `
 //   SELECT 

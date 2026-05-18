@@ -33,24 +33,16 @@ exports.updateBranch = async (req, res) => {
   const details = req.body;
   const username = req.user.given_name;
 
-  const result = await branchService.updateBranch({
+  const result = await branchService.updateBranch(
     branch_id,
     tenant_id,
     details,
-    username,
-  });
+    username
+  );
 
   // Invalidate cache
   await RedisService.delete(`branch:${branch_id}:${tenant_id}`);
   await RedisService.deleteByPattern(`branch:list:*`);
-
-  // ✅ Service should throw AppError if not found, but keeping fallback
-  if (result.affectedRows === 0) {
-    return res.status(404).json({
-      success: false,
-      message: "Branch not found",
-    });
-  }
 
   res.status(200).json({
     success: true,

@@ -550,7 +550,37 @@ router.post("/tokensave", (req, res) => {
 
 const otpStore = {};
 
-router.post("/login", async (req, res) => {
+const validateSession = async (req, res, next) => {
+  try {
+    const sessionId = req.cookies?.session_id;
+
+    if (!sessionId) {
+      return res.status(401).json({
+        message: "Session not found",
+      });
+    }
+
+    const session = await RedisService.read(
+      `session:${sessionId}`
+    );
+
+    if (!session) {
+      return res.status(401).json({
+        message: "Session expired. Please login again",
+      });
+    }
+
+    req.sessionData = session;
+
+    next();
+  } catch (error) {
+    return res.status(401).json({
+      message: "Invalid session",
+    });
+  }
+};
+
+router.post("/login",validateSession, async (req, res) => {
   try {
     let { username, password, host } = req.body;
 

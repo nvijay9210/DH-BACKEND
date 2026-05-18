@@ -21,33 +21,45 @@ exports.materialList = async (req, res) => {
 exports.materialUsed = async (req, res) => {
   const { tenant_id, branch_id } = req;
   const details = req.body;
-  const cacheKey = `material:used:${details.Project_id}:${tenant_id}:${branch_id}:${details.date}`;
+  const cacheKey = `material:${tenant_id}:${branch_id}:*`;
 
-  let data = await RedisService.read(cacheKey);
-  if (data) {
-    return res.status(200).json({ success: true, data });
+  const data = await materialService.materialUsed(details, tenant_id, branch_id);
+
+  if(data.success){
+    await RedisService.deleteByPattern(cacheKey);
   }
-
-  data = await materialService.materialUsed(details, tenant_id, branch_id);
-
-  await RedisService.create(cacheKey, data, REDIS_DATA_TTL);
+  
   res.status(200).json({ success: true, data });
 };
 
 exports.editMaterialUsed = async (req, res) => {
   const { tenant_id, branch_id } = req;
   const details = req.body;
+    const cacheKey = `material:${tenant_id}:${branch_id}:*`;
   const data = await materialService.EditMaterialUsed(
     details,
     tenant_id,
     branch_id
   );
 
-  if (details.Id) {
-    await RedisService.delete(
-      `material:used:${details.Id}:${tenant_id}:${branch_id}`
-    );
-    await RedisService.deleteByPattern(`material:list:*`);
+  if (data.success) {
+      await RedisService.deleteByPattern(cacheKey);
+  }
+
+  res.status(200).json({ success: true, data });
+};
+exports.DeleteMaterialUsed = async (req, res) => {
+  const { tenant_id, branch_id } = req;
+  const details = req.body;
+    const cacheKey = `material:${tenant_id}:${branch_id}:*`;
+  const data = await materialService.DeleteMaterialUsed(
+    details,
+    tenant_id,
+    branch_id
+  );
+
+  if (data.success) {
+      await RedisService.deleteByPattern(cacheKey);
   }
 
   res.status(200).json({ success: true, data });
@@ -57,6 +69,7 @@ exports.measurementDetails = async (req, res) => {
   const { tenant_id, branch_id } = req;
   const username = req.user.given_name;
   const details = req.body;
+  const cacheKey = `material:${tenant_id}:${branch_id}:*`;
 
   const file = req.file;
   const data = await materialService.measurementDetails(
@@ -67,8 +80,8 @@ exports.measurementDetails = async (req, res) => {
     file
   );
 
-  if (details.Id) {
-    await RedisService.deleteByPattern(`material:list:*`);
+  if (data.success) {
+    await RedisService.deleteByPattern(cacheKey);
   }
 
   res.status(200).json({ success: true, data });
@@ -83,11 +96,9 @@ exports.updateMaterial = async (req, res) => {
     branch_id
   );
 
-  if (details.Id) {
-    await RedisService.delete(
-      `material:${details.Id}:${tenant_id}:${branch_id}`
-    );
-    await RedisService.deleteByPattern(`material:list:*`);
+  if (data.success) {
+    const cacheKey = `material:${tenant_id}:${branch_id}:*`;
+    await RedisService.deleteByPattern(cacheKey);
   }
 
   res.status(200).json({ success: true, data });
@@ -96,7 +107,7 @@ exports.updateMaterial = async (req, res) => {
 exports.fetchMaterialUpdate = async (req, res) => {
   const { tenant_id, branch_id } = req;
   const details = req.body;
-  const cacheKey = `material:update:${details.Id}:${tenant_id}:${branch_id}:${details.date}`;
+  const cacheKey = `material:${tenant_id}:${branch_id}:update:${details.startDate}:${details.endDate}`;
 
   let data = await RedisService.read(cacheKey);
   if (data) {
@@ -116,7 +127,7 @@ exports.fetchMaterialUpdate = async (req, res) => {
 exports.fetchMaterialUsed = async (req, res) => {
   const { tenant_id, branch_id } = req;
   const details = req.body;
-  const cacheKey = `material:used:fetch:${details.Id}:${tenant_id}:${branch_id}:${details.date}`;
+  const cacheKey = `material:${tenant_id}:${branch_id}:used:fetch:${details.Id}:${details.startDate}:${details.endDate}`;
 
   let data = await RedisService.read(cacheKey);
 
@@ -154,11 +165,9 @@ exports.materialDelete = async (req, res) => {
     branch_id
   );
 
-  if (details.Id) {
-    await RedisService.delete(
-      `material:${details.Id}:${tenant_id}:${branch_id}`
-    );
-    await RedisService.deleteByPattern(`material:*`);
+  if (data.success) {
+    const cacheKey = `material:${tenant_id}:${branch_id}:*`;
+    await RedisService.deleteByPattern(cacheKey);
   }
 
   res.status(200).json({ success: true, data });
@@ -167,7 +176,7 @@ exports.materialDelete = async (req, res) => {
 exports.materialPaymentReports = async (req, res) => {
   const { tenant_id, branch_id } = req;
   const details = req.body;
-  const cacheKey = `material:payment:reports:${tenant_id}:${branch_id}`;
+  const cacheKey = `material:${tenant_id}:${branch_id}:payment:reports`;
 
   let data = await RedisService.read(cacheKey);
   if (data) {
@@ -187,7 +196,7 @@ exports.materialPaymentReports = async (req, res) => {
 exports.stockList = async (req, res) => {
   const { tenant_id, branch_id } = req;
   const details = req.body;
-  const cacheKey = `material:stock:${details.pro_id}:${tenant_id}:${branch_id}`;
+  const cacheKey = `material:${tenant_id}:${branch_id}:stock:${details.pro_id}`;
 
   let data = await RedisService.read(cacheKey);
   if (data) {
@@ -209,8 +218,9 @@ exports.measurementDelete = async (req, res) => {
     branch_id
   );
 
-  if (details.Id) {
-    await RedisService.deleteByPattern(`material:*`);
+  if (data.success) {
+    const cacheKey = `material:${tenant_id}:${branch_id}:*`;
+    await RedisService.deleteByPattern(cacheKey);
   }
 
   res.status(200).json({ success: true, data });
@@ -219,7 +229,7 @@ exports.measurementDelete = async (req, res) => {
 exports.measurementReports = async (req, res) => {
   const { tenant_id, branch_id } = req;
   const details = req.body;
-  const cacheKey = `material:measurement:reports:${tenant_id}:${branch_id}:${details.Id}:${details.Start}:${details.End}`;
+  const cacheKey = `material:${tenant_id}:${branch_id}:measurement:reports:${details.Id}:${details.Start}:${details.End}`;
 
   let data = await RedisService.read(cacheKey);
   if (data) {
@@ -239,7 +249,7 @@ exports.measurementReports = async (req, res) => {
 exports.overAllReports = async (req, res) => {
   const { tenant_id, branch_id } = req;
   const details = req.body;
-  const cacheKey = `material:overall:reports:${details.Start}:${details.End}:${tenant_id}:${branch_id}`;
+  const cacheKey = `material:${tenant_id}:${branch_id}:overall:reports:${details.Start}:${details.End}`;
 
   let data = await RedisService.read(cacheKey);
   if (data) {

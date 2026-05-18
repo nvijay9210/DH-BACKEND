@@ -5,15 +5,15 @@ const REDIS_DATA_TTL=process.env.REDIS_DATA_TTL
 exports.labourList = async (req, res) => {
   const details = req.body;
   const { tenant_id, branch_id } = req;
-  const cacheKey = `master:labour:list:${tenant_id}:${branch_id}`;
+  const cacheKey = `master:${tenant_id}:${branch_id}:labour:list`;
 
-  let data = await RedisService.read(cacheKey);
-  if (data) {
-    return res.status(200).json({ success: true, data });
-  }
+  // let data = await RedisService.read(cacheKey);
+  // if (data) {
+  //   return res.status(200).json({ success: true, data });
+  // }
 
   data = await masterService.labourList(details,tenant_id, branch_id);
-  await RedisService.deleteByPattern(`master:labour:list:*`);
+  await RedisService.deleteByPattern(`master:labour:*`);
   await RedisService.create(cacheKey, data, REDIS_DATA_TTL);
   res.status(200).json({ success: true, data });
 };
@@ -22,7 +22,7 @@ exports.materialList = async (req, res) => {
   const details = req.body;
   console.log('details:',details)
   const { tenant_id, branch_id } = req;
-  const cacheKey = `master:material:list:${tenant_id}:${branch_id}`;
+  const cacheKey = `master:${tenant_id}:${branch_id}:material:list`;
 
   let data = await RedisService.read(cacheKey);
   if (data) {
@@ -30,7 +30,7 @@ exports.materialList = async (req, res) => {
   }
 
   data = await masterService.materialList(details,tenant_id, branch_id);
-  await RedisService.deleteByPattern(`master:material:list:*`);
+  await RedisService.deleteByPattern(`master:material:*`);
   await RedisService.create(cacheKey, data, REDIS_DATA_TTL);
   res.status(200).json({ success: true, data });
 };
@@ -38,15 +38,15 @@ exports.materialList = async (req, res) => {
 exports.contractorList = async (req, res) => {
   const details = req.body;
   const { tenant_id, branch_id } = req;
-  const cacheKey = `master:contractor:list:${tenant_id}:${branch_id}`;
+  const cacheKey = `master:${tenant_id}:${branch_id}:contractor:list`;
 
-  let data = await RedisService.read(cacheKey);
-  if (data) {
-    return res.status(200).json({ success: true, data });
-  }
+  // let data = await RedisService.read(cacheKey);
+  // if (data) {
+  //   return res.status(200).json({ success: true, data });
+  // }
 
   data = await masterService.contractorList(details,tenant_id, branch_id);
-  await RedisService.deleteByPattern(`master:contractor:list:*`);
+  await RedisService.deleteByPattern(`master:contractor:*`);
   await RedisService.create(cacheKey, data, REDIS_DATA_TTL);
   res.status(200).json({ success: true, data });
 };
@@ -54,7 +54,7 @@ exports.contractorList = async (req, res) => {
 exports.supplierList = async (req, res) => {
   const details = req.body;
   const { tenant_id, branch_id } = req;
-  const cacheKey = `master:supplier:list:${tenant_id}:${branch_id}`;
+  const cacheKey = `master:${tenant_id}:${branch_id}:supplier:list`;
 
   let data = await RedisService.read(cacheKey);
   if (data) {
@@ -69,7 +69,7 @@ exports.supplierList = async (req, res) => {
 
 exports.fetchMaterial = async (req, res) => {
   const { tenant_id, branch_id } = req;
-  const cacheKey = `master:material:fetch:${tenant_id}:${branch_id}`;
+  const cacheKey = `master:${tenant_id}:${branch_id}:material:fetch`;
 
   let data = await RedisService.read(cacheKey);
   if (data) {
@@ -84,7 +84,7 @@ exports.fetchMaterial = async (req, res) => {
 
 exports.fetchLabour = async (req, res) => {
   const { tenant_id, branch_id } = req;
-  const cacheKey = `master:labour:fetch:${tenant_id}:${branch_id}`;
+  const cacheKey = `master:${tenant_id}:${branch_id}:labour:fetch`;
 
   let data = await RedisService.read(cacheKey);
   if (data) {
@@ -99,7 +99,7 @@ exports.fetchLabour = async (req, res) => {
 
 exports.fetchContractor = async (req, res) => {
   const { tenant_id, branch_id } = req;
-  const cacheKey = `master:contractor:fetch:${tenant_id}:${branch_id}`;
+  const cacheKey = `master:contractor:${tenant_id}:${branch_id}:fetch`;
 
   let data = await RedisService.read(cacheKey);
   if (data) {
@@ -114,12 +114,12 @@ exports.fetchContractor = async (req, res) => {
 
 exports.fetchSupplier = async (req, res) => {
   const { tenant_id, branch_id } = req;
-  const cacheKey = `master:supplier:fetch:${tenant_id}:${branch_id}`;
+  const cacheKey = `master:supplier:${tenant_id}:${branch_id}:fetch`;
 
-  let data = await RedisService.read(cacheKey);
-  if (data) {
-    return res.status(200).json({ success: true, data });
-  }
+  // let data = await RedisService.read(cacheKey);
+  // if (data) {
+  //   return res.status(200).json({ success: true, data });
+  // }
 
   data = await masterService.fetchSupplier(tenant_id, branch_id);
   await RedisService.deleteByPattern(`master:supplier:*`);

@@ -12,6 +12,7 @@ exports.createProject = async (req, res) => {
 
   // Invalidate list caches
   await RedisService.deleteByPattern(`project:list:*`);
+  await RedisService.deleteByPattern(`dashboard:*`);
 
   res.status(201).json({
     success: true,
@@ -197,6 +198,9 @@ exports.projectDetailsController = async (req, res) => {
     tenant_id,
     branch_id,
   );
+
+  await RedisService.deleteByPattern(`project:list:*`);
+  await RedisService.deleteByPattern(`dashboard:*`);
 
   res.status(200).json({ success: true, data });
 };
