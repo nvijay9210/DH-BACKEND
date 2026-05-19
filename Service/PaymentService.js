@@ -49,8 +49,8 @@ exports.fetchPaymentUpdate = async (details, tenant_id, branch_id) => {
     conn = await pool.getConnection();
     const result = await conn.query(
       `SELECT * FROM payment_details
-      WHERE tenant_id = ? AND branch_id = ? AND Payment_date = ? AND Project_id = ?`,
-      [tenant_id, branch_id, details.date, details.Id]
+      WHERE tenant_id = ? AND branch_id = ? AND Payment_date BETWEEN ? AND ? AND Project_id = ?`,
+      [tenant_id, branch_id, details.date, details.endDate, details.Id]
     );
     return result;
   } catch (err) {

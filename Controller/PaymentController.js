@@ -17,7 +17,7 @@ exports.newPayment = async (req, res) => {
 exports.fetchPaymentUpdate = async (req, res) => {
   const { tenant_id, branch_id } = req;
   const details = req.body;
-  const cacheKey = `payment:${tenant_id}:${branch_id}:update:${details.date}:${details.Id}`;
+  const cacheKey = `payment:${tenant_id}:${branch_id}:update:${details.date}:${details.endDate}:${details.Id}`;
 
   let data = await RedisService.read(cacheKey);
   if (data) {
