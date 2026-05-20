@@ -17000,3 +17000,1006 @@
 [18/5/2026, 3:52:20 pm] [INFO] ℹ️  [10:22:20.591] [SsoAuth:SSO_AUTH] 🔐 Redis health: healthy 
 [18/5/2026, 3:52:20 pm] [INFO] 🚀 Redis ready
 [18/5/2026, 3:52:20 pm] [INFO] ✅ MaxMind DB loaded
+[19/5/2026, 12:28:11 pm] [INFO] 🪵 Logger initialized {"env":"development","log_level":"silly","toggles":{"master":true,"console":true,"file":true,"requests":true},"log_directory":"D:\\BRIGHTON\\DREAMHOUSE\\DHBACKEND\\logs"}
+[19/5/2026, 12:28:11 pm] [INFO] 🚀 Server running on port 8006 {"env":"development","pid":16764}
+[19/5/2026, 12:28:11 pm] [INFO] ✅ Redis connected: redis://127.0.0.1:6379
+[19/5/2026, 12:28:11 pm] [INFO] ✅ Redis connected: {"host":"127.0.0.1","port":6379,"db":0}
+[19/5/2026, 12:28:11 pm] [INFO] ✅ Database connected {"threadId":913,"config":{"host":"localhost","database":"dreamhouse","connectionLimit":"10"}}
+[19/5/2026, 12:28:11 pm] [INFO] 🚀 Redis ready
+[19/5/2026, 12:28:11 pm] [INFO] 🚀 Redis is ready to accept commands
+[19/5/2026, 12:28:11 pm] [INFO] ℹ️  [06:58:11.342] [SsoAuth:SSO_AUTH] 🔐 Redis health: healthy 
+[19/5/2026, 12:28:11 pm] [INFO] ✅ MaxMind DB loaded
+[19/5/2026, 12:28:20 pm] [INFO] 🪵 Logger initialized {"env":"development","log_level":"silly","toggles":{"master":true,"console":true,"file":true,"requests":true},"log_directory":"D:\\BRIGHTON\\DREAMHOUSE\\DHBACKEND\\logs"}
+[19/5/2026, 12:28:20 pm] [INFO] 🚀 Server running on port 8006 {"env":"development","pid":18680}
+[19/5/2026, 12:28:20 pm] [INFO] ✅ Redis connected: redis://127.0.0.1:6379
+[19/5/2026, 12:28:20 pm] [INFO] ✅ Redis connected: {"host":"127.0.0.1","port":6379,"db":0}
+[19/5/2026, 12:28:20 pm] [INFO] ✅ Database connected {"threadId":915,"config":{"host":"localhost","database":"dreamhouse","connectionLimit":"10"}}
+[19/5/2026, 12:28:20 pm] [INFO] 🚀 Redis is ready to accept commands
+[19/5/2026, 12:28:20 pm] [INFO] 🚀 Redis ready
+[19/5/2026, 12:28:20 pm] [INFO] ℹ️  [06:58:20.773] [SsoAuth:SSO_AUTH] 🔐 Redis health: healthy 
+[19/5/2026, 12:28:20 pm] [INFO] ✅ MaxMind DB loaded
+[19/5/2026, 12:28:34 pm] [INFO] [HTTP] 🌐 📥 Request received GET /api/user/logout {"ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Sa"}
+[19/5/2026, 12:28:34 pm] [INFO] ✅ Redis DELETE: session:ac57beb1-12d2-4997-90f6-c7840999ce19 (1 key(s) deleted)
+[19/5/2026, 12:28:34 pm] [INFO] ✅ Redis DELETE: api_count:ac57beb1-12d2-4997-90f6-c7840999ce19 (1 key(s) deleted)
+[19/5/2026, 12:28:34 pm] [INFO] ✅ Logout completed
+[19/5/2026, 12:28:34 pm] [DEBUG] [HTTP] ✅ 📤 Request completed GET /api/user/logout (user:1) {"status":304,"duration_ms":18}
+[19/5/2026, 12:30:53 pm] [INFO] 🪵 Logger initialized {"env":"development","log_level":"silly","toggles":{"master":true,"console":true,"file":true,"requests":true},"log_directory":"D:\\BRIGHTON\\DREAMHOUSE\\DHBACKEND\\logs"}
+[19/5/2026, 12:30:53 pm] [ERROR] ❌ Database connection failed {"error":"Cannot read properties of undefined (reading 'getConnection')"}
+[19/5/2026, 12:30:53 pm] [INFO] 🚀 Server running on port 8006 {"env":"development","pid":14776}
+[19/5/2026, 12:30:53 pm] [INFO] ✅ Redis connected: redis://127.0.0.1:6379
+[19/5/2026, 12:30:53 pm] [INFO] ✅ Redis connected: {"host":"127.0.0.1","port":6379,"db":0}
+[19/5/2026, 12:30:53 pm] [INFO] 🚀 Redis ready
+[19/5/2026, 12:30:53 pm] [INFO] 🚀 Redis is ready to accept commands
+[19/5/2026, 12:30:53 pm] [INFO] ℹ️  [07:00:53.966] [SsoAuth:SSO_AUTH] 🔐 Redis health: healthy 
+[19/5/2026, 12:30:54 pm] [INFO] ✅ MaxMind DB loaded
+[19/5/2026, 12:35:13 pm] [INFO] 🪵 Logger initialized {"env":"development","log_level":"silly","toggles":{"master":true,"console":true,"file":true,"requests":true},"log_directory":"D:\\BRIGHTON\\DREAMHOUSE\\DHBACKEND\\logs"}
+[19/5/2026, 12:35:13 pm] [ERROR] ❌ Database connection failed {"error":"Cannot read properties of undefined (reading 'getConnection')"}
+[19/5/2026, 12:35:13 pm] [INFO] 🚀 Server running on port 8006 {"env":"development","pid":5264}
+[19/5/2026, 12:35:13 pm] [INFO] ✅ Redis connected: redis://127.0.0.1:6379
+[19/5/2026, 12:35:13 pm] [INFO] ✅ Redis connected: {"host":"127.0.0.1","port":6379,"db":0}
+[19/5/2026, 12:35:13 pm] [INFO] 🚀 Redis ready
+[19/5/2026, 12:35:13 pm] [INFO] 🚀 Redis is ready to accept commands
+[19/5/2026, 12:35:13 pm] [INFO] ℹ️  [07:05:13.812] [SsoAuth:SSO_AUTH] 🔐 Redis health: healthy 
+[19/5/2026, 12:35:13 pm] [INFO] ✅ MaxMind DB loaded
+[19/5/2026, 12:38:22 pm] [INFO] 🪵 Logger initialized {"env":"development","log_level":"silly","toggles":{"master":true,"console":true,"file":true,"requests":true},"log_directory":"D:\\BRIGHTON\\DREAMHOUSE\\DHBACKEND\\logs"}
+[19/5/2026, 12:38:22 pm] [ERROR] ❌ Database connection failed {"error":"Cannot read properties of undefined (reading 'getConnection')"}
+[19/5/2026, 12:38:22 pm] [INFO] 🚀 Server running on port 8006 {"env":"development","pid":10088}
+[19/5/2026, 12:38:22 pm] [INFO] ✅ Redis connected: redis://127.0.0.1:6379
+[19/5/2026, 12:38:22 pm] [INFO] ✅ Redis connected: {"host":"127.0.0.1","port":6379,"db":0}
+[19/5/2026, 12:38:22 pm] [INFO] 🚀 Redis ready
+[19/5/2026, 12:38:22 pm] [INFO] 🚀 Redis is ready to accept commands
+[19/5/2026, 12:38:22 pm] [INFO] ℹ️  [07:08:22.170] [SsoAuth:SSO_AUTH] 🔐 Redis health: healthy 
+[19/5/2026, 12:38:22 pm] [INFO] ✅ MaxMind DB loaded
+[19/5/2026, 12:38:41 pm] [INFO] 🪵 Logger initialized {"env":"development","log_level":"silly","toggles":{"master":true,"console":true,"file":true,"requests":true},"log_directory":"D:\\BRIGHTON\\DREAMHOUSE\\DHBACKEND\\logs"}
+[19/5/2026, 12:38:41 pm] [INFO] 🚀 Server running on port 8006 {"env":"development","pid":17924}
+[19/5/2026, 12:38:41 pm] [INFO] ✅ Redis connected: redis://127.0.0.1:6379
+[19/5/2026, 12:38:41 pm] [INFO] ✅ Redis connected: {"host":"127.0.0.1","port":6379,"db":0}
+[19/5/2026, 12:38:41 pm] [INFO] ✅ Database connected {"threadId":923,"config":{"host":"localhost","database":"dreamhouse","connectionLimit":"10"}}
+[19/5/2026, 12:38:41 pm] [INFO] 🚀 Redis is ready to accept commands
+[19/5/2026, 12:38:41 pm] [INFO] 🚀 Redis ready
+[19/5/2026, 12:38:41 pm] [INFO] ℹ️  [07:08:41.488] [SsoAuth:SSO_AUTH] 🔐 Redis health: healthy 
+[19/5/2026, 12:38:41 pm] [INFO] ✅ MaxMind DB loaded
+[19/5/2026, 12:38:49 pm] [INFO] 🪵 Logger initialized {"env":"development","log_level":"silly","toggles":{"master":true,"console":true,"file":true,"requests":true},"log_directory":"D:\\BRIGHTON\\DREAMHOUSE\\DHBACKEND\\logs"}
+[19/5/2026, 12:38:49 pm] [INFO] 🚀 Server running on port 8006 {"env":"development","pid":26184}
+[19/5/2026, 12:38:49 pm] [INFO] ✅ Redis connected: redis://127.0.0.1:6379
+[19/5/2026, 12:38:49 pm] [INFO] ✅ Redis connected: {"host":"127.0.0.1","port":6379,"db":0}
+[19/5/2026, 12:38:49 pm] [INFO] ✅ Database connected {"threadId":925,"config":{"host":"localhost","database":"dreamhouse","connectionLimit":"10"}}
+[19/5/2026, 12:38:49 pm] [INFO] 🚀 Redis ready
+[19/5/2026, 12:38:49 pm] [INFO] 🚀 Redis is ready to accept commands
+[19/5/2026, 12:38:49 pm] [INFO] ℹ️  [07:08:49.156] [SsoAuth:SSO_AUTH] 🔐 Redis health: healthy 
+[19/5/2026, 12:38:49 pm] [INFO] ✅ MaxMind DB loaded
+[19/5/2026, 12:39:43 pm] [INFO] 🪵 Logger initialized {"env":"development","log_level":"silly","toggles":{"master":true,"console":true,"file":true,"requests":true},"log_directory":"D:\\BRIGHTON\\DREAMHOUSE\\DHBACKEND\\logs"}
+[19/5/2026, 12:39:43 pm] [INFO] 🚀 Server running on port 8006 {"env":"development","pid":14972}
+[19/5/2026, 12:39:43 pm] [INFO] ✅ Redis connected: redis://127.0.0.1:6379
+[19/5/2026, 12:39:43 pm] [INFO] ✅ Redis connected: {"host":"127.0.0.1","port":6379,"db":0}
+[19/5/2026, 12:39:43 pm] [INFO] ✅ Database connected {"threadId":927,"config":{"host":"localhost","database":"dreamhouse","connectionLimit":"10"}}
+[19/5/2026, 12:39:43 pm] [INFO] 🚀 Redis ready
+[19/5/2026, 12:39:43 pm] [INFO] ℹ️  [07:09:43.447] [SsoAuth:SSO_AUTH] 🔐 Redis health: healthy 
+[19/5/2026, 12:39:43 pm] [INFO] 🚀 Redis is ready to accept commands
+[19/5/2026, 12:39:43 pm] [INFO] ✅ MaxMind DB loaded
+[19/5/2026, 12:39:48 pm] [INFO] 🪵 Logger initialized {"env":"development","log_level":"silly","toggles":{"master":true,"console":true,"file":true,"requests":true},"log_directory":"D:\\BRIGHTON\\DREAMHOUSE\\DHBACKEND\\logs"}
+[19/5/2026, 12:39:48 pm] [INFO] 🚀 Server running on port 8006 {"env":"development","pid":18436}
+[19/5/2026, 12:39:48 pm] [INFO] ✅ Redis connected: redis://127.0.0.1:6379
+[19/5/2026, 12:39:48 pm] [INFO] ✅ Redis connected: {"host":"127.0.0.1","port":6379,"db":0}
+[19/5/2026, 12:39:48 pm] [INFO] ✅ Database connected {"threadId":929,"config":{"host":"localhost","database":"dreamhouse","connectionLimit":"10"}}
+[19/5/2026, 12:39:48 pm] [INFO] 🚀 Redis ready
+[19/5/2026, 12:39:48 pm] [INFO] ℹ️  [07:09:48.432] [SsoAuth:SSO_AUTH] 🔐 Redis health: healthy 
+[19/5/2026, 12:39:48 pm] [INFO] 🚀 Redis is ready to accept commands
+[19/5/2026, 12:39:48 pm] [INFO] ✅ MaxMind DB loaded
+[19/5/2026, 12:39:50 pm] [INFO] 🪵 Logger initialized {"env":"development","log_level":"silly","toggles":{"master":true,"console":true,"file":true,"requests":true},"log_directory":"D:\\BRIGHTON\\DREAMHOUSE\\DHBACKEND\\logs"}
+[19/5/2026, 12:39:50 pm] [INFO] 🚀 Server running on port 8006 {"env":"development","pid":17284}
+[19/5/2026, 12:39:50 pm] [INFO] ✅ Redis connected: redis://127.0.0.1:6379
+[19/5/2026, 12:39:50 pm] [INFO] ✅ Redis connected: {"host":"127.0.0.1","port":6379,"db":0}
+[19/5/2026, 12:39:50 pm] [INFO] ✅ Database connected {"threadId":931,"config":{"host":"localhost","database":"dreamhouse","connectionLimit":"10"}}
+[19/5/2026, 12:39:50 pm] [INFO] 🚀 Redis ready
+[19/5/2026, 12:39:50 pm] [INFO] ℹ️  [07:09:50.290] [SsoAuth:SSO_AUTH] 🔐 Redis health: healthy 
+[19/5/2026, 12:39:50 pm] [INFO] 🚀 Redis is ready to accept commands
+[19/5/2026, 12:39:50 pm] [INFO] ✅ MaxMind DB loaded
+[19/5/2026, 12:39:59 pm] [ERROR] ❌ [07:09:59.726] [SsoAuth:Route] Login failed getTenant is not a function
+[19/5/2026, 12:40:20 pm] [INFO] 🪵 Logger initialized {"env":"development","log_level":"silly","toggles":{"master":true,"console":true,"file":true,"requests":true},"log_directory":"D:\\BRIGHTON\\DREAMHOUSE\\DHBACKEND\\logs"}
+[19/5/2026, 12:40:20 pm] [INFO] 🚀 Server running on port 8006 {"env":"development","pid":29204}
+[19/5/2026, 12:40:20 pm] [INFO] ✅ Redis connected: redis://127.0.0.1:6379
+[19/5/2026, 12:40:20 pm] [INFO] ✅ Redis connected: {"host":"127.0.0.1","port":6379,"db":0}
+[19/5/2026, 12:40:20 pm] [INFO] ✅ Database connected {"threadId":933,"config":{"host":"localhost","database":"dreamhouse","connectionLimit":"10"}}
+[19/5/2026, 12:40:20 pm] [INFO] 🚀 Redis ready
+[19/5/2026, 12:40:20 pm] [INFO] 🚀 Redis is ready to accept commands
+[19/5/2026, 12:40:20 pm] [INFO] ℹ️  [07:10:20.648] [SsoAuth:SSO_AUTH] 🔐 Redis health: healthy 
+[19/5/2026, 12:40:20 pm] [INFO] ✅ MaxMind DB loaded
+[19/5/2026, 12:40:29 pm] [INFO] 🪵 Logger initialized {"env":"development","log_level":"silly","toggles":{"master":true,"console":true,"file":true,"requests":true},"log_directory":"D:\\BRIGHTON\\DREAMHOUSE\\DHBACKEND\\logs"}
+[19/5/2026, 12:40:29 pm] [INFO] 🚀 Server running on port 8006 {"env":"development","pid":6708}
+[19/5/2026, 12:40:29 pm] [INFO] ✅ Redis connected: redis://127.0.0.1:6379
+[19/5/2026, 12:40:29 pm] [INFO] ✅ Redis connected: {"host":"127.0.0.1","port":6379,"db":0}
+[19/5/2026, 12:40:29 pm] [INFO] ✅ Database connected {"threadId":935,"config":{"host":"localhost","database":"dreamhouse","connectionLimit":"10"}}
+[19/5/2026, 12:40:29 pm] [INFO] 🚀 Redis is ready to accept commands
+[19/5/2026, 12:40:29 pm] [INFO] 🚀 Redis ready
+[19/5/2026, 12:40:29 pm] [INFO] ℹ️  [07:10:29.544] [SsoAuth:SSO_AUTH] 🔐 Redis health: healthy 
+[19/5/2026, 12:40:29 pm] [INFO] ✅ MaxMind DB loaded
+[19/5/2026, 12:40:52 pm] [ERROR] ❌ [07:10:52.150] [SsoAuth:Route] Login failed getTenant is not a function
+[19/5/2026, 12:42:27 pm] [INFO] 🪵 Logger initialized {"env":"development","log_level":"silly","toggles":{"master":true,"console":true,"file":true,"requests":true},"log_directory":"D:\\BRIGHTON\\DREAMHOUSE\\DHBACKEND\\logs"}
+[19/5/2026, 12:42:27 pm] [INFO] 🚀 Server running on port 8006 {"env":"development","pid":17564}
+[19/5/2026, 12:42:27 pm] [INFO] ✅ Redis connected: redis://127.0.0.1:6379
+[19/5/2026, 12:42:27 pm] [INFO] ✅ Redis connected: {"host":"127.0.0.1","port":6379,"db":0}
+[19/5/2026, 12:42:27 pm] [INFO] ✅ Database connected {"threadId":937,"config":{"host":"localhost","database":"dreamhouse","connectionLimit":"10"}}
+[19/5/2026, 12:42:27 pm] [INFO] 🚀 Redis ready
+[19/5/2026, 12:42:27 pm] [INFO] ℹ️  [07:12:27.841] [SsoAuth:SSO_AUTH] 🔐 Redis health: healthy 
+[19/5/2026, 12:42:27 pm] [INFO] 🚀 Redis is ready to accept commands
+[19/5/2026, 12:42:27 pm] [INFO] ✅ MaxMind DB loaded
+[19/5/2026, 12:42:43 pm] [INFO] [HTTP] 🌐 📥 Request received GET /api/project/projects/financials {"ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Sa"}
+[19/5/2026, 12:42:43 pm] [INFO] [HTTP] 🌐 📥 Request received GET /api/project/summary {"ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Sa"}
+[19/5/2026, 12:42:43 pm] [INFO] [HTTP] 🌐 📥 Request received GET /api/labour/FetchContractorPay {"ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Sa"}
+[19/5/2026, 12:42:43 pm] [INFO] ⚠️ Redis key not found: dashboard:financials:1:1
+[19/5/2026, 12:42:43 pm] [INFO] [HTTP] 🌐 📥 Request received GET /api/payment/FetchMaterialPay {"ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Sa"}
+[19/5/2026, 12:42:43 pm] [INFO] ⚠️ Redis key not found: dashboard:summary:1:1
+[19/5/2026, 12:42:43 pm] [INFO] ⚠️ Redis key not found: labour:1:1:contractor:pay
+[19/5/2026, 12:42:43 pm] [INFO] ⚠️ Redis key not found: payment:material:fetch:1:1
+[19/5/2026, 12:42:43 pm] [INFO] ✅ Redis SET: labour:1:1:contractor:pay
+[19/5/2026, 12:42:43 pm] [DEBUG] [HTTP] ✅ 📤 Request completed GET /api/labour/FetchContractorPay (user:1) {"status":304,"duration_ms":38}
+[19/5/2026, 12:42:43 pm] [INFO] [HTTP] 🌐 📥 Request received GET /api/labour/FetchContractorPay {"ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Sa"}
+[19/5/2026, 12:42:43 pm] [INFO] ✅ Redis SET: payment:material:fetch:1:1
+[19/5/2026, 12:42:43 pm] [INFO] ✅ Redis SET: dashboard:financials:1:1
+[19/5/2026, 12:42:43 pm] [DEBUG] [HTTP] ✅ 📤 Request completed GET /api/payment/FetchMaterialPay (user:1) {"status":304,"duration_ms":39}
+[19/5/2026, 12:42:43 pm] [DEBUG] [HTTP] ✅ 📤 Request completed GET /api/project/projects/financials (user:1) {"status":200,"duration_ms":68}
+[19/5/2026, 12:42:43 pm] [INFO] ✅ Redis GET: labour:1:1:contractor:pay [{"Contractor":"NESAMANI","TotalBalance":44090}]
+[19/5/2026, 12:42:43 pm] [DEBUG] [HTTP] ✅ 📤 Request completed GET /api/labour/FetchContractorPay (user:1) {"status":304,"duration_ms":16}
+[19/5/2026, 12:42:43 pm] [INFO] [HTTP] 🌐 📥 Request received GET /api/payment/FetchMaterialPay {"ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Sa"}
+[19/5/2026, 12:42:43 pm] [INFO] [HTTP] 🌐 📥 Request received GET /api/project/projects/financials {"ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Sa"}
+[19/5/2026, 12:42:43 pm] [INFO] ✅ Redis SET: dashboard:summary:1:1
+[19/5/2026, 12:42:43 pm] [DEBUG] [HTTP] ✅ 📤 Request completed GET /api/project/summary (user:1) {"status":200,"duration_ms":74}
+[19/5/2026, 12:42:43 pm] [INFO] ✅ Redis GET: payment:material:fetch:1:1 [{"supplier_name":"MANI","Balance":5000}]
+[19/5/2026, 12:42:43 pm] [DEBUG] [HTTP] ✅ 📤 Request completed GET /api/payment/FetchMaterialPay (user:1) {"status":304,"duration_ms":12}
+[19/5/2026, 12:42:43 pm] [INFO] ✅ Redis GET: dashboard:financials:1:1 [{"Project_id":2,"Project_name":"MODERN HOUSE","income":{"total":30000,"payments":10000,"daily_process":20000},"expense":{"total":434091,"material":130000,"labour":304091},"material":{"total":130000,"paid":120000,"balance":10000},"labour":{"total":304091,"paid":260001,"balance":44090,"entries":2},"profit":-404091,"profit_margin":"-1346.97"},{"Project_id":3,"Project_name":"SCHOOL","income":{"total":0,"payments":0,"daily_process":0},"expense":{"total":0,"material":0,"labour":0},"material":{"total":0,"paid":0,"balance":0},"labour":{"total":0,"paid":0,"balance":0,"entries":0},"profit":0,"profit_margin":0},{"Project_id":4,"Project_name":"COLLEGE","income":{"total":0,"payments":0,"daily_process":0},"expense":{"total":0,"material":0,"labour":0},"material":{"total":0,"paid":0,"balance":0},"labour":{"total":0,"paid":0,"balance":0,"entries":0},"profit":0,"profit_margin":0}]
+[19/5/2026, 12:42:43 pm] [DEBUG] [HTTP] ✅ 📤 Request completed GET /api/project/projects/financials (user:1) {"status":304,"duration_ms":13}
+[19/5/2026, 12:42:43 pm] [INFO] [HTTP] 🌐 📥 Request received GET /api/project/summary {"ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Sa"}
+[19/5/2026, 12:42:43 pm] [INFO] ✅ Redis GET: dashboard:summary:1:1 {"total_projects":3,"active_projects":3,"total_income":30000,"total_expense":369091,"total_material":65000,"total_labour":304091,"total_profit":-339091,"profit_margin":"-1130.30"}
+[19/5/2026, 12:42:43 pm] [DEBUG] [HTTP] ✅ 📤 Request completed GET /api/project/summary (user:1) {"status":304,"duration_ms":8}
+[19/5/2026, 12:43:00 pm] [INFO] [HTTP] 🌐 📥 Request received GET /api/master/fetchMaterial {"ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Sa"}
+[19/5/2026, 12:43:00 pm] [INFO] [HTTP] 🌐 📥 Request received GET /api/master/fetchLabour {"ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Sa"}
+[19/5/2026, 12:43:00 pm] [INFO] [HTTP] 🌐 📥 Request received GET /api/master/fetchContractor {"ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Sa"}
+[19/5/2026, 12:43:00 pm] [INFO] [HTTP] 🌐 📥 Request received GET /api/master/fetchSupplier {"ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Sa"}
+[19/5/2026, 12:43:00 pm] [INFO] ⚠️ Redis key not found: master:1:1:material:fetch
+[19/5/2026, 12:43:00 pm] [INFO] ⚠️ Redis key not found: master:1:1:labour:fetch
+[19/5/2026, 12:43:00 pm] [INFO] ⚠️ Redis key not found: master:contractor:1:1:fetch
+[19/5/2026, 12:43:00 pm] [INFO] ⚠️ No keys found to delete for pattern: master:material:*
+[19/5/2026, 12:43:00 pm] [INFO] ⚠️ No keys found to delete for pattern: master:contractor:*
+[19/5/2026, 12:43:00 pm] [INFO] ⚠️ No keys found to delete for pattern: master:labour:*
+[19/5/2026, 12:43:00 pm] [INFO] ✅ Redis SET: master:1:1:material:fetch
+[19/5/2026, 12:43:00 pm] [INFO] ✅ Redis SET: master:contractor:1:1:fetch
+[19/5/2026, 12:43:00 pm] [INFO] ✅ Redis SET: master:1:1:labour:fetch
+[19/5/2026, 12:43:00 pm] [DEBUG] [HTTP] ✅ 📤 Request completed GET /api/master/fetchMaterial (user:1) {"status":304,"duration_ms":43}
+[19/5/2026, 12:43:00 pm] [DEBUG] [HTTP] ✅ 📤 Request completed GET /api/master/fetchContractor (user:1) {"status":304,"duration_ms":36}
+[19/5/2026, 12:43:00 pm] [DEBUG] [HTTP] ✅ 📤 Request completed GET /api/master/fetchLabour (user:1) {"status":304,"duration_ms":42}
+[19/5/2026, 12:43:00 pm] [INFO] [HTTP] 🌐 📥 Request received GET /api/master/fetchMaterial {"ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Sa"}
+[19/5/2026, 12:43:00 pm] [INFO] [HTTP] 🌐 📥 Request received GET /api/master/fetchContractor {"ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Sa"}
+[19/5/2026, 12:43:00 pm] [INFO] [HTTP] 🌐 📥 Request received GET /api/master/fetchLabour {"ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Sa"}
+[19/5/2026, 12:43:00 pm] [INFO] ⚠️ No keys found to delete for pattern: master:supplier:*
+[19/5/2026, 12:43:00 pm] [INFO] ✅ Redis SET: master:supplier:1:1:fetch
+[19/5/2026, 12:43:00 pm] [DEBUG] [HTTP] ✅ 📤 Request completed GET /api/master/fetchSupplier (user:1) {"status":304,"duration_ms":50}
+[19/5/2026, 12:43:00 pm] [INFO] ✅ Redis GET: master:1:1:material:fetch [{"id":7,"Material_Name":"CEMENT","Created_by":"superuser1","created_datetime":"2026-05-13","Supplier_Name":null,"Supplier_Contact":null,"tenant_id":1,"branch_id":1},{"id":8,"Material_Name":"JALLI","Created_by":"superuser1","created_datetime":"2026-05-13","Supplier_Name":null,"Supplier_Contact":null,"tenant_id":1,"branch_id":1},{"id":9,"Material_Name":"SAND","Created_by":"superuser1","created_datetime":"2026-05-13","Supplier_Name":null,"Supplier_Contact":null,"tenant_id":1,"branch_id":1},{"id":10,"Material_Name":null,"Created_by":"superuser1","created_datetime":"2026-05-13","Supplier_Name":"MANI","Supplier_Contact":"8943483943","tenant_id":1,"branch_id":1},{"id":11,"Material_Name":null,"Created_by":"superuser1","created_datetime":"2026-05-13","Supplier_Name":"SABIR","Supplier_Contact":"9978767767","tenant_id":1,"branch_id":1},{"id":12,"Material_Name":"STONE","Created_by":"superuser1","created_datetime":"2026-05-13","Supplier_Name":null,"Supplier_Contact":null,"tenant_id":1,"branch_id":1}]
+[19/5/2026, 12:43:00 pm] [INFO] ✅ Redis GET: master:contractor:1:1:fetch [{"Contractor":"NESAMANI","Id":6},{"Contractor":"MUTHUKUMAR","Id":7}]
+[19/5/2026, 12:43:00 pm] [INFO] ✅ Redis GET: master:1:1:labour:fetch [{"id":4,"Labour_Details":"ENGINEER","Contractor":null,"Created_by":"superuser1","created_datetime":"2026-05-13","Salary":250000,"Ratio":1,"tenant_id":1,"branch_id":1},{"id":5,"Labour_Details":"KOTHANAR","Contractor":null,"Created_by":"superuser1","created_datetime":"2026-05-13","Salary":18000,"Ratio":30,"tenant_id":1,"branch_id":1},{"id":6,"Labour_Details":null,"Contractor":"NESAMANI","Created_by":"superuser1","created_datetime":"2026-05-13","Salary":null,"Ratio":null,"tenant_id":1,"branch_id":1},{"id":7,"Labour_Details":null,"Contractor":"MUTHUKUMAR","Created_by":"superuser1","created_datetime":"2026-05-13","Salary":null,"Ratio":null,"tenant_id":1,"branch_id":1}]
+[19/5/2026, 12:43:00 pm] [DEBUG] [HTTP] ✅ 📤 Request completed GET /api/master/fetchMaterial (user:1) {"status":304,"duration_ms":18}
+[19/5/2026, 12:43:00 pm] [DEBUG] [HTTP] ✅ 📤 Request completed GET /api/master/fetchContractor (user:1) {"status":304,"duration_ms":17}
+[19/5/2026, 12:43:00 pm] [DEBUG] [HTTP] ✅ 📤 Request completed GET /api/master/fetchLabour (user:1) {"status":304,"duration_ms":16}
+[19/5/2026, 12:43:00 pm] [INFO] [HTTP] 🌐 📥 Request received GET /api/master/fetchSupplier {"ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Sa"}
+[19/5/2026, 12:43:00 pm] [INFO] ✅ Redis DELETE PATTERN: master:supplier:* (1 key(s) deleted)
+[19/5/2026, 12:43:00 pm] [INFO] ✅ Redis SET: master:supplier:1:1:fetch
+[19/5/2026, 12:43:00 pm] [DEBUG] [HTTP] ✅ 📤 Request completed GET /api/master/fetchSupplier (user:1) {"status":304,"duration_ms":8}
+[19/5/2026, 12:43:05 pm] [INFO] [HTTP] 🌐 📥 Request received POST /api/material/Stock_List {"ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Sa"}
+[19/5/2026, 12:43:05 pm] [INFO] [HTTP] 🌐 📥 Request received POST /api/material/Stock_List {"ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Sa"}
+[19/5/2026, 12:43:05 pm] [INFO] ⚠️ Redis key not found: material:1:1:stock:2
+[19/5/2026, 12:43:05 pm] [INFO] ⚠️ Redis key not found: material:1:1:stock:2
+[19/5/2026, 12:43:05 pm] [INFO] ✅ Redis SET: material:1:1:stock:2
+[19/5/2026, 12:43:05 pm] [DEBUG] [HTTP] ✅ 📤 Request completed POST /api/material/Stock_List (user:1) {"status":200,"duration_ms":17}
+[19/5/2026, 12:43:05 pm] [INFO] ✅ Redis SET: material:1:1:stock:2
+[19/5/2026, 12:43:05 pm] [DEBUG] [HTTP] ✅ 📤 Request completed POST /api/material/Stock_List (user:1) {"status":200,"duration_ms":20}
+[19/5/2026, 12:43:07 pm] [INFO] [HTTP] 🌐 📥 Request received GET /api/master/fetchMaterial {"ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Sa"}
+[19/5/2026, 12:43:07 pm] [INFO] [HTTP] 🌐 📥 Request received POST /api/order/FetchOrderUpdate {"ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Sa"}
+[19/5/2026, 12:43:07 pm] [INFO] [HTTP] 🌐 📥 Request received POST /api/order/FetchOrderUpdate {"ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Sa"}
+[19/5/2026, 12:43:07 pm] [INFO] ✅ Redis GET: master:1:1:material:fetch [{"id":7,"Material_Name":"CEMENT","Created_by":"superuser1","created_datetime":"2026-05-13","Supplier_Name":null,"Supplier_Contact":null,"tenant_id":1,"branch_id":1},{"id":8,"Material_Name":"JALLI","Created_by":"superuser1","created_datetime":"2026-05-13","Supplier_Name":null,"Supplier_Contact":null,"tenant_id":1,"branch_id":1},{"id":9,"Material_Name":"SAND","Created_by":"superuser1","created_datetime":"2026-05-13","Supplier_Name":null,"Supplier_Contact":null,"tenant_id":1,"branch_id":1},{"id":10,"Material_Name":null,"Created_by":"superuser1","created_datetime":"2026-05-13","Supplier_Name":"MANI","Supplier_Contact":"8943483943","tenant_id":1,"branch_id":1},{"id":11,"Material_Name":null,"Created_by":"superuser1","created_datetime":"2026-05-13","Supplier_Name":"SABIR","Supplier_Contact":"9978767767","tenant_id":1,"branch_id":1},{"id":12,"Material_Name":"STONE","Created_by":"superuser1","created_datetime":"2026-05-13","Supplier_Name":null,"Supplier_Contact":null,"tenant_id":1,"branch_id":1}]
+[19/5/2026, 12:43:07 pm] [INFO] ⚠️ Redis key not found: order:update:1:1:2026-05-19:2026-05-19:2
+[19/5/2026, 12:43:07 pm] [DEBUG] [HTTP] ✅ 📤 Request completed GET /api/master/fetchMaterial (user:1) {"status":304,"duration_ms":14}
+[19/5/2026, 12:43:07 pm] [INFO] [HTTP] 🌐 📥 Request received GET /api/master/fetchMaterial {"ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Sa"}
+[19/5/2026, 12:43:07 pm] [INFO] ⚠️ Redis key not found: order:update:1:1:2026-05-19:2026-05-19:2
+[19/5/2026, 12:43:07 pm] [INFO] ✅ Redis SET: order:update:1:1:2026-05-19:2026-05-19:2
+[19/5/2026, 12:43:07 pm] [DEBUG] [HTTP] ✅ 📤 Request completed POST /api/order/FetchOrderUpdate (user:1) {"status":200,"duration_ms":25}
+[19/5/2026, 12:43:07 pm] [INFO] ✅ Redis GET: master:1:1:material:fetch [{"id":7,"Material_Name":"CEMENT","Created_by":"superuser1","created_datetime":"2026-05-13","Supplier_Name":null,"Supplier_Contact":null,"tenant_id":1,"branch_id":1},{"id":8,"Material_Name":"JALLI","Created_by":"superuser1","created_datetime":"2026-05-13","Supplier_Name":null,"Supplier_Contact":null,"tenant_id":1,"branch_id":1},{"id":9,"Material_Name":"SAND","Created_by":"superuser1","created_datetime":"2026-05-13","Supplier_Name":null,"Supplier_Contact":null,"tenant_id":1,"branch_id":1},{"id":10,"Material_Name":null,"Created_by":"superuser1","created_datetime":"2026-05-13","Supplier_Name":"MANI","Supplier_Contact":"8943483943","tenant_id":1,"branch_id":1},{"id":11,"Material_Name":null,"Created_by":"superuser1","created_datetime":"2026-05-13","Supplier_Name":"SABIR","Supplier_Contact":"9978767767","tenant_id":1,"branch_id":1},{"id":12,"Material_Name":"STONE","Created_by":"superuser1","created_datetime":"2026-05-13","Supplier_Name":null,"Supplier_Contact":null,"tenant_id":1,"branch_id":1}]
+[19/5/2026, 12:43:07 pm] [DEBUG] [HTTP] ✅ 📤 Request completed GET /api/master/fetchMaterial (user:1) {"status":304,"duration_ms":14}
+[19/5/2026, 12:43:07 pm] [INFO] ✅ Redis SET: order:update:1:1:2026-05-19:2026-05-19:2
+[19/5/2026, 12:43:07 pm] [DEBUG] [HTTP] ✅ 📤 Request completed POST /api/order/FetchOrderUpdate (user:1) {"status":200,"duration_ms":29}
+[19/5/2026, 12:43:10 pm] [INFO] [HTTP] 🌐 📥 Request received GET /api/master/fetchLabour {"ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Sa"}
+[19/5/2026, 12:43:10 pm] [INFO] [HTTP] 🌐 📥 Request received GET /api/master/fetchContractor {"ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Sa"}
+[19/5/2026, 12:43:10 pm] [INFO] ✅ Redis GET: master:1:1:labour:fetch [{"id":4,"Labour_Details":"ENGINEER","Contractor":null,"Created_by":"superuser1","created_datetime":"2026-05-13","Salary":250000,"Ratio":1,"tenant_id":1,"branch_id":1},{"id":5,"Labour_Details":"KOTHANAR","Contractor":null,"Created_by":"superuser1","created_datetime":"2026-05-13","Salary":18000,"Ratio":30,"tenant_id":1,"branch_id":1},{"id":6,"Labour_Details":null,"Contractor":"NESAMANI","Created_by":"superuser1","created_datetime":"2026-05-13","Salary":null,"Ratio":null,"tenant_id":1,"branch_id":1},{"id":7,"Labour_Details":null,"Contractor":"MUTHUKUMAR","Created_by":"superuser1","created_datetime":"2026-05-13","Salary":null,"Ratio":null,"tenant_id":1,"branch_id":1}]
+[19/5/2026, 12:43:10 pm] [DEBUG] [HTTP] ✅ 📤 Request completed GET /api/master/fetchLabour (user:1) {"status":304,"duration_ms":8}
+[19/5/2026, 12:43:10 pm] [INFO] ✅ Redis GET: master:contractor:1:1:fetch [{"Contractor":"NESAMANI","Id":6},{"Contractor":"MUTHUKUMAR","Id":7}]
+[19/5/2026, 12:43:10 pm] [DEBUG] [HTTP] ✅ 📤 Request completed GET /api/master/fetchContractor (user:1) {"status":304,"duration_ms":13}
+[19/5/2026, 12:43:10 pm] [INFO] [HTTP] 🌐 📥 Request received POST /api/labour/FetchLabourUpdate {"ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Sa"}
+[19/5/2026, 12:43:10 pm] [INFO] [HTTP] 🌐 📥 Request received GET /api/master/fetchLabour {"ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Sa"}
+[19/5/2026, 12:43:10 pm] [INFO] [HTTP] 🌐 📥 Request received GET /api/master/fetchContractor {"ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Sa"}
+[19/5/2026, 12:43:10 pm] [INFO] [HTTP] 🌐 📥 Request received POST /api/labour/FetchLabourUpdate {"ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Sa"}
+[19/5/2026, 12:43:10 pm] [INFO] ⚠️ Redis key not found: labour:1:1:2:update:2026-05-19:2026-05-19
+[19/5/2026, 12:43:10 pm] [INFO] ✅ Redis GET: master:1:1:labour:fetch [{"id":4,"Labour_Details":"ENGINEER","Contractor":null,"Created_by":"superuser1","created_datetime":"2026-05-13","Salary":250000,"Ratio":1,"tenant_id":1,"branch_id":1},{"id":5,"Labour_Details":"KOTHANAR","Contractor":null,"Created_by":"superuser1","created_datetime":"2026-05-13","Salary":18000,"Ratio":30,"tenant_id":1,"branch_id":1},{"id":6,"Labour_Details":null,"Contractor":"NESAMANI","Created_by":"superuser1","created_datetime":"2026-05-13","Salary":null,"Ratio":null,"tenant_id":1,"branch_id":1},{"id":7,"Labour_Details":null,"Contractor":"MUTHUKUMAR","Created_by":"superuser1","created_datetime":"2026-05-13","Salary":null,"Ratio":null,"tenant_id":1,"branch_id":1}]
+[19/5/2026, 12:43:10 pm] [INFO] ✅ Redis GET: master:contractor:1:1:fetch [{"Contractor":"NESAMANI","Id":6},{"Contractor":"MUTHUKUMAR","Id":7}]
+[19/5/2026, 12:43:10 pm] [INFO] ⚠️ Redis key not found: labour:1:1:2:update:2026-05-19:2026-05-19
+[19/5/2026, 12:43:10 pm] [DEBUG] [HTTP] ✅ 📤 Request completed GET /api/master/fetchLabour (user:1) {"status":304,"duration_ms":17}
+[19/5/2026, 12:43:10 pm] [DEBUG] [HTTP] ✅ 📤 Request completed GET /api/master/fetchContractor (user:1) {"status":304,"duration_ms":16}
+[19/5/2026, 12:43:10 pm] [INFO] ✅ Redis SET: labour:1:1:2:update:2026-05-19:2026-05-19
+[19/5/2026, 12:43:10 pm] [DEBUG] [HTTP] ✅ 📤 Request completed POST /api/labour/FetchLabourUpdate (user:1) {"status":200,"duration_ms":28}
+[19/5/2026, 12:43:10 pm] [INFO] ✅ Redis SET: labour:1:1:2:update:2026-05-19:2026-05-19
+[19/5/2026, 12:43:10 pm] [DEBUG] [HTTP] ✅ 📤 Request completed POST /api/labour/FetchLabourUpdate (user:1) {"status":200,"duration_ms":27}
+[19/5/2026, 12:43:17 pm] [INFO] [HTTP] 🌐 📥 Request received POST /api/labour/FetchLabourUpdate {"ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Sa"}
+[19/5/2026, 12:43:17 pm] [INFO] ⚠️ Redis key not found: labour:1:1:2:update:2026-05-01:2026-05-19
+[19/5/2026, 12:43:17 pm] [INFO] ✅ Redis SET: labour:1:1:2:update:2026-05-01:2026-05-19
+[19/5/2026, 12:43:17 pm] [DEBUG] [HTTP] ✅ 📤 Request completed POST /api/labour/FetchLabourUpdate (user:1) {"status":200,"duration_ms":7}
+[19/5/2026, 12:44:48 pm] [INFO] 🛑 Closing Redis connection...
+[19/5/2026, 12:44:48 pm] [INFO] 🛑 Shutting down Redis connection...
+[19/5/2026, 12:44:48 pm] [INFO] ✅ Redis connection closed
+[19/5/2026, 12:44:48 pm] [INFO] ✅ Redis connection closed gracefully
+[19/5/2026, 12:44:54 pm] [INFO] 🪵 Logger initialized {"env":"development","log_level":"silly","toggles":{"master":true,"console":false,"file":true,"requests":true},"log_directory":"D:\\BRIGHTON\\DREAMHOUSE\\DHBACKEND\\logs"}
+[19/5/2026, 12:44:54 pm] [INFO] 🚀 Server running on port 8006 {"env":"development","pid":6172}
+[19/5/2026, 12:44:54 pm] [INFO] ✅ Redis connected: redis://127.0.0.1:6379
+[19/5/2026, 12:44:54 pm] [INFO] ✅ Redis connected: {"host":"127.0.0.1","port":6379,"db":0}
+[19/5/2026, 12:44:54 pm] [INFO] ✅ Database connected {"threadId":941,"config":{"host":"localhost","database":"dreamhouse","connectionLimit":"10"}}
+[19/5/2026, 12:44:54 pm] [INFO] 🚀 Redis ready
+[19/5/2026, 12:44:54 pm] [INFO] 🚀 Redis is ready to accept commands
+[19/5/2026, 12:44:54 pm] [INFO] ℹ️  [07:14:54.923] [SsoAuth:SSO_AUTH] 🔐 Redis health: healthy 
+[19/5/2026, 12:44:54 pm] [INFO] ✅ MaxMind DB loaded
+[19/5/2026, 12:45:06 pm] [INFO] [HTTP] 🌐 📥 Request received GET /api/master/fetchMaterial {"ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Sa"}
+[19/5/2026, 12:45:06 pm] [INFO] [HTTP] 🌐 📥 Request received POST /api/order/FetchOrderUpdate {"ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Sa"}
+[19/5/2026, 12:45:06 pm] [INFO] ✅ Redis GET: master:1:1:material:fetch [{"id":7,"Material_Name":"CEMENT","Created_by":"superuser1","created_datetime":"2026-05-13","Supplier_Name":null,"Supplier_Contact":null,"tenant_id":1,"branch_id":1},{"id":8,"Material_Name":"JALLI","Created_by":"superuser1","created_datetime":"2026-05-13","Supplier_Name":null,"Supplier_Contact":null,"tenant_id":1,"branch_id":1},{"id":9,"Material_Name":"SAND","Created_by":"superuser1","created_datetime":"2026-05-13","Supplier_Name":null,"Supplier_Contact":null,"tenant_id":1,"branch_id":1},{"id":10,"Material_Name":null,"Created_by":"superuser1","created_datetime":"2026-05-13","Supplier_Name":"MANI","Supplier_Contact":"8943483943","tenant_id":1,"branch_id":1},{"id":11,"Material_Name":null,"Created_by":"superuser1","created_datetime":"2026-05-13","Supplier_Name":"SABIR","Supplier_Contact":"9978767767","tenant_id":1,"branch_id":1},{"id":12,"Material_Name":"STONE","Created_by":"superuser1","created_datetime":"2026-05-13","Supplier_Name":null,"Supplier_Contact":null,"tenant_id":1,"branch_id":1}]
+[19/5/2026, 12:45:06 pm] [DEBUG] [HTTP] ✅ 📤 Request completed GET /api/master/fetchMaterial (user:1) {"status":304,"duration_ms":51}
+[19/5/2026, 12:45:06 pm] [INFO] [HTTP] 🌐 📥 Request received POST /api/order/FetchOrderUpdate {"ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Sa"}
+[19/5/2026, 12:45:06 pm] [INFO] ✅ Redis GET: order:update:1:1:2026-05-19:2026-05-19:2 []
+[19/5/2026, 12:45:06 pm] [DEBUG] [HTTP] ✅ 📤 Request completed POST /api/order/FetchOrderUpdate (user:1) {"status":200,"duration_ms":35}
+[19/5/2026, 12:45:06 pm] [INFO] [HTTP] 🌐 📥 Request received GET /api/master/fetchMaterial {"ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Sa"}
+[19/5/2026, 12:45:06 pm] [INFO] ✅ Redis GET: order:update:1:1:2026-05-19:2026-05-19:2 []
+[19/5/2026, 12:45:06 pm] [DEBUG] [HTTP] ✅ 📤 Request completed POST /api/order/FetchOrderUpdate (user:1) {"status":200,"duration_ms":15}
+[19/5/2026, 12:45:06 pm] [INFO] ✅ Redis GET: master:1:1:material:fetch [{"id":7,"Material_Name":"CEMENT","Created_by":"superuser1","created_datetime":"2026-05-13","Supplier_Name":null,"Supplier_Contact":null,"tenant_id":1,"branch_id":1},{"id":8,"Material_Name":"JALLI","Created_by":"superuser1","created_datetime":"2026-05-13","Supplier_Name":null,"Supplier_Contact":null,"tenant_id":1,"branch_id":1},{"id":9,"Material_Name":"SAND","Created_by":"superuser1","created_datetime":"2026-05-13","Supplier_Name":null,"Supplier_Contact":null,"tenant_id":1,"branch_id":1},{"id":10,"Material_Name":null,"Created_by":"superuser1","created_datetime":"2026-05-13","Supplier_Name":"MANI","Supplier_Contact":"8943483943","tenant_id":1,"branch_id":1},{"id":11,"Material_Name":null,"Created_by":"superuser1","created_datetime":"2026-05-13","Supplier_Name":"SABIR","Supplier_Contact":"9978767767","tenant_id":1,"branch_id":1},{"id":12,"Material_Name":"STONE","Created_by":"superuser1","created_datetime":"2026-05-13","Supplier_Name":null,"Supplier_Contact":null,"tenant_id":1,"branch_id":1}]
+[19/5/2026, 12:45:06 pm] [DEBUG] [HTTP] ✅ 📤 Request completed GET /api/master/fetchMaterial (user:1) {"status":304,"duration_ms":10}
+[19/5/2026, 12:45:11 pm] [INFO] [HTTP] 🌐 📥 Request received GET /api/master/fetchMaterial {"ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Sa"}
+[19/5/2026, 12:45:11 pm] [INFO] [HTTP] 🌐 📥 Request received GET /api/master/fetchLabour {"ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Sa"}
+[19/5/2026, 12:45:11 pm] [INFO] [HTTP] 🌐 📥 Request received GET /api/master/fetchContractor {"ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Sa"}
+[19/5/2026, 12:45:11 pm] [INFO] ✅ Redis GET: master:1:1:material:fetch [{"id":7,"Material_Name":"CEMENT","Created_by":"superuser1","created_datetime":"2026-05-13","Supplier_Name":null,"Supplier_Contact":null,"tenant_id":1,"branch_id":1},{"id":8,"Material_Name":"JALLI","Created_by":"superuser1","created_datetime":"2026-05-13","Supplier_Name":null,"Supplier_Contact":null,"tenant_id":1,"branch_id":1},{"id":9,"Material_Name":"SAND","Created_by":"superuser1","created_datetime":"2026-05-13","Supplier_Name":null,"Supplier_Contact":null,"tenant_id":1,"branch_id":1},{"id":10,"Material_Name":null,"Created_by":"superuser1","created_datetime":"2026-05-13","Supplier_Name":"MANI","Supplier_Contact":"8943483943","tenant_id":1,"branch_id":1},{"id":11,"Material_Name":null,"Created_by":"superuser1","created_datetime":"2026-05-13","Supplier_Name":"SABIR","Supplier_Contact":"9978767767","tenant_id":1,"branch_id":1},{"id":12,"Material_Name":"STONE","Created_by":"superuser1","created_datetime":"2026-05-13","Supplier_Name":null,"Supplier_Contact":null,"tenant_id":1,"branch_id":1}]
+[19/5/2026, 12:45:11 pm] [INFO] ✅ Redis GET: master:1:1:labour:fetch [{"id":4,"Labour_Details":"ENGINEER","Contractor":null,"Created_by":"superuser1","created_datetime":"2026-05-13","Salary":250000,"Ratio":1,"tenant_id":1,"branch_id":1},{"id":5,"Labour_Details":"KOTHANAR","Contractor":null,"Created_by":"superuser1","created_datetime":"2026-05-13","Salary":18000,"Ratio":30,"tenant_id":1,"branch_id":1},{"id":6,"Labour_Details":null,"Contractor":"NESAMANI","Created_by":"superuser1","created_datetime":"2026-05-13","Salary":null,"Ratio":null,"tenant_id":1,"branch_id":1},{"id":7,"Labour_Details":null,"Contractor":"MUTHUKUMAR","Created_by":"superuser1","created_datetime":"2026-05-13","Salary":null,"Ratio":null,"tenant_id":1,"branch_id":1}]
+[19/5/2026, 12:45:11 pm] [DEBUG] [HTTP] ✅ 📤 Request completed GET /api/master/fetchMaterial (user:1) {"status":304,"duration_ms":10}
+[19/5/2026, 12:45:11 pm] [DEBUG] [HTTP] ✅ 📤 Request completed GET /api/master/fetchLabour (user:1) {"status":304,"duration_ms":9}
+[19/5/2026, 12:45:11 pm] [INFO] ✅ Redis GET: master:contractor:1:1:fetch [{"Contractor":"NESAMANI","Id":6},{"Contractor":"MUTHUKUMAR","Id":7}]
+[19/5/2026, 12:45:11 pm] [DEBUG] [HTTP] ✅ 📤 Request completed GET /api/master/fetchContractor (user:1) {"status":304,"duration_ms":10}
+[19/5/2026, 12:45:11 pm] [INFO] [HTTP] 🌐 📥 Request received GET /api/master/fetchMaterial {"ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Sa"}
+[19/5/2026, 12:45:11 pm] [INFO] [HTTP] 🌐 📥 Request received GET /api/master/fetchLabour {"ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Sa"}
+[19/5/2026, 12:45:11 pm] [INFO] [HTTP] 🌐 📥 Request received GET /api/master/fetchSupplier {"ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Sa"}
+[19/5/2026, 12:45:11 pm] [INFO] [HTTP] 🌐 📥 Request received GET /api/master/fetchContractor {"ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Sa"}
+[19/5/2026, 12:45:11 pm] [INFO] ✅ Redis GET: master:1:1:material:fetch [{"id":7,"Material_Name":"CEMENT","Created_by":"superuser1","created_datetime":"2026-05-13","Supplier_Name":null,"Supplier_Contact":null,"tenant_id":1,"branch_id":1},{"id":8,"Material_Name":"JALLI","Created_by":"superuser1","created_datetime":"2026-05-13","Supplier_Name":null,"Supplier_Contact":null,"tenant_id":1,"branch_id":1},{"id":9,"Material_Name":"SAND","Created_by":"superuser1","created_datetime":"2026-05-13","Supplier_Name":null,"Supplier_Contact":null,"tenant_id":1,"branch_id":1},{"id":10,"Material_Name":null,"Created_by":"superuser1","created_datetime":"2026-05-13","Supplier_Name":"MANI","Supplier_Contact":"8943483943","tenant_id":1,"branch_id":1},{"id":11,"Material_Name":null,"Created_by":"superuser1","created_datetime":"2026-05-13","Supplier_Name":"SABIR","Supplier_Contact":"9978767767","tenant_id":1,"branch_id":1},{"id":12,"Material_Name":"STONE","Created_by":"superuser1","created_datetime":"2026-05-13","Supplier_Name":null,"Supplier_Contact":null,"tenant_id":1,"branch_id":1}]
+[19/5/2026, 12:45:11 pm] [INFO] ✅ Redis GET: master:1:1:labour:fetch [{"id":4,"Labour_Details":"ENGINEER","Contractor":null,"Created_by":"superuser1","created_datetime":"2026-05-13","Salary":250000,"Ratio":1,"tenant_id":1,"branch_id":1},{"id":5,"Labour_Details":"KOTHANAR","Contractor":null,"Created_by":"superuser1","created_datetime":"2026-05-13","Salary":18000,"Ratio":30,"tenant_id":1,"branch_id":1},{"id":6,"Labour_Details":null,"Contractor":"NESAMANI","Created_by":"superuser1","created_datetime":"2026-05-13","Salary":null,"Ratio":null,"tenant_id":1,"branch_id":1},{"id":7,"Labour_Details":null,"Contractor":"MUTHUKUMAR","Created_by":"superuser1","created_datetime":"2026-05-13","Salary":null,"Ratio":null,"tenant_id":1,"branch_id":1}]
+[19/5/2026, 12:45:11 pm] [DEBUG] [HTTP] ✅ 📤 Request completed GET /api/master/fetchMaterial (user:1) {"status":304,"duration_ms":16}
+[19/5/2026, 12:45:11 pm] [DEBUG] [HTTP] ✅ 📤 Request completed GET /api/master/fetchLabour (user:1) {"status":304,"duration_ms":16}
+[19/5/2026, 12:45:11 pm] [INFO] ✅ Redis GET: master:contractor:1:1:fetch [{"Contractor":"NESAMANI","Id":6},{"Contractor":"MUTHUKUMAR","Id":7}]
+[19/5/2026, 12:45:11 pm] [DEBUG] [HTTP] ✅ 📤 Request completed GET /api/master/fetchContractor (user:1) {"status":304,"duration_ms":15}
+[19/5/2026, 12:45:11 pm] [INFO] ✅ Redis DELETE PATTERN: master:supplier:* (1 key(s) deleted)
+[19/5/2026, 12:45:11 pm] [INFO] ✅ Redis SET: master:supplier:1:1:fetch
+[19/5/2026, 12:45:11 pm] [DEBUG] [HTTP] ✅ 📤 Request completed GET /api/master/fetchSupplier (user:1) {"status":304,"duration_ms":26}
+[19/5/2026, 12:45:11 pm] [INFO] [HTTP] 🌐 📥 Request received GET /api/master/fetchSupplier {"ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Sa"}
+[19/5/2026, 12:45:11 pm] [INFO] ✅ Redis DELETE PATTERN: master:supplier:* (1 key(s) deleted)
+[19/5/2026, 12:45:11 pm] [INFO] ✅ Redis SET: master:supplier:1:1:fetch
+[19/5/2026, 12:45:11 pm] [DEBUG] [HTTP] ✅ 📤 Request completed GET /api/master/fetchSupplier (user:1) {"status":304,"duration_ms":7}
+[19/5/2026, 12:48:15 pm] [INFO] 🛑 Closing Redis connection...
+[19/5/2026, 12:48:15 pm] [INFO] 🛑 Shutting down Redis connection...
+[19/5/2026, 12:48:15 pm] [INFO] ✅ Redis connection closed
+[19/5/2026, 12:48:15 pm] [INFO] ✅ Redis connection closed gracefully
+[19/5/2026, 12:48:22 pm] [INFO] 🪵 Logger initialized {"env":"development","log_level":"silly","toggles":{"master":true,"console":true,"file":true,"requests":true},"log_directory":"D:\\BRIGHTON\\DREAMHOUSE\\DHBACKEND\\logs"}
+[19/5/2026, 12:48:22 pm] [INFO] 🚀 Server running on port 8006 {"env":"development","pid":15332}
+[19/5/2026, 12:48:22 pm] [INFO] ✅ Redis connected: redis://127.0.0.1:6379
+[19/5/2026, 12:48:22 pm] [INFO] ✅ Redis connected: {"host":"127.0.0.1","port":6379,"db":0}
+[19/5/2026, 12:48:22 pm] [INFO] ✅ Database connected {"threadId":943,"config":{"host":"localhost","database":"dreamhouse","connectionLimit":"10"}}
+[19/5/2026, 12:48:22 pm] [INFO] 🚀 Redis ready
+[19/5/2026, 12:48:22 pm] [INFO] 🚀 Redis is ready to accept commands
+[19/5/2026, 12:48:22 pm] [INFO] ℹ️  [07:18:22.515] [SsoAuth:SSO_AUTH] 🔐 Redis health: healthy 
+[19/5/2026, 12:48:22 pm] [INFO] ✅ MaxMind DB loaded
+[19/5/2026, 12:48:31 pm] [INFO] [HTTP] 🌐 📥 Request received GET /api/master/fetchLabour {"ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Sa"}
+[19/5/2026, 12:48:31 pm] [INFO] [HTTP] 🌐 📥 Request received GET /api/master/fetchContractor {"ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Sa"}
+[19/5/2026, 12:48:31 pm] [INFO] [HTTP] 🌐 📥 Request received POST /api/labour/FetchLabourUpdate {"ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Sa"}
+[19/5/2026, 12:48:31 pm] [INFO] [HTTP] 🌐 📥 Request received POST /api/labour/FetchLabourUpdate {"ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Sa"}
+[19/5/2026, 12:48:31 pm] [INFO] ⚠️ Redis key not found: master:1:1:labour:fetch
+[19/5/2026, 12:48:31 pm] [INFO] ⚠️ Redis key not found: master:contractor:1:1:fetch
+[19/5/2026, 12:48:31 pm] [INFO] ⚠️ Redis key not found: labour:1:1:2:update:2026-05-19:2026-05-19
+[19/5/2026, 12:48:31 pm] [INFO] ⚠️ Redis key not found: labour:1:1:2:update:2026-05-19:2026-05-19
+[19/5/2026, 12:48:31 pm] [INFO] ⚠️ No keys found to delete for pattern: master:contractor:*
+[19/5/2026, 12:48:31 pm] [INFO] ✅ Redis SET: master:contractor:1:1:fetch
+[19/5/2026, 12:48:31 pm] [INFO] ⚠️ No keys found to delete for pattern: master:labour:*
+[19/5/2026, 12:48:31 pm] [DEBUG] [HTTP] ✅ 📤 Request completed GET /api/master/fetchContractor (user:1) {"status":304,"duration_ms":62}
+[19/5/2026, 12:48:31 pm] [INFO] ✅ Redis SET: master:1:1:labour:fetch
+[19/5/2026, 12:48:31 pm] [DEBUG] [HTTP] ✅ 📤 Request completed GET /api/master/fetchLabour (user:1) {"status":304,"duration_ms":73}
+[19/5/2026, 12:48:31 pm] [INFO] [HTTP] 🌐 📥 Request received GET /api/master/fetchContractor {"ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Sa"}
+[19/5/2026, 12:48:31 pm] [INFO] [HTTP] 🌐 📥 Request received GET /api/master/fetchLabour {"ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Sa"}
+[19/5/2026, 12:48:31 pm] [INFO] ✅ Redis SET: labour:1:1:2:update:2026-05-19:2026-05-19
+[19/5/2026, 12:48:31 pm] [INFO] ✅ Redis SET: labour:1:1:2:update:2026-05-19:2026-05-19
+[19/5/2026, 12:48:31 pm] [DEBUG] [HTTP] ✅ 📤 Request completed POST /api/labour/FetchLabourUpdate (user:1) {"status":200,"duration_ms":61}
+[19/5/2026, 12:48:31 pm] [DEBUG] [HTTP] ✅ 📤 Request completed POST /api/labour/FetchLabourUpdate (user:1) {"status":200,"duration_ms":45}
+[19/5/2026, 12:48:31 pm] [INFO] ✅ Redis GET: master:contractor:1:1:fetch [{"Contractor":"NESAMANI","Id":6},{"Contractor":"MUTHUKUMAR","Id":7}]
+[19/5/2026, 12:48:31 pm] [DEBUG] [HTTP] ✅ 📤 Request completed GET /api/master/fetchContractor (user:1) {"status":304,"duration_ms":18}
+[19/5/2026, 12:48:31 pm] [INFO] ✅ Redis GET: master:1:1:labour:fetch [{"id":4,"Labour_Details":"ENGINEER","Contractor":null,"Created_by":"superuser1","created_datetime":"2026-05-13","Salary":250000,"Ratio":1,"tenant_id":1,"branch_id":1},{"id":5,"Labour_Details":"KOTHANAR","Contractor":null,"Created_by":"superuser1","created_datetime":"2026-05-13","Salary":18000,"Ratio":30,"tenant_id":1,"branch_id":1},{"id":6,"Labour_Details":null,"Contractor":"NESAMANI","Created_by":"superuser1","created_datetime":"2026-05-13","Salary":null,"Ratio":null,"tenant_id":1,"branch_id":1},{"id":7,"Labour_Details":null,"Contractor":"MUTHUKUMAR","Created_by":"superuser1","created_datetime":"2026-05-13","Salary":null,"Ratio":null,"tenant_id":1,"branch_id":1}]
+[19/5/2026, 12:48:31 pm] [DEBUG] [HTTP] ✅ 📤 Request completed GET /api/master/fetchLabour (user:1) {"status":304,"duration_ms":21}
+[19/5/2026, 12:49:40 pm] [INFO] 🪵 Logger initialized {"env":"development","log_level":"silly","toggles":{"master":true,"console":true,"file":true,"requests":true},"log_directory":"D:\\BRIGHTON\\DREAMHOUSE\\DHBACKEND\\logs"}
+[19/5/2026, 12:49:40 pm] [INFO] 🚀 Server running on port 8006 {"env":"development","pid":23640}
+[19/5/2026, 12:49:40 pm] [INFO] ✅ Redis connected: redis://127.0.0.1:6379
+[19/5/2026, 12:49:40 pm] [INFO] ✅ Redis connected: {"host":"127.0.0.1","port":6379,"db":0}
+[19/5/2026, 12:49:40 pm] [INFO] ✅ Database connected {"threadId":946,"config":{"host":"localhost","database":"dreamhouse","connectionLimit":"10"}}
+[19/5/2026, 12:49:40 pm] [INFO] 🚀 Redis ready
+[19/5/2026, 12:49:40 pm] [INFO] ℹ️  [07:19:40.613] [SsoAuth:SSO_AUTH] 🔐 Redis health: healthy 
+[19/5/2026, 12:49:40 pm] [INFO] 🚀 Redis is ready to accept commands
+[19/5/2026, 12:49:40 pm] [INFO] ✅ MaxMind DB loaded
+[19/5/2026, 12:49:42 pm] [INFO] 🪵 Logger initialized {"env":"development","log_level":"silly","toggles":{"master":true,"console":true,"file":true,"requests":true},"log_directory":"D:\\BRIGHTON\\DREAMHOUSE\\DHBACKEND\\logs"}
+[19/5/2026, 12:49:42 pm] [INFO] 🚀 Server running on port 8006 {"env":"development","pid":27292}
+[19/5/2026, 12:49:42 pm] [INFO] ✅ Redis connected: redis://127.0.0.1:6379
+[19/5/2026, 12:49:42 pm] [INFO] ✅ Redis connected: {"host":"127.0.0.1","port":6379,"db":0}
+[19/5/2026, 12:49:42 pm] [INFO] ✅ Database connected {"threadId":948,"config":{"host":"localhost","database":"dreamhouse","connectionLimit":"10"}}
+[19/5/2026, 12:49:42 pm] [INFO] 🚀 Redis ready
+[19/5/2026, 12:49:42 pm] [INFO] ℹ️  [07:19:42.314] [SsoAuth:SSO_AUTH] 🔐 Redis health: healthy 
+[19/5/2026, 12:49:42 pm] [INFO] 🚀 Redis is ready to accept commands
+[19/5/2026, 12:49:42 pm] [INFO] ✅ MaxMind DB loaded
+[19/5/2026, 12:49:47 pm] [INFO] 🪵 Logger initialized {"env":"development","log_level":"silly","toggles":{"master":true,"console":true,"file":true,"requests":true},"log_directory":"D:\\BRIGHTON\\DREAMHOUSE\\DHBACKEND\\logs"}
+[19/5/2026, 12:49:47 pm] [INFO] 🚀 Server running on port 8006 {"env":"development","pid":19656}
+[19/5/2026, 12:49:47 pm] [INFO] ✅ Redis connected: redis://127.0.0.1:6379
+[19/5/2026, 12:49:47 pm] [INFO] ✅ Redis connected: {"host":"127.0.0.1","port":6379,"db":0}
+[19/5/2026, 12:49:47 pm] [INFO] ✅ Database connected {"threadId":950,"config":{"host":"localhost","database":"dreamhouse","connectionLimit":"10"}}
+[19/5/2026, 12:49:47 pm] [INFO] 🚀 Redis ready
+[19/5/2026, 12:49:47 pm] [INFO] 🚀 Redis is ready to accept commands
+[19/5/2026, 12:49:47 pm] [INFO] ℹ️  [07:19:47.650] [SsoAuth:SSO_AUTH] 🔐 Redis health: healthy 
+[19/5/2026, 12:49:47 pm] [INFO] ✅ MaxMind DB loaded
+[19/5/2026, 12:49:53 pm] [INFO] [HTTP] 🌐 📥 Request received GET /api/project/projects/financials {"ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Sa"}
+[19/5/2026, 12:49:53 pm] [INFO] [HTTP] 🌐 📥 Request received GET /api/project/summary {"ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Sa"}
+[19/5/2026, 12:49:53 pm] [INFO] [HTTP] 🌐 📥 Request received GET /api/labour/FetchContractorPay {"ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Sa"}
+[19/5/2026, 12:49:53 pm] [INFO] [HTTP] 🌐 📥 Request received GET /api/payment/FetchMaterialPay {"ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Sa"}
+[19/5/2026, 12:49:53 pm] [INFO] ✅ Redis GET: dashboard:financials:1:1
+[19/5/2026, 12:49:53 pm] [INFO] ⚠️ Redis key not found: dashboard:summary:1:1
+[19/5/2026, 12:49:53 pm] [INFO] ⚠️ Redis key not found: labour:1:1:contractor:pay
+[19/5/2026, 12:49:53 pm] [INFO] ⚠️ Redis key not found: payment:material:fetch:1:1
+[19/5/2026, 12:49:53 pm] [DEBUG] [HTTP] ✅ 📤 Request completed GET /api/project/projects/financials (user:1) {"status":304,"duration_ms":37}
+[19/5/2026, 12:49:53 pm] [INFO] [HTTP] 🌐 📥 Request received GET /api/project/projects/financials {"ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Sa"}
+[19/5/2026, 12:49:53 pm] [INFO] ✅ Redis SET: labour:1:1:contractor:pay
+[19/5/2026, 12:49:53 pm] [DEBUG] [HTTP] ✅ 📤 Request completed GET /api/labour/FetchContractorPay (user:1) {"status":304,"duration_ms":48}
+[19/5/2026, 12:49:53 pm] [INFO] ✅ Redis GET: dashboard:financials:1:1
+[19/5/2026, 12:49:53 pm] [INFO] ✅ Redis SET: payment:material:fetch:1:1
+[19/5/2026, 12:49:53 pm] [DEBUG] [HTTP] ✅ 📤 Request completed GET /api/project/projects/financials (user:1) {"status":304,"duration_ms":23}
+[19/5/2026, 12:49:53 pm] [DEBUG] [HTTP] ✅ 📤 Request completed GET /api/payment/FetchMaterialPay (user:1) {"status":304,"duration_ms":56}
+[19/5/2026, 12:49:53 pm] [INFO] [HTTP] 🌐 📥 Request received GET /api/labour/FetchContractorPay {"ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Sa"}
+[19/5/2026, 12:49:53 pm] [INFO] [HTTP] 🌐 📥 Request received GET /api/payment/FetchMaterialPay {"ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Sa"}
+[19/5/2026, 12:49:53 pm] [INFO] ✅ Redis SET: dashboard:summary:1:1
+[19/5/2026, 12:49:53 pm] [INFO] ✅ Redis GET: labour:1:1:contractor:pay
+[19/5/2026, 12:49:53 pm] [INFO] ✅ Redis GET: payment:material:fetch:1:1
+[19/5/2026, 12:49:53 pm] [DEBUG] [HTTP] ✅ 📤 Request completed GET /api/project/summary (user:1) {"status":304,"duration_ms":74}
+[19/5/2026, 12:49:53 pm] [DEBUG] [HTTP] ✅ 📤 Request completed GET /api/labour/FetchContractorPay (user:1) {"status":304,"duration_ms":13}
+[19/5/2026, 12:49:53 pm] [DEBUG] [HTTP] ✅ 📤 Request completed GET /api/payment/FetchMaterialPay (user:1) {"status":304,"duration_ms":12}
+[19/5/2026, 12:49:53 pm] [INFO] [HTTP] 🌐 📥 Request received GET /api/project/summary {"ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Sa"}
+[19/5/2026, 12:49:53 pm] [INFO] ✅ Redis GET: dashboard:summary:1:1
+[19/5/2026, 12:49:53 pm] [DEBUG] [HTTP] ✅ 📤 Request completed GET /api/project/summary (user:1) {"status":304,"duration_ms":5}
+[19/5/2026, 12:50:23 pm] [INFO] 🛑 Closing Redis connection...
+[19/5/2026, 12:50:23 pm] [INFO] 🛑 Shutting down Redis connection...
+[19/5/2026, 12:50:30 pm] [INFO] 🪵 Logger initialized {"env":"development","log_level":"silly","toggles":{"master":true,"console":true,"file":true,"requests":false},"log_directory":"D:\\BRIGHTON\\DREAMHOUSE\\DHBACKEND\\logs"}
+[19/5/2026, 12:50:30 pm] [INFO] 🚀 Server running on port 8006 {"env":"development","pid":22924}
+[19/5/2026, 12:50:30 pm] [INFO] ✅ Redis connected: redis://127.0.0.1:6379
+[19/5/2026, 12:50:30 pm] [INFO] ✅ Redis connected: {"host":"127.0.0.1","port":6379,"db":0}
+[19/5/2026, 12:50:30 pm] [INFO] ✅ Database connected {"threadId":953,"config":{"host":"localhost","database":"dreamhouse","connectionLimit":"10"}}
+[19/5/2026, 12:50:30 pm] [INFO] 🚀 Redis ready
+[19/5/2026, 12:50:30 pm] [INFO] 🚀 Redis is ready to accept commands
+[19/5/2026, 12:50:30 pm] [INFO] ℹ️  [07:20:30.443] [SsoAuth:SSO_AUTH] 🔐 Redis health: healthy 
+[19/5/2026, 12:50:30 pm] [INFO] ✅ MaxMind DB loaded
+[19/5/2026, 12:50:34 pm] [INFO] ⚠️ Redis key not found: master:1:1:material:fetch
+[19/5/2026, 12:50:34 pm] [INFO] ✅ Redis GET: master:1:1:labour:fetch
+[19/5/2026, 12:50:34 pm] [INFO] ✅ Redis GET: master:contractor:1:1:fetch
+[19/5/2026, 12:50:34 pm] [INFO] ⚠️ No keys found to delete for pattern: master:supplier:*
+[19/5/2026, 12:50:34 pm] [INFO] ⚠️ No keys found to delete for pattern: master:material:*
+[19/5/2026, 12:50:34 pm] [INFO] ✅ Redis SET: master:supplier:1:1:fetch
+[19/5/2026, 12:50:34 pm] [INFO] ✅ Redis SET: master:1:1:material:fetch
+[19/5/2026, 12:50:34 pm] [INFO] ✅ Redis GET: master:1:1:labour:fetch
+[19/5/2026, 12:50:34 pm] [INFO] ✅ Redis GET: master:contractor:1:1:fetch
+[19/5/2026, 12:50:34 pm] [INFO] ✅ Redis GET: master:1:1:material:fetch
+[19/5/2026, 12:50:34 pm] [INFO] ✅ Redis DELETE PATTERN: master:supplier:* (1 key(s) deleted)
+[19/5/2026, 12:50:34 pm] [INFO] ✅ Redis SET: master:supplier:1:1:fetch
+[19/5/2026, 12:50:56 pm] [INFO] ✅ Redis GET: master:1:1:material:fetch
+[19/5/2026, 12:50:56 pm] [INFO] ⚠️ Redis key not found: order:update:1:1:2026-05-19:2026-05-19:2
+[19/5/2026, 12:50:56 pm] [INFO] ⚠️ Redis key not found: order:update:1:1:2026-05-19:2026-05-19:2
+[19/5/2026, 12:50:56 pm] [INFO] ✅ Redis GET: master:1:1:material:fetch
+[19/5/2026, 12:50:56 pm] [INFO] ✅ Redis SET: order:update:1:1:2026-05-19:2026-05-19:2
+[19/5/2026, 12:50:56 pm] [INFO] ✅ Redis SET: order:update:1:1:2026-05-19:2026-05-19:2
+[19/5/2026, 12:50:59 pm] [INFO] ⚠️ Redis key not found: order:update:1:1:2026-05-01T00:00:00.000Z:2026-05-19:2
+[19/5/2026, 12:50:59 pm] [INFO] ✅ Redis SET: order:update:1:1:2026-05-01T00:00:00.000Z:2026-05-19:2
+[19/5/2026, 12:53:16 pm] [INFO] ✅ Redis GET: master:1:1:material:fetch
+[19/5/2026, 12:53:16 pm] [INFO] ✅ Redis GET: order:update:1:1:2026-05-19:2026-05-19:2
+[19/5/2026, 12:53:16 pm] [INFO] ✅ Redis GET: order:update:1:1:2026-05-19:2026-05-19:2
+[19/5/2026, 12:53:16 pm] [INFO] ✅ Redis GET: master:1:1:material:fetch
+[19/5/2026, 12:53:35 pm] [INFO] 🪵 Logger initialized {"env":"development","log_level":"silly","toggles":{"master":true,"console":true,"file":true,"requests":false},"log_directory":"D:\\BRIGHTON\\DREAMHOUSE\\DHBACKEND\\logs"}
+[19/5/2026, 12:53:35 pm] [INFO] 🚀 Server running on port 8006 {"env":"development","pid":17912}
+[19/5/2026, 12:53:35 pm] [INFO] ✅ Redis connected: redis://127.0.0.1:6379
+[19/5/2026, 12:53:35 pm] [INFO] ✅ Redis connected: {"host":"127.0.0.1","port":6379,"db":0}
+[19/5/2026, 12:53:35 pm] [INFO] ✅ Database connected {"threadId":955,"config":{"host":"localhost","database":"dreamhouse","connectionLimit":"10"}}
+[19/5/2026, 12:53:35 pm] [INFO] 🚀 Redis ready
+[19/5/2026, 12:53:35 pm] [INFO] ℹ️  [07:23:35.292] [SsoAuth:SSO_AUTH] 🔐 Redis health: healthy 
+[19/5/2026, 12:53:35 pm] [INFO] 🚀 Redis is ready to accept commands
+[19/5/2026, 12:53:35 pm] [INFO] ✅ MaxMind DB loaded
+[20/5/2026, 2:05:51 pm] [INFO] 🪵 Logger initialized {"env":"development","log_level":"silly","toggles":{"master":true,"console":true,"file":true,"requests":false},"log_directory":"D:\\BRIGHTON\\DREAMHOUSE\\DHBACKEND\\logs"}
+[20/5/2026, 2:05:51 pm] [INFO] 🚀 Server running on port 8006 {"env":"development","pid":2372}
+[20/5/2026, 2:05:51 pm] [INFO] ✅ Redis connected: redis://127.0.0.1:6379
+[20/5/2026, 2:05:51 pm] [INFO] ✅ Redis connected: {"host":"127.0.0.1","port":6379,"db":0}
+[20/5/2026, 2:05:51 pm] [INFO] ✅ Database connected {"threadId":1237,"config":{"host":"localhost","database":"dreamhouse","connectionLimit":"10"}}
+[20/5/2026, 2:05:51 pm] [INFO] 🚀 Redis is ready to accept commands
+[20/5/2026, 2:05:51 pm] [INFO] 🚀 Redis ready
+[20/5/2026, 2:05:51 pm] [INFO] ℹ️  [08:35:51.567] [SsoAuth:SSO_AUTH] 🔐 Redis health: healthy 
+[20/5/2026, 2:05:51 pm] [INFO] ✅ MaxMind DB loaded
+[20/5/2026, 2:08:45 pm] [INFO] ⚠️ Redis key not found: dashboard:financials:1:1
+[20/5/2026, 2:08:45 pm] [INFO] ⚠️ Redis key not found: dashboard:summary:1:1
+[20/5/2026, 2:08:45 pm] [INFO] ⚠️ Redis key not found: labour:1:1:contractor:pay
+[20/5/2026, 2:08:45 pm] [INFO] ⚠️ Redis key not found: payment:material:fetch:1:1
+[20/5/2026, 2:08:45 pm] [INFO] ✅ Redis SET: labour:1:1:contractor:pay
+[20/5/2026, 2:08:45 pm] [INFO] ✅ Redis SET: payment:material:fetch:1:1
+[20/5/2026, 2:08:45 pm] [INFO] ✅ Redis SET: dashboard:financials:1:1
+[20/5/2026, 2:08:45 pm] [INFO] ✅ Redis SET: dashboard:summary:1:1
+[20/5/2026, 2:08:45 pm] [INFO] ✅ Redis GET: labour:1:1:contractor:pay
+[20/5/2026, 2:08:45 pm] [INFO] ✅ Redis GET: payment:material:fetch:1:1
+[20/5/2026, 2:08:45 pm] [INFO] ✅ Redis GET: dashboard:financials:1:1
+[20/5/2026, 2:08:45 pm] [INFO] ✅ Redis GET: dashboard:summary:1:1
+[20/5/2026, 2:09:06 pm] [INFO] ⚠️ Redis key not found: master:1:1:material:fetch
+[20/5/2026, 2:09:06 pm] [INFO] ⚠️ Redis key not found: master:1:1:labour:fetch
+[20/5/2026, 2:09:06 pm] [INFO] ⚠️ No keys found to delete for pattern: master:material:*
+[20/5/2026, 2:09:06 pm] [INFO] ✅ Redis SET: master:1:1:material:fetch
+[20/5/2026, 2:09:07 pm] [INFO] ⚠️ Redis key not found: master:contractor:1:1:fetch
+[20/5/2026, 2:09:07 pm] [INFO] ⚠️ No keys found to delete for pattern: master:labour:*
+[20/5/2026, 2:09:07 pm] [INFO] ✅ Redis SET: master:1:1:labour:fetch
+[20/5/2026, 2:09:07 pm] [INFO] ⚠️ No keys found to delete for pattern: master:supplier:*
+[20/5/2026, 2:09:07 pm] [INFO] ⚠️ No keys found to delete for pattern: master:contractor:*
+[20/5/2026, 2:09:07 pm] [INFO] ✅ Redis SET: master:supplier:1:1:fetch
+[20/5/2026, 2:09:07 pm] [INFO] ✅ Redis SET: master:contractor:1:1:fetch
+[20/5/2026, 2:09:07 pm] [INFO] ✅ Redis GET: master:1:1:material:fetch
+[20/5/2026, 2:09:07 pm] [INFO] ✅ Redis GET: master:1:1:labour:fetch
+[20/5/2026, 2:09:07 pm] [INFO] ✅ Redis GET: master:contractor:1:1:fetch
+[20/5/2026, 2:09:07 pm] [INFO] ✅ Redis DELETE PATTERN: master:supplier:* (1 key(s) deleted)
+[20/5/2026, 2:09:07 pm] [INFO] ✅ Redis SET: master:supplier:1:1:fetch
+[20/5/2026, 2:09:14 pm] [INFO] 1 1 SUPERUSER
+[20/5/2026, 2:09:14 pm] [INFO] ⚠️ Redis key not found: user:details:1:1:SUPERUSER
+[20/5/2026, 2:09:14 pm] [INFO] 🔹 SUPERUSER query
+[20/5/2026, 2:09:14 pm] [INFO] ✅ Returned 0 active users
+[20/5/2026, 2:09:14 pm] [INFO] ✅ Redis SET: user:details:1:1:SUPERUSER
+[20/5/2026, 2:09:14 pm] [INFO] 1 1 SUPERUSER
+[20/5/2026, 2:09:14 pm] [INFO] ✅ Redis GET: user:details:1:1:SUPERUSER
+[20/5/2026, 2:09:29 pm] [INFO] ⚠️ Redis key not found: branch:list:1
+[20/5/2026, 2:09:29 pm] [INFO] ✅ Redis SET: branch:list:1
+[20/5/2026, 2:09:29 pm] [INFO] ✅ Redis GET: branch:list:1
+[20/5/2026, 2:09:43 pm] [INFO] ✅ Redis GET: master:1:1:material:fetch
+[20/5/2026, 2:09:43 pm] [INFO] ⚠️ Redis key not found: order:update:1:1:2026-05-20:2026-05-20:2
+[20/5/2026, 2:09:43 pm] [INFO] ✅ Redis GET: master:1:1:material:fetch
+[20/5/2026, 2:09:43 pm] [INFO] ⚠️ Redis key not found: order:update:1:1:2026-05-20:2026-05-20:2
+[20/5/2026, 2:09:43 pm] [INFO] ✅ Redis SET: order:update:1:1:2026-05-20:2026-05-20:2
+[20/5/2026, 2:09:43 pm] [INFO] ✅ Redis SET: order:update:1:1:2026-05-20:2026-05-20:2
+[20/5/2026, 2:09:47 pm] [INFO] ✅ Redis GET: branch:list:1
+[20/5/2026, 2:09:47 pm] [INFO] ✅ Redis GET: branch:list:1
+[20/5/2026, 2:10:12 pm] [INFO] KC error: {"error":"HTTP 403 Forbidden"}
+[20/5/2026, 2:11:10 pm] [INFO] {}
+[20/5/2026, 2:11:10 pm] [INFO] cleanData: {"first_name":"CUSTOMER","last_name":"D","email":"admina@gmail.com","user_photo":"C:\\fakepath\\Screenshot (3).png","id_card_photo":"C:\\fakepath\\Screenshot (2).png","aadhaar_number":"235575675645","address":"ClinicA,Forest road","pincode":"625531","city":"Allinagaram","district":"Theni","state":"Tamil Nadu","country":"India","status":"A","failed_attempt_count":0,"account_locked":false} {"first_name":"CUSTOMER","last_name":"D","dateofbirth":"2026-05-16","email":"admina@gmail.com","phone_number":"7708197854","gender":"MALE","user_photo":"C:\\fakepath\\Screenshot (3).png","id_card_photo":"C:\\fakepath\\Screenshot (2).png","aadhaar_number":"235575675645","address":"ClinicA,Forest road","pincode":"625531","city":"Allinagaram","district":"Theni","state":"Tamil Nadu","country":"India","username":"Admina@123","password":"123456","role":"ADMIN","branch_ids":"6","status":"A","tenant_id":"1","created_by":"superuser1"}
+[20/5/2026, 2:11:10 pm] [INFO] addUser called with: {"details":{"first_name":"CUSTOMER","last_name":"D","dateofbirth":"2026-05-16","email":"admina@gmail.com","phone_number":"7708197854","gender":"MALE","user_photo":"C:\\fakepath\\Screenshot (3).png","id_card_photo":"C:\\fakepath\\Screenshot (2).png","aadhaar_number":"235575675645","address":"ClinicA,Forest road","pincode":"625531","city":"Allinagaram","district":"Theni","state":"Tamil Nadu","country":"India","username":"Admina@123","password":"123456","role":"ADMIN","branch_ids":"6","status":"A","tenant_id":"1","created_by":"superuser1"},"tenant_id":1,"branch_id":1}
+[20/5/2026, 2:11:10 pm] [INFO] Creating user with data: {"email":"admina@gmail.com","first_name":"CUSTOMER","last_name":"D","username":"Admina@123"}
+[20/5/2026, 2:11:10 pm] [ERROR] Error creating user: {"error":"HTTP 403 Forbidden"}
+[20/5/2026, 2:11:10 pm] [INFO] keycloakdata: undefined
+[20/5/2026, 2:11:10 pm] [ERROR] Transaction failed, rolled back: Cannot read properties of undefined (reading 'id')
+[20/5/2026, 2:11:10 pm] [ERROR] ❌ Error: {}
+[20/5/2026, 2:11:10 pm] [ERROR] 💥 Unknown Error: {}
+[20/5/2026, 2:13:02 pm] [INFO] ✅ Redis GET: dashboard:financials:1:1
+[20/5/2026, 2:13:02 pm] [INFO] ✅ Redis GET: dashboard:summary:1:1
+[20/5/2026, 2:13:02 pm] [INFO] ✅ Redis GET: dashboard:financials:1:1
+[20/5/2026, 2:13:02 pm] [INFO] ✅ Redis GET: labour:1:1:contractor:pay
+[20/5/2026, 2:13:02 pm] [INFO] ✅ Redis GET: payment:material:fetch:1:1
+[20/5/2026, 2:13:02 pm] [INFO] ✅ Redis GET: dashboard:summary:1:1
+[20/5/2026, 2:13:02 pm] [INFO] ✅ Redis GET: labour:1:1:contractor:pay
+[20/5/2026, 2:13:02 pm] [INFO] ✅ Redis GET: payment:material:fetch:1:1
+[20/5/2026, 2:13:04 pm] [INFO] ✅ Redis DELETE: session:3f7e7d9c-7e01-4fe4-89d3-b9269451dfcc (1 key(s) deleted)
+[20/5/2026, 2:13:04 pm] [INFO] ✅ Redis DELETE: api_count:3f7e7d9c-7e01-4fe4-89d3-b9269451dfcc (0 key(s) deleted)
+[20/5/2026, 2:13:04 pm] [INFO] ✅ Logout completed
+[20/5/2026, 2:13:15 pm] [INFO] ✅ Redis GET: dashboard:financials:1:1
+[20/5/2026, 2:13:15 pm] [INFO] ✅ Redis GET: dashboard:summary:1:1
+[20/5/2026, 2:13:15 pm] [INFO] ✅ Redis GET: labour:1:1:contractor:pay
+[20/5/2026, 2:13:15 pm] [INFO] ✅ Redis GET: dashboard:financials:1:1
+[20/5/2026, 2:13:15 pm] [INFO] ✅ Redis GET: payment:material:fetch:1:1
+[20/5/2026, 2:13:15 pm] [INFO] ✅ Redis GET: dashboard:summary:1:1
+[20/5/2026, 2:13:15 pm] [INFO] ✅ Redis GET: labour:1:1:contractor:pay
+[20/5/2026, 2:13:15 pm] [INFO] ✅ Redis GET: payment:material:fetch:1:1
+[20/5/2026, 2:13:19 pm] [INFO] ✅ Redis GET: master:1:1:material:fetch
+[20/5/2026, 2:13:19 pm] [INFO] ✅ Redis GET: master:1:1:labour:fetch
+[20/5/2026, 2:13:19 pm] [INFO] ✅ Redis GET: master:contractor:1:1:fetch
+[20/5/2026, 2:13:19 pm] [INFO] ✅ Redis GET: master:1:1:material:fetch
+[20/5/2026, 2:13:19 pm] [INFO] ✅ Redis GET: master:1:1:labour:fetch
+[20/5/2026, 2:13:19 pm] [INFO] ✅ Redis GET: master:contractor:1:1:fetch
+[20/5/2026, 2:13:19 pm] [INFO] ✅ Redis DELETE PATTERN: master:supplier:* (1 key(s) deleted)
+[20/5/2026, 2:13:19 pm] [INFO] ✅ Redis SET: master:supplier:1:1:fetch
+[20/5/2026, 2:13:19 pm] [INFO] ✅ Redis DELETE PATTERN: master:supplier:* (1 key(s) deleted)
+[20/5/2026, 2:13:19 pm] [INFO] ✅ Redis SET: master:supplier:1:1:fetch
+[20/5/2026, 4:22:39 pm] [INFO] ⚠️ Redis key not found: dashboard:financials:1:1
+[20/5/2026, 4:22:39 pm] [INFO] ⚠️ Redis key not found: dashboard:summary:1:1
+[20/5/2026, 4:22:39 pm] [INFO] ⚠️ Redis key not found: labour:1:1:contractor:pay
+[20/5/2026, 4:22:39 pm] [INFO] ⚠️ Redis key not found: payment:material:fetch:1:1
+[20/5/2026, 4:22:39 pm] [INFO] ✅ Redis SET: labour:1:1:contractor:pay
+[20/5/2026, 4:22:39 pm] [INFO] ✅ Redis SET: payment:material:fetch:1:1
+[20/5/2026, 4:22:39 pm] [INFO] ✅ Redis SET: dashboard:financials:1:1
+[20/5/2026, 4:22:39 pm] [INFO] ✅ Redis SET: dashboard:summary:1:1
+[20/5/2026, 4:22:39 pm] [INFO] ✅ Redis GET: labour:1:1:contractor:pay
+[20/5/2026, 4:22:39 pm] [INFO] ✅ Redis GET: payment:material:fetch:1:1
+[20/5/2026, 4:22:39 pm] [INFO] ✅ Redis GET: dashboard:financials:1:1
+[20/5/2026, 4:22:39 pm] [INFO] ✅ Redis GET: dashboard:summary:1:1
+[20/5/2026, 4:22:41 pm] [INFO] ⚠️ Redis key not found: master:1:1:material:fetch
+[20/5/2026, 4:22:41 pm] [INFO] ⚠️ Redis key not found: master:contractor:1:1:fetch
+[20/5/2026, 4:22:41 pm] [INFO] ⚠️ No keys found to delete for pattern: master:material:*
+[20/5/2026, 4:22:41 pm] [INFO] ⚠️ No keys found to delete for pattern: master:contractor:*
+[20/5/2026, 4:22:41 pm] [INFO] ✅ Redis SET: master:1:1:material:fetch
+[20/5/2026, 4:22:41 pm] [INFO] ⚠️ Redis key not found: master:1:1:labour:fetch
+[20/5/2026, 4:22:41 pm] [INFO] ⚠️ No keys found to delete for pattern: master:supplier:*
+[20/5/2026, 4:22:41 pm] [INFO] ✅ Redis SET: master:contractor:1:1:fetch
+[20/5/2026, 4:22:41 pm] [INFO] ✅ Redis SET: master:supplier:1:1:fetch
+[20/5/2026, 4:22:41 pm] [INFO] ⚠️ No keys found to delete for pattern: master:labour:*
+[20/5/2026, 4:22:41 pm] [INFO] ✅ Redis SET: master:1:1:labour:fetch
+[20/5/2026, 4:22:41 pm] [INFO] ✅ Redis GET: master:1:1:material:fetch
+[20/5/2026, 4:22:41 pm] [INFO] ✅ Redis GET: master:contractor:1:1:fetch
+[20/5/2026, 4:22:41 pm] [INFO] ✅ Redis DELETE PATTERN: master:supplier:* (1 key(s) deleted)
+[20/5/2026, 4:22:41 pm] [INFO] ✅ Redis SET: master:supplier:1:1:fetch
+[20/5/2026, 4:22:41 pm] [INFO] ✅ Redis GET: master:1:1:labour:fetch
+[20/5/2026, 4:22:46 pm] [INFO] ⚠️ Redis key not found: branch:list:1
+[20/5/2026, 4:22:46 pm] [INFO] ✅ Redis SET: branch:list:1
+[20/5/2026, 4:22:46 pm] [INFO] ✅ Redis GET: branch:list:1
+[20/5/2026, 4:23:57 pm] [INFO] ✅ Redis GET: master:1:1:labour:fetch
+[20/5/2026, 4:23:57 pm] [INFO] ✅ Redis GET: master:contractor:1:1:fetch
+[20/5/2026, 4:23:57 pm] [INFO] ✅ Redis GET: master:1:1:labour:fetch
+[20/5/2026, 4:23:57 pm] [INFO] ⚠️ Redis key not found: labour:1:1:2:update:2026-05-20:2026-05-20
+[20/5/2026, 4:23:57 pm] [INFO] ✅ Redis SET: labour:1:1:2:update:2026-05-20:2026-05-20
+[20/5/2026, 4:23:57 pm] [INFO] ✅ Redis GET: master:contractor:1:1:fetch
+[20/5/2026, 4:23:57 pm] [INFO] ✅ Redis GET: labour:1:1:2:update:2026-05-20:2026-05-20
+[20/5/2026, 4:28:07 pm] [INFO] ✅ Redis GET: dashboard:financials:1:1
+[20/5/2026, 4:28:07 pm] [INFO] ⚠️ Redis key not found: dashboard:summary:1:1
+[20/5/2026, 4:28:07 pm] [INFO] ⚠️ Redis key not found: labour:1:1:contractor:pay
+[20/5/2026, 4:28:07 pm] [INFO] ⚠️ Redis key not found: payment:material:fetch:1:1
+[20/5/2026, 4:28:07 pm] [INFO] ✅ Redis GET: dashboard:financials:1:1
+[20/5/2026, 4:28:07 pm] [INFO] ✅ Redis SET: payment:material:fetch:1:1
+[20/5/2026, 4:28:07 pm] [INFO] ✅ Redis SET: labour:1:1:contractor:pay
+[20/5/2026, 4:28:07 pm] [INFO] ✅ Redis GET: payment:material:fetch:1:1
+[20/5/2026, 4:28:07 pm] [INFO] ✅ Redis GET: labour:1:1:contractor:pay
+[20/5/2026, 4:28:07 pm] [INFO] ✅ Redis SET: dashboard:summary:1:1
+[20/5/2026, 4:28:07 pm] [INFO] ✅ Redis GET: dashboard:summary:1:1
+[20/5/2026, 4:28:12 pm] [INFO] ⚠️ Redis key not found: master:1:1:material:fetch
+[20/5/2026, 4:28:12 pm] [INFO] ⚠️ Redis key not found: master:1:1:labour:fetch
+[20/5/2026, 4:28:12 pm] [INFO] ⚠️ No keys found to delete for pattern: master:material:*
+[20/5/2026, 4:28:12 pm] [INFO] ⚠️ Redis key not found: master:contractor:1:1:fetch
+[20/5/2026, 4:28:12 pm] [INFO] ✅ Redis SET: master:1:1:material:fetch
+[20/5/2026, 4:28:12 pm] [INFO] ⚠️ No keys found to delete for pattern: master:labour:*
+[20/5/2026, 4:28:12 pm] [INFO] ⚠️ No keys found to delete for pattern: master:contractor:*
+[20/5/2026, 4:28:12 pm] [INFO] ✅ Redis SET: master:1:1:labour:fetch
+[20/5/2026, 4:28:12 pm] [INFO] ✅ Redis GET: master:1:1:material:fetch
+[20/5/2026, 4:28:12 pm] [INFO] ✅ Redis SET: master:contractor:1:1:fetch
+[20/5/2026, 4:28:12 pm] [INFO] ⚠️ No keys found to delete for pattern: master:supplier:*
+[20/5/2026, 4:28:12 pm] [INFO] ✅ Redis SET: master:supplier:1:1:fetch
+[20/5/2026, 4:28:12 pm] [INFO] ✅ Redis GET: master:1:1:labour:fetch
+[20/5/2026, 4:28:12 pm] [INFO] ✅ Redis GET: master:contractor:1:1:fetch
+[20/5/2026, 4:28:12 pm] [INFO] ✅ Redis DELETE PATTERN: master:supplier:* (1 key(s) deleted)
+[20/5/2026, 4:28:12 pm] [INFO] ✅ Redis SET: master:supplier:1:1:fetch
+[20/5/2026, 4:28:16 pm] [INFO] ⚠️ Redis key not found: branch:list:1
+[20/5/2026, 4:28:16 pm] [INFO] ✅ Redis SET: branch:list:1
+[20/5/2026, 4:28:16 pm] [INFO] ✅ Redis GET: branch:list:1
+[20/5/2026, 4:38:44 pm] [INFO] ✅ Redis GET: dashboard:financials:1:1
+[20/5/2026, 4:38:44 pm] [INFO] ⚠️ Redis key not found: dashboard:summary:1:1
+[20/5/2026, 4:38:44 pm] [INFO] ⚠️ Redis key not found: labour:1:1:contractor:pay
+[20/5/2026, 4:38:44 pm] [INFO] ⚠️ Redis key not found: payment:material:fetch:1:1
+[20/5/2026, 4:38:44 pm] [INFO] ✅ Redis GET: dashboard:financials:1:1
+[20/5/2026, 4:38:44 pm] [INFO] ✅ Redis SET: labour:1:1:contractor:pay
+[20/5/2026, 4:38:44 pm] [INFO] ✅ Redis SET: payment:material:fetch:1:1
+[20/5/2026, 4:38:44 pm] [INFO] ✅ Redis SET: dashboard:summary:1:1
+[20/5/2026, 4:38:44 pm] [INFO] ✅ Redis GET: labour:1:1:contractor:pay
+[20/5/2026, 4:38:44 pm] [INFO] ✅ Redis GET: payment:material:fetch:1:1
+[20/5/2026, 4:38:44 pm] [INFO] ✅ Redis GET: dashboard:summary:1:1
+[20/5/2026, 4:38:45 pm] [INFO] ⚠️ Redis key not found: master:1:1:material:fetch
+[20/5/2026, 4:38:45 pm] [INFO] ⚠️ Redis key not found: master:1:1:labour:fetch
+[20/5/2026, 4:38:45 pm] [INFO] ⚠️ Redis key not found: master:contractor:1:1:fetch
+[20/5/2026, 4:38:45 pm] [INFO] ⚠️ No keys found to delete for pattern: master:material:*
+[20/5/2026, 4:38:45 pm] [INFO] ✅ Redis SET: master:1:1:material:fetch
+[20/5/2026, 4:38:45 pm] [INFO] ⚠️ No keys found to delete for pattern: master:contractor:*
+[20/5/2026, 4:38:45 pm] [INFO] ⚠️ No keys found to delete for pattern: master:supplier:*
+[20/5/2026, 4:38:45 pm] [INFO] ⚠️ No keys found to delete for pattern: master:labour:*
+[20/5/2026, 4:38:45 pm] [INFO] ✅ Redis SET: master:contractor:1:1:fetch
+[20/5/2026, 4:38:45 pm] [INFO] ✅ Redis SET: master:supplier:1:1:fetch
+[20/5/2026, 4:38:45 pm] [INFO] ✅ Redis SET: master:1:1:labour:fetch
+[20/5/2026, 4:38:45 pm] [INFO] ✅ Redis GET: master:1:1:material:fetch
+[20/5/2026, 4:38:45 pm] [INFO] ✅ Redis GET: master:contractor:1:1:fetch
+[20/5/2026, 4:38:45 pm] [INFO] ✅ Redis GET: master:1:1:labour:fetch
+[20/5/2026, 4:38:45 pm] [INFO] ✅ Redis DELETE PATTERN: master:supplier:* (1 key(s) deleted)
+[20/5/2026, 4:38:45 pm] [INFO] ✅ Redis SET: master:supplier:1:1:fetch
+[20/5/2026, 4:38:48 pm] [INFO] ⚠️ Redis key not found: branch:list:1
+[20/5/2026, 4:38:48 pm] [INFO] ✅ Redis SET: branch:list:1
+[20/5/2026, 4:38:48 pm] [INFO] ✅ Redis GET: branch:list:1
+[20/5/2026, 4:39:56 pm] [INFO] ✅ Redis GET: dashboard:financials:1:1
+[20/5/2026, 4:39:56 pm] [INFO] ✅ Redis GET: dashboard:summary:1:1
+[20/5/2026, 4:39:56 pm] [INFO] ✅ Redis GET: payment:material:fetch:1:1
+[20/5/2026, 4:39:56 pm] [INFO] ✅ Redis GET: labour:1:1:contractor:pay
+[20/5/2026, 4:39:56 pm] [INFO] ✅ Redis GET: dashboard:financials:1:1
+[20/5/2026, 4:39:56 pm] [INFO] ✅ Redis GET: dashboard:summary:1:1
+[20/5/2026, 4:39:56 pm] [INFO] ✅ Redis GET: payment:material:fetch:1:1
+[20/5/2026, 4:39:56 pm] [INFO] ✅ Redis GET: labour:1:1:contractor:pay
+[20/5/2026, 4:41:41 pm] [INFO] ✅ Redis GET: master:1:1:material:fetch
+[20/5/2026, 4:41:41 pm] [INFO] ✅ Redis GET: master:1:1:labour:fetch
+[20/5/2026, 4:41:41 pm] [INFO] ✅ Redis GET: master:contractor:1:1:fetch
+[20/5/2026, 4:41:41 pm] [INFO] ✅ Redis GET: master:1:1:material:fetch
+[20/5/2026, 4:41:41 pm] [INFO] ✅ Redis GET: master:1:1:labour:fetch
+[20/5/2026, 4:41:41 pm] [INFO] ✅ Redis GET: master:contractor:1:1:fetch
+[20/5/2026, 4:41:41 pm] [INFO] ✅ Redis DELETE PATTERN: master:supplier:* (1 key(s) deleted)
+[20/5/2026, 4:41:41 pm] [INFO] ✅ Redis SET: master:supplier:1:1:fetch
+[20/5/2026, 4:41:41 pm] [INFO] ✅ Redis DELETE PATTERN: master:supplier:* (1 key(s) deleted)
+[20/5/2026, 4:41:41 pm] [INFO] ✅ Redis SET: master:supplier:1:1:fetch
+[20/5/2026, 4:41:45 pm] [INFO] ✅ Redis GET: branch:list:1
+[20/5/2026, 4:41:45 pm] [INFO] ✅ Redis GET: branch:list:1
+[20/5/2026, 4:47:40 pm] [INFO] ⚠️ Redis key not found: branch:list:1
+[20/5/2026, 4:47:40 pm] [INFO] ✅ Redis SET: branch:list:1
+[20/5/2026, 4:47:56 pm] [INFO] ⚠️ Redis key not found: master:1:1:material:fetch
+[20/5/2026, 4:47:56 pm] [INFO] ⚠️ No keys found to delete for pattern: master:material:*
+[20/5/2026, 4:47:56 pm] [INFO] ✅ Redis SET: master:1:1:material:fetch
+[20/5/2026, 4:47:56 pm] [INFO] ⚠️ Redis key not found: order:update:1:1:2026-05-20:2026-05-20:2
+[20/5/2026, 4:47:56 pm] [INFO] ⚠️ Redis key not found: order:update:1:1:2026-05-20:2026-05-20:2
+[20/5/2026, 4:47:56 pm] [INFO] ✅ Redis GET: master:1:1:material:fetch
+[20/5/2026, 4:47:56 pm] [INFO] ✅ Redis SET: order:update:1:1:2026-05-20:2026-05-20:2
+[20/5/2026, 4:47:56 pm] [INFO] ✅ Redis SET: order:update:1:1:2026-05-20:2026-05-20:2
+[20/5/2026, 4:47:58 pm] [INFO] ✅ Redis GET: branch:list:1
+[20/5/2026, 4:47:58 pm] [INFO] ✅ Redis GET: branch:list:1
+[20/5/2026, 4:53:24 pm] [INFO] ⚠️ Redis key not found: dashboard:financials:1:1
+[20/5/2026, 4:53:24 pm] [INFO] ⚠️ Redis key not found: dashboard:summary:1:1
+[20/5/2026, 4:53:24 pm] [INFO] ⚠️ Redis key not found: labour:1:1:contractor:pay
+[20/5/2026, 4:53:24 pm] [INFO] ⚠️ Redis key not found: payment:material:fetch:1:1
+[20/5/2026, 4:53:24 pm] [INFO] ✅ Redis SET: labour:1:1:contractor:pay
+[20/5/2026, 4:53:24 pm] [INFO] ✅ Redis SET: payment:material:fetch:1:1
+[20/5/2026, 4:53:24 pm] [INFO] ✅ Redis SET: dashboard:financials:1:1
+[20/5/2026, 4:53:24 pm] [INFO] ✅ Redis GET: labour:1:1:contractor:pay
+[20/5/2026, 4:53:24 pm] [INFO] ✅ Redis SET: dashboard:summary:1:1
+[20/5/2026, 4:53:24 pm] [INFO] ✅ Redis GET: payment:material:fetch:1:1
+[20/5/2026, 4:53:24 pm] [INFO] ✅ Redis GET: dashboard:financials:1:1
+[20/5/2026, 4:53:24 pm] [INFO] ✅ Redis GET: dashboard:summary:1:1
+[20/5/2026, 4:53:28 pm] [INFO] ⚠️ Redis key not found: master:1:1:material:fetch
+[20/5/2026, 4:53:28 pm] [INFO] ⚠️ Redis key not found: master:1:1:labour:fetch
+[20/5/2026, 4:53:28 pm] [INFO] ⚠️ No keys found to delete for pattern: master:material:*
+[20/5/2026, 4:53:28 pm] [INFO] ⚠️ No keys found to delete for pattern: master:labour:*
+[20/5/2026, 4:53:28 pm] [INFO] ✅ Redis SET: master:1:1:material:fetch
+[20/5/2026, 4:53:28 pm] [INFO] ✅ Redis SET: master:1:1:labour:fetch
+[20/5/2026, 4:53:28 pm] [INFO] ⚠️ Redis key not found: master:contractor:1:1:fetch
+[20/5/2026, 4:53:28 pm] [INFO] ⚠️ No keys found to delete for pattern: master:supplier:*
+[20/5/2026, 4:53:28 pm] [INFO] ✅ Redis SET: master:supplier:1:1:fetch
+[20/5/2026, 4:53:28 pm] [INFO] ✅ Redis GET: master:1:1:material:fetch
+[20/5/2026, 4:53:28 pm] [INFO] ✅ Redis GET: master:1:1:labour:fetch
+[20/5/2026, 4:53:28 pm] [INFO] ⚠️ No keys found to delete for pattern: master:contractor:*
+[20/5/2026, 4:53:28 pm] [INFO] ✅ Redis SET: master:contractor:1:1:fetch
+[20/5/2026, 4:53:28 pm] [INFO] ✅ Redis DELETE PATTERN: master:supplier:* (1 key(s) deleted)
+[20/5/2026, 4:53:28 pm] [INFO] ✅ Redis SET: master:supplier:1:1:fetch
+[20/5/2026, 4:53:28 pm] [INFO] ✅ Redis GET: master:contractor:1:1:fetch
+[20/5/2026, 4:53:31 pm] [INFO] ⚠️ Redis key not found: branch:list:1
+[20/5/2026, 4:53:31 pm] [INFO] ✅ Redis SET: branch:list:1
+[20/5/2026, 4:53:31 pm] [INFO] ✅ Redis GET: branch:list:1
+[20/5/2026, 5:00:46 pm] [INFO] ✅ Redis GET: dashboard:financials:1:1
+[20/5/2026, 5:00:46 pm] [INFO] ⚠️ Redis key not found: dashboard:summary:1:1
+[20/5/2026, 5:00:46 pm] [INFO] ⚠️ Redis key not found: labour:1:1:contractor:pay
+[20/5/2026, 5:00:46 pm] [INFO] ✅ Redis GET: dashboard:financials:1:1
+[20/5/2026, 5:00:46 pm] [INFO] ⚠️ Redis key not found: payment:material:fetch:1:1
+[20/5/2026, 5:00:46 pm] [INFO] ✅ Redis SET: labour:1:1:contractor:pay
+[20/5/2026, 5:00:46 pm] [INFO] ✅ Redis SET: payment:material:fetch:1:1
+[20/5/2026, 5:00:46 pm] [INFO] ✅ Redis GET: labour:1:1:contractor:pay
+[20/5/2026, 5:00:46 pm] [INFO] ✅ Redis SET: dashboard:summary:1:1
+[20/5/2026, 5:00:46 pm] [INFO] ✅ Redis GET: payment:material:fetch:1:1
+[20/5/2026, 5:00:46 pm] [INFO] ✅ Redis GET: dashboard:summary:1:1
+[20/5/2026, 5:00:52 pm] [INFO] ⚠️ Redis key not found: master:1:1:material:fetch
+[20/5/2026, 5:00:52 pm] [INFO] ⚠️ Redis key not found: master:1:1:labour:fetch
+[20/5/2026, 5:00:52 pm] [INFO] ⚠️ Redis key not found: master:contractor:1:1:fetch
+[20/5/2026, 5:00:52 pm] [INFO] ⚠️ No keys found to delete for pattern: master:material:*
+[20/5/2026, 5:00:52 pm] [INFO] ✅ Redis SET: master:1:1:material:fetch
+[20/5/2026, 5:00:52 pm] [INFO] ⚠️ No keys found to delete for pattern: master:labour:*
+[20/5/2026, 5:00:52 pm] [INFO] ⚠️ No keys found to delete for pattern: master:supplier:*
+[20/5/2026, 5:00:52 pm] [INFO] ⚠️ No keys found to delete for pattern: master:contractor:*
+[20/5/2026, 5:00:52 pm] [INFO] ✅ Redis SET: master:1:1:labour:fetch
+[20/5/2026, 5:00:52 pm] [INFO] ✅ Redis SET: master:supplier:1:1:fetch
+[20/5/2026, 5:00:52 pm] [INFO] ✅ Redis SET: master:contractor:1:1:fetch
+[20/5/2026, 5:00:52 pm] [INFO] ✅ Redis GET: master:1:1:material:fetch
+[20/5/2026, 5:00:52 pm] [INFO] ✅ Redis GET: master:1:1:labour:fetch
+[20/5/2026, 5:00:52 pm] [INFO] ✅ Redis GET: master:contractor:1:1:fetch
+[20/5/2026, 5:00:52 pm] [INFO] ✅ Redis DELETE PATTERN: master:supplier:* (1 key(s) deleted)
+[20/5/2026, 5:00:52 pm] [INFO] ✅ Redis SET: master:supplier:1:1:fetch
+[20/5/2026, 5:00:58 pm] [INFO] ⚠️ Redis key not found: branch:list:1
+[20/5/2026, 5:00:58 pm] [INFO] ✅ Redis SET: branch:list:1
+[20/5/2026, 5:00:58 pm] [INFO] ✅ Redis GET: branch:list:1
+[20/5/2026, 5:01:44 pm] [INFO] ✅ Redis GET: dashboard:financials:1:1
+[20/5/2026, 5:01:44 pm] [INFO] ✅ Redis GET: dashboard:summary:1:1
+[20/5/2026, 5:01:44 pm] [INFO] ✅ Redis GET: payment:material:fetch:1:1
+[20/5/2026, 5:01:44 pm] [INFO] ✅ Redis GET: labour:1:1:contractor:pay
+[20/5/2026, 5:01:44 pm] [INFO] ✅ Redis GET: dashboard:summary:1:1
+[20/5/2026, 5:01:44 pm] [INFO] ✅ Redis GET: payment:material:fetch:1:1
+[20/5/2026, 5:01:44 pm] [INFO] ✅ Redis GET: dashboard:financials:1:1
+[20/5/2026, 5:01:44 pm] [INFO] ✅ Redis GET: labour:1:1:contractor:pay
+[20/5/2026, 5:02:18 pm] [INFO] ✅ Redis GET: master:1:1:material:fetch
+[20/5/2026, 5:02:18 pm] [INFO] ✅ Redis GET: master:1:1:labour:fetch
+[20/5/2026, 5:02:18 pm] [INFO] ✅ Redis GET: master:contractor:1:1:fetch
+[20/5/2026, 5:02:18 pm] [INFO] ✅ Redis GET: master:1:1:material:fetch
+[20/5/2026, 5:02:18 pm] [INFO] ✅ Redis GET: master:1:1:labour:fetch
+[20/5/2026, 5:02:18 pm] [INFO] ✅ Redis DELETE PATTERN: master:supplier:* (1 key(s) deleted)
+[20/5/2026, 5:02:18 pm] [INFO] ✅ Redis GET: master:contractor:1:1:fetch
+[20/5/2026, 5:02:18 pm] [INFO] ✅ Redis SET: master:supplier:1:1:fetch
+[20/5/2026, 5:02:18 pm] [INFO] ✅ Redis DELETE PATTERN: master:supplier:* (1 key(s) deleted)
+[20/5/2026, 5:02:18 pm] [INFO] ✅ Redis SET: master:supplier:1:1:fetch
+[20/5/2026, 5:02:21 pm] [INFO] ✅ Redis GET: branch:list:1
+[20/5/2026, 5:02:21 pm] [INFO] ✅ Redis GET: branch:list:1
+[20/5/2026, 5:02:37 pm] [INFO] 🪵 Logger initialized {"env":"development","log_level":"silly","toggles":{"master":true,"console":true,"file":true,"requests":false},"log_directory":"D:\\BRIGHTON\\DREAMHOUSE\\DHBACKEND\\logs"}
+[20/5/2026, 5:02:37 pm] [INFO] 🚀 Server running on port 8006 {"env":"development","pid":27268}
+[20/5/2026, 5:02:37 pm] [INFO] ✅ Redis connected: redis://127.0.0.1:6379
+[20/5/2026, 5:02:37 pm] [INFO] ✅ Redis connected: {"host":"127.0.0.1","port":6379,"db":0}
+[20/5/2026, 5:02:37 pm] [INFO] ✅ Database connected {"threadId":1242,"config":{"host":"localhost","database":"dreamhouse","connectionLimit":"10"}}
+[20/5/2026, 5:02:38 pm] [INFO] 🚀 Redis ready
+[20/5/2026, 5:02:38 pm] [INFO] 🚀 Redis is ready to accept commands
+[20/5/2026, 5:02:38 pm] [INFO] ℹ️  [11:32:38.005] [SsoAuth:SSO_AUTH] 🔐 Redis health: healthy 
+[20/5/2026, 5:02:38 pm] [INFO] ✅ MaxMind DB loaded
+[20/5/2026, 5:02:40 pm] [INFO] 🪵 Logger initialized {"env":"development","log_level":"silly","toggles":{"master":true,"console":true,"file":true,"requests":false},"log_directory":"D:\\BRIGHTON\\DREAMHOUSE\\DHBACKEND\\logs"}
+[20/5/2026, 5:02:40 pm] [INFO] 🚀 Server running on port 8006 {"env":"development","pid":756}
+[20/5/2026, 5:02:40 pm] [INFO] ✅ Redis connected: redis://127.0.0.1:6379
+[20/5/2026, 5:02:40 pm] [INFO] ✅ Redis connected: {"host":"127.0.0.1","port":6379,"db":0}
+[20/5/2026, 5:02:40 pm] [INFO] ✅ Database connected {"threadId":1244,"config":{"host":"localhost","database":"dreamhouse","connectionLimit":"10"}}
+[20/5/2026, 5:02:40 pm] [INFO] 🚀 Redis ready
+[20/5/2026, 5:02:40 pm] [INFO] ℹ️  [11:32:40.703] [SsoAuth:SSO_AUTH] 🔐 Redis health: healthy 
+[20/5/2026, 5:02:40 pm] [INFO] 🚀 Redis is ready to accept commands
+[20/5/2026, 5:02:40 pm] [INFO] ✅ MaxMind DB loaded
+[20/5/2026, 5:02:52 pm] [INFO] 🪵 Logger initialized {"env":"development","log_level":"silly","toggles":{"master":true,"console":true,"file":true,"requests":false},"log_directory":"D:\\BRIGHTON\\DREAMHOUSE\\DHBACKEND\\logs"}
+[20/5/2026, 5:02:52 pm] [INFO] 🚀 Server running on port 8006 {"env":"development","pid":2600}
+[20/5/2026, 5:02:52 pm] [INFO] ✅ Redis connected: redis://127.0.0.1:6379
+[20/5/2026, 5:02:52 pm] [INFO] ✅ Redis connected: {"host":"127.0.0.1","port":6379,"db":0}
+[20/5/2026, 5:02:52 pm] [INFO] ✅ Database connected {"threadId":1246,"config":{"host":"localhost","database":"dreamhouse","connectionLimit":"10"}}
+[20/5/2026, 5:02:52 pm] [INFO] 🚀 Redis ready
+[20/5/2026, 5:02:52 pm] [INFO] ℹ️  [11:32:52.180] [SsoAuth:SSO_AUTH] 🔐 Redis health: healthy 
+[20/5/2026, 5:02:52 pm] [INFO] 🚀 Redis is ready to accept commands
+[20/5/2026, 5:02:52 pm] [INFO] ✅ MaxMind DB loaded
+[20/5/2026, 5:02:58 pm] [INFO] 🪵 Logger initialized {"env":"development","log_level":"silly","toggles":{"master":true,"console":true,"file":true,"requests":false},"log_directory":"D:\\BRIGHTON\\DREAMHOUSE\\DHBACKEND\\logs"}
+[20/5/2026, 5:02:58 pm] [INFO] 🚀 Server running on port 8006 {"env":"development","pid":32476}
+[20/5/2026, 5:02:58 pm] [INFO] ✅ Redis connected: redis://127.0.0.1:6379
+[20/5/2026, 5:02:58 pm] [INFO] ✅ Redis connected: {"host":"127.0.0.1","port":6379,"db":0}
+[20/5/2026, 5:02:58 pm] [INFO] ✅ Database connected {"threadId":1248,"config":{"host":"localhost","database":"dreamhouse","connectionLimit":"10"}}
+[20/5/2026, 5:02:58 pm] [INFO] 🚀 Redis ready
+[20/5/2026, 5:02:58 pm] [INFO] ℹ️  [11:32:58.596] [SsoAuth:SSO_AUTH] 🔐 Redis health: healthy 
+[20/5/2026, 5:02:58 pm] [INFO] 🚀 Redis is ready to accept commands
+[20/5/2026, 5:02:58 pm] [INFO] ✅ MaxMind DB loaded
+[20/5/2026, 5:03:05 pm] [INFO] Checking username: Admina@123 Realm: undefined {"session_id":"d6007b45-6cf2-428a-b084-c3a2ba488d8b","access_token":"eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJtLWRpZXFYSGE3TUhfRzNaYWtmWHBkOU9oVlVDOGZQaTV5ek1UajFnaldJIn0.eyJleHAiOjE3NzkyODAzMDMsImlhdCI6MTc3OTI3NjcwMywianRpIjoib25ydHJvOjhlY2NmOTFlLTcyNzQtMzMwNC0wNzM5LWFhNTIwOGIyZjJiZCIsImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6ODA4MC9yZWFsbXMvRHJlYW1Ib3VzZSIsImF1ZCI6WyJyZWFsbS1tYW5hZ2VtZW50IiwiYnJva2VyIiwiYWNjb3VudCJdLCJzdWIiOiI1MTM5ZTkzZS1iNGY1LTRjYjQtOWY0NS1kM2MxNzU4Zjc1YWUiLCJ0eXAiOiJCZWFyZXIiLCJhenAiOiJteWRyZWFtaG91c2UuaW4iLCJzaWQiOiJKU3Nvdk4wS2lyTE5DVDdkZVFBangtQ2IiLCJhY3IiOiIxIiwiYWxsb3dlZC1vcmlnaW5zIjpbImh0dHA6Ly9sb2NhbGhvc3Q6NTE3MyJdLCJyZWFsbV9hY2Nlc3MiOnsicm9sZXMiOlsiU3VwZXIgVXNlciIsIlNVUEVSVVNFUiIsImRlZmF1bHQtcm9sZXMtZHJlYW1ob3VzZSIsIm9mZmxpbmVfYWNjZXNzIiwidW1hX2F1dGhvcml6YXRpb24iXX0sInJlc291cmNlX2FjY2VzcyI6eyJyZWFsbS1tYW5hZ2VtZW50Ijp7InJvbGVzIjpbInZpZXctaWRlbnRpdHktcHJvdmlkZXJzIiwidmlldy1yZWFsbSIsIm1hbmFnZS1pZGVudGl0eS1wcm92aWRlcnMiLCJpbXBlcnNvbmF0aW9uIiwicmVhbG0tYWRtaW4iLCJjcmVhdGUtY2xpZW50IiwibWFuYWdlLXVzZXJzIiwicXVlcnktcmVhbG1zIiwidmlldy1hdXRob3JpemF0aW9uIiwicXVlcnktY2xpZW50cyIsInF1ZXJ5LXVzZXJzIiwibWFuYWdlLWV2ZW50cyIsIm1hbmFnZS1yZWFsbSIsInZpZXctZXZlbnRzIiwidmlldy11c2VycyIsInZpZXctY2xpZW50cyIsIm1hbmFnZS1hdXRob3JpemF0aW9uIiwibWFuYWdlLWNsaWVudHMiLCJxdWVyeS1ncm91cHMiXX0sImJyb2tlciI6eyJyb2xlcyI6WyJyZWFkLXRva2VuIl19LCJhY2NvdW50Ijp7InJvbGVzIjpbIm1hbmFnZS1hY2NvdW50Iiwidmlldy1hcHBsaWNhdGlvbnMiLCJ2aWV3LWNvbnNlbnQiLCJ2aWV3LWdyb3VwcyIsIm1hbmFnZS1hY2NvdW50LWxpbmtzIiwibWFuYWdlLWNvbnNlbnQiLCJkZWxldGUtYWNjb3VudCIsInZpZXctcHJvZmlsZSJdfX0sInNjb3BlIjoiZW1haWwgcHJvZmlsZSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJuYW1lIjoiU1VQRVJVU0VSIE9ORSIsInByZWZlcnJlZF91c2VybmFtZSI6InN1cGVydXNlcjEiLCJnaXZlbl9uYW1lIjoiU1VQRVJVU0VSIiwiZmFtaWx5X25hbWUiOiJPTkUiLCJlbWFpbCI6InN1cGVydXNlcjFAZ21haWwuY29tIn0.vct0CCeKbqxDi3QrFKi604IvEde_lPArpQidoExQr6B7MSDfYBNMbZY91ZEDxTypEcfWnbZxFRCQT2EE6KkLeH0d2T_LzpsFYH4VKP5nf4KkR8MYWmqEcCXpa8Ub976IaGEW0L7UZHYYSAnUAr1-h95ueTPBVtyMVGKvF_ZDVAOB_2TTmbWZGpvrmYVm_e-lACrJ0RBONASMwCXJ-ITR4jGLFup7b3FHVRo24lnmcsN6eVx0oYZIBRFiV4gNb1H6mj0dA7sDXNTO-wEa3M2-bq6fVU1aAfag33ZO8P3rGfVQCbfmhY9hweI4o5v0cxWJCl462Sd9mDCXrsDMX8y2kw","refresh_token":"eyJhbGciOiJIUzUxMiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICIxZThmYzZjOS05NzlmLTQyNGItODhmMi1mMzk3Y2ZkMzIwNmUifQ.eyJleHAiOjE3Nzk4ODE1MDMsImlhdCI6MTc3OTI3NjcwMywianRpIjoiNGJmYmEzNTgtNjExZC01YWZlLTZhOTItZDVjNjMzZmQxYTQ5IiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo4MDgwL3JlYWxtcy9EcmVhbUhvdXNlIiwiYXVkIjoiaHR0cDovL2xvY2FsaG9zdDo4MDgwL3JlYWxtcy9EcmVhbUhvdXNlIiwic3ViIjoiNTEzOWU5M2UtYjRmNS00Y2I0LTlmNDUtZDNjMTc1OGY3NWFlIiwidHlwIjoiUmVmcmVzaCIsImF6cCI6Im15ZHJlYW1ob3VzZS5pbiIsInNpZCI6IkpTc292TjBLaXJMTkNUN2RlUUFqeC1DYiIsInNjb3BlIjoiYmFzaWMgZW1haWwgd2ViLW9yaWdpbnMgYWNyIHByb2ZpbGUgcm9sZXMiLCJhdWRfeCI6WyJyZWFsbS1tYW5hZ2VtZW50IiwiYnJva2VyIiwiYWNjb3VudCJdfQ.RIEosMW4Sguj0XZKwt2SbCCU-Hbfiek8Q2o2awAoAKZGSKrNRTXkkJ7UTUYFl9kOputRFdh8ahegptCmup6TuA"}
+[20/5/2026, 5:05:17 pm] [INFO] 🪵 Logger initialized {"env":"development","log_level":"silly","toggles":{"master":true,"console":true,"file":true,"requests":false},"log_directory":"D:\\BRIGHTON\\DREAMHOUSE\\DHBACKEND\\logs"}
+[20/5/2026, 5:05:17 pm] [INFO] 🚀 Server running on port 8006 {"env":"development","pid":20104}
+[20/5/2026, 5:05:17 pm] [INFO] ✅ Redis connected: redis://127.0.0.1:6379
+[20/5/2026, 5:05:17 pm] [INFO] ✅ Redis connected: {"host":"127.0.0.1","port":6379,"db":0}
+[20/5/2026, 5:05:17 pm] [INFO] ✅ Database connected {"threadId":1250,"config":{"host":"localhost","database":"dreamhouse","connectionLimit":"10"}}
+[20/5/2026, 5:05:17 pm] [INFO] 🚀 Redis ready
+[20/5/2026, 5:05:17 pm] [INFO] ℹ️  [11:35:17.098] [SsoAuth:SSO_AUTH] 🔐 Redis health: healthy 
+[20/5/2026, 5:05:17 pm] [INFO] 🚀 Redis is ready to accept commands
+[20/5/2026, 5:05:17 pm] [INFO] ✅ MaxMind DB loaded
+[20/5/2026, 5:05:22 pm] [INFO] 🪵 Logger initialized {"env":"development","log_level":"silly","toggles":{"master":true,"console":true,"file":true,"requests":false},"log_directory":"D:\\BRIGHTON\\DREAMHOUSE\\DHBACKEND\\logs"}
+[20/5/2026, 5:05:22 pm] [INFO] 🚀 Server running on port 8006 {"env":"development","pid":32772}
+[20/5/2026, 5:05:22 pm] [INFO] ✅ Redis connected: redis://127.0.0.1:6379
+[20/5/2026, 5:05:22 pm] [INFO] ✅ Redis connected: {"host":"127.0.0.1","port":6379,"db":0}
+[20/5/2026, 5:05:22 pm] [INFO] ✅ Database connected {"threadId":1252,"config":{"host":"localhost","database":"dreamhouse","connectionLimit":"10"}}
+[20/5/2026, 5:05:22 pm] [INFO] 🚀 Redis ready
+[20/5/2026, 5:05:22 pm] [INFO] 🚀 Redis is ready to accept commands
+[20/5/2026, 5:05:22 pm] [INFO] ℹ️  [11:35:22.510] [SsoAuth:SSO_AUTH] 🔐 Redis health: healthy 
+[20/5/2026, 5:05:22 pm] [INFO] ✅ MaxMind DB loaded
+[20/5/2026, 5:05:25 pm] [INFO] 🪵 Logger initialized {"env":"development","log_level":"silly","toggles":{"master":true,"console":true,"file":true,"requests":false},"log_directory":"D:\\BRIGHTON\\DREAMHOUSE\\DHBACKEND\\logs"}
+[20/5/2026, 5:05:25 pm] [INFO] 🚀 Server running on port 8006 {"env":"development","pid":12820}
+[20/5/2026, 5:05:25 pm] [INFO] ✅ Redis connected: redis://127.0.0.1:6379
+[20/5/2026, 5:05:25 pm] [INFO] ✅ Redis connected: {"host":"127.0.0.1","port":6379,"db":0}
+[20/5/2026, 5:05:25 pm] [INFO] ✅ Database connected {"threadId":1254,"config":{"host":"localhost","database":"dreamhouse","connectionLimit":"10"}}
+[20/5/2026, 5:05:25 pm] [INFO] 🚀 Redis ready
+[20/5/2026, 5:05:25 pm] [INFO] ℹ️  [11:35:25.626] [SsoAuth:SSO_AUTH] 🔐 Redis health: healthy 
+[20/5/2026, 5:05:25 pm] [INFO] 🚀 Redis is ready to accept commands
+[20/5/2026, 5:05:25 pm] [INFO] ✅ MaxMind DB loaded
+[20/5/2026, 5:05:27 pm] [INFO] 🪵 Logger initialized {"env":"development","log_level":"silly","toggles":{"master":true,"console":true,"file":true,"requests":false},"log_directory":"D:\\BRIGHTON\\DREAMHOUSE\\DHBACKEND\\logs"}
+[20/5/2026, 5:05:27 pm] [INFO] 🚀 Server running on port 8006 {"env":"development","pid":16808}
+[20/5/2026, 5:05:27 pm] [INFO] ✅ Redis connected: redis://127.0.0.1:6379
+[20/5/2026, 5:05:27 pm] [INFO] ✅ Redis connected: {"host":"127.0.0.1","port":6379,"db":0}
+[20/5/2026, 5:05:27 pm] [INFO] ✅ Database connected {"threadId":1256,"config":{"host":"localhost","database":"dreamhouse","connectionLimit":"10"}}
+[20/5/2026, 5:05:27 pm] [INFO] 🚀 Redis is ready to accept commands
+[20/5/2026, 5:05:27 pm] [INFO] 🚀 Redis ready
+[20/5/2026, 5:05:27 pm] [INFO] ℹ️  [11:35:27.372] [SsoAuth:SSO_AUTH] 🔐 Redis health: healthy 
+[20/5/2026, 5:05:27 pm] [INFO] ✅ MaxMind DB loaded
+[20/5/2026, 5:05:33 pm] [INFO] 🪵 Logger initialized {"env":"development","log_level":"silly","toggles":{"master":true,"console":true,"file":true,"requests":false},"log_directory":"D:\\BRIGHTON\\DREAMHOUSE\\DHBACKEND\\logs"}
+[20/5/2026, 5:05:33 pm] [INFO] 🚀 Server running on port 8006 {"env":"development","pid":23076}
+[20/5/2026, 5:05:33 pm] [INFO] ✅ Redis connected: redis://127.0.0.1:6379
+[20/5/2026, 5:05:33 pm] [INFO] ✅ Redis connected: {"host":"127.0.0.1","port":6379,"db":0}
+[20/5/2026, 5:05:33 pm] [INFO] ✅ Database connected {"threadId":1258,"config":{"host":"localhost","database":"dreamhouse","connectionLimit":"10"}}
+[20/5/2026, 5:05:33 pm] [INFO] 🚀 Redis ready
+[20/5/2026, 5:05:33 pm] [INFO] ℹ️  [11:35:33.980] [SsoAuth:SSO_AUTH] 🔐 Redis health: healthy 
+[20/5/2026, 5:05:33 pm] [INFO] 🚀 Redis is ready to accept commands
+[20/5/2026, 5:05:34 pm] [INFO] ✅ MaxMind DB loaded
+[20/5/2026, 5:05:36 pm] [INFO] 🪵 Logger initialized {"env":"development","log_level":"silly","toggles":{"master":true,"console":true,"file":true,"requests":false},"log_directory":"D:\\BRIGHTON\\DREAMHOUSE\\DHBACKEND\\logs"}
+[20/5/2026, 5:05:36 pm] [INFO] 🚀 Server running on port 8006 {"env":"development","pid":34600}
+[20/5/2026, 5:05:36 pm] [INFO] ✅ Redis connected: redis://127.0.0.1:6379
+[20/5/2026, 5:05:36 pm] [INFO] ✅ Redis connected: {"host":"127.0.0.1","port":6379,"db":0}
+[20/5/2026, 5:05:36 pm] [INFO] ✅ Database connected {"threadId":1260,"config":{"host":"localhost","database":"dreamhouse","connectionLimit":"10"}}
+[20/5/2026, 5:05:36 pm] [INFO] 🚀 Redis ready
+[20/5/2026, 5:05:36 pm] [INFO] ℹ️  [11:35:36.061] [SsoAuth:SSO_AUTH] 🔐 Redis health: healthy 
+[20/5/2026, 5:05:36 pm] [INFO] 🚀 Redis is ready to accept commands
+[20/5/2026, 5:05:36 pm] [INFO] ✅ MaxMind DB loaded
+[20/5/2026, 5:05:56 pm] [INFO] ✅ Redis GET: dashboard:financials:1:1
+[20/5/2026, 5:05:56 pm] [INFO] ⚠️ Redis key not found: dashboard:summary:1:1
+[20/5/2026, 5:05:56 pm] [INFO] ⚠️ Redis key not found: labour:1:1:contractor:pay
+[20/5/2026, 5:05:56 pm] [INFO] ⚠️ Redis key not found: payment:material:fetch:1:1
+[20/5/2026, 5:05:56 pm] [INFO] ✅ Redis SET: labour:1:1:contractor:pay
+[20/5/2026, 5:05:56 pm] [INFO] ✅ Redis GET: dashboard:financials:1:1
+[20/5/2026, 5:05:56 pm] [INFO] ✅ Redis SET: payment:material:fetch:1:1
+[20/5/2026, 5:05:56 pm] [INFO] ✅ Redis GET: labour:1:1:contractor:pay
+[20/5/2026, 5:05:56 pm] [INFO] ✅ Redis GET: payment:material:fetch:1:1
+[20/5/2026, 5:05:56 pm] [INFO] ✅ Redis SET: dashboard:summary:1:1
+[20/5/2026, 5:05:56 pm] [INFO] ✅ Redis GET: dashboard:summary:1:1
+[20/5/2026, 5:06:06 pm] [INFO] ⚠️ Redis key not found: master:1:1:material:fetch
+[20/5/2026, 5:06:06 pm] [INFO] ⚠️ Redis key not found: master:1:1:labour:fetch
+[20/5/2026, 5:06:06 pm] [INFO] ⚠️ No keys found to delete for pattern: master:material:*
+[20/5/2026, 5:06:06 pm] [INFO] ✅ Redis SET: master:1:1:material:fetch
+[20/5/2026, 5:06:06 pm] [INFO] ⚠️ Redis key not found: master:contractor:1:1:fetch
+[20/5/2026, 5:06:06 pm] [INFO] ⚠️ No keys found to delete for pattern: master:contractor:*
+[20/5/2026, 5:06:06 pm] [INFO] ⚠️ No keys found to delete for pattern: master:labour:*
+[20/5/2026, 5:06:06 pm] [INFO] ✅ Redis DELETE PATTERN: master:supplier:* (1 key(s) deleted)
+[20/5/2026, 5:06:06 pm] [INFO] ✅ Redis SET: master:contractor:1:1:fetch
+[20/5/2026, 5:06:06 pm] [INFO] ✅ Redis SET: master:1:1:labour:fetch
+[20/5/2026, 5:06:06 pm] [INFO] ✅ Redis SET: master:supplier:1:1:fetch
+[20/5/2026, 5:06:06 pm] [INFO] ✅ Redis GET: master:1:1:material:fetch
+[20/5/2026, 5:06:06 pm] [INFO] ✅ Redis GET: master:contractor:1:1:fetch
+[20/5/2026, 5:06:06 pm] [INFO] ✅ Redis GET: master:1:1:labour:fetch
+[20/5/2026, 5:06:06 pm] [INFO] ✅ Redis DELETE PATTERN: master:supplier:* (1 key(s) deleted)
+[20/5/2026, 5:06:06 pm] [INFO] ✅ Redis SET: master:supplier:1:1:fetch
+[20/5/2026, 5:06:08 pm] [INFO] ⚠️ Redis key not found: branch:list:1
+[20/5/2026, 5:06:08 pm] [INFO] ✅ Redis SET: branch:list:1
+[20/5/2026, 5:06:08 pm] [INFO] ✅ Redis GET: branch:list:1
+[20/5/2026, 5:06:11 pm] [INFO] Checking username: Admina@123 Realm: DreamHouse {"session_id":"18091c9c-d17e-4c40-8266-cb8da9b6530c","realm":"DreamHouse","clientId":"mydreamhouse.in","access_token":"eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJtLWRpZXFYSGE3TUhfRzNaYWtmWHBkOU9oVlVDOGZQaTV5ek1UajFnaldJIn0.eyJleHAiOjE3NzkyODA1NTUsImlhdCI6MTc3OTI3Njk1NSwianRpIjoib25ydHJvOjg1NTI4ZTkwLWFkOTItYzYyOS1mMzc3LTA5Y2ViYTA2MDJjYyIsImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6ODA4MC9yZWFsbXMvRHJlYW1Ib3VzZSIsImF1ZCI6WyJyZWFsbS1tYW5hZ2VtZW50IiwiYnJva2VyIiwiYWNjb3VudCJdLCJzdWIiOiI1MTM5ZTkzZS1iNGY1LTRjYjQtOWY0NS1kM2MxNzU4Zjc1YWUiLCJ0eXAiOiJCZWFyZXIiLCJhenAiOiJteWRyZWFtaG91c2UuaW4iLCJzaWQiOiJwbDFkOTdfaS03MFNxa0k4MVhlczJxdG0iLCJhY3IiOiIxIiwiYWxsb3dlZC1vcmlnaW5zIjpbImh0dHA6Ly9sb2NhbGhvc3Q6NTE3MyJdLCJyZWFsbV9hY2Nlc3MiOnsicm9sZXMiOlsiU3VwZXIgVXNlciIsIlNVUEVSVVNFUiIsImRlZmF1bHQtcm9sZXMtZHJlYW1ob3VzZSIsIm9mZmxpbmVfYWNjZXNzIiwidW1hX2F1dGhvcml6YXRpb24iXX0sInJlc291cmNlX2FjY2VzcyI6eyJyZWFsbS1tYW5hZ2VtZW50Ijp7InJvbGVzIjpbInZpZXctaWRlbnRpdHktcHJvdmlkZXJzIiwidmlldy1yZWFsbSIsIm1hbmFnZS1pZGVudGl0eS1wcm92aWRlcnMiLCJpbXBlcnNvbmF0aW9uIiwicmVhbG0tYWRtaW4iLCJjcmVhdGUtY2xpZW50IiwibWFuYWdlLXVzZXJzIiwicXVlcnktcmVhbG1zIiwidmlldy1hdXRob3JpemF0aW9uIiwicXVlcnktY2xpZW50cyIsInF1ZXJ5LXVzZXJzIiwibWFuYWdlLWV2ZW50cyIsIm1hbmFnZS1yZWFsbSIsInZpZXctZXZlbnRzIiwidmlldy11c2VycyIsInZpZXctY2xpZW50cyIsIm1hbmFnZS1hdXRob3JpemF0aW9uIiwibWFuYWdlLWNsaWVudHMiLCJxdWVyeS1ncm91cHMiXX0sImJyb2tlciI6eyJyb2xlcyI6WyJyZWFkLXRva2VuIl19LCJhY2NvdW50Ijp7InJvbGVzIjpbIm1hbmFnZS1hY2NvdW50Iiwidmlldy1hcHBsaWNhdGlvbnMiLCJ2aWV3LWNvbnNlbnQiLCJ2aWV3LWdyb3VwcyIsIm1hbmFnZS1hY2NvdW50LWxpbmtzIiwibWFuYWdlLWNvbnNlbnQiLCJkZWxldGUtYWNjb3VudCIsInZpZXctcHJvZmlsZSJdfX0sInNjb3BlIjoiZW1haWwgcHJvZmlsZSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJuYW1lIjoiU1VQRVJVU0VSIE9ORSIsInByZWZlcnJlZF91c2VybmFtZSI6InN1cGVydXNlcjEiLCJnaXZlbl9uYW1lIjoiU1VQRVJVU0VSIiwiZmFtaWx5X25hbWUiOiJPTkUiLCJlbWFpbCI6InN1cGVydXNlcjFAZ21haWwuY29tIn0.t2XuAnlh6ozIACzMPXSJJF8h5qrT8FZzC_3kupIuuFjitvkNxzQD42nc2KwOh728hbdjeBz6efd3BXVpIV-0Va_EmeadrLHtHFKbxUKvlprTY7G3KXXkak0_adJ-irL3hVasg4To_I8X4D-g9rVm8iJIqyP_DGd22q7_TsgYDpjbjENSIOAwVYEO7G1lE-jwE7OpipyLpsH828dIetwDlAZb7zEeTO0tvViAZe4me39r_GP6uL2jTSdpJ2TW8Loi-1_fXgaDOZILhE0kDikqqnwcwwnCcBhFmlkiEQDD8F4987HD5VORpes27ooKk0B3Q7gZF-wkRWX8pe_nJsPSfw","refresh_token":"eyJhbGciOiJIUzUxMiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICIxZThmYzZjOS05NzlmLTQyNGItODhmMi1mMzk3Y2ZkMzIwNmUifQ.eyJleHAiOjE3Nzk4ODE3NTUsImlhdCI6MTc3OTI3Njk1NSwianRpIjoiYTBjMTQ0ZmItMzg5ZC00MWNlLTcxMmQtYTk3YmM2ODEzN2VjIiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo4MDgwL3JlYWxtcy9EcmVhbUhvdXNlIiwiYXVkIjoiaHR0cDovL2xvY2FsaG9zdDo4MDgwL3JlYWxtcy9EcmVhbUhvdXNlIiwic3ViIjoiNTEzOWU5M2UtYjRmNS00Y2I0LTlmNDUtZDNjMTc1OGY3NWFlIiwidHlwIjoiUmVmcmVzaCIsImF6cCI6Im15ZHJlYW1ob3VzZS5pbiIsInNpZCI6InBsMWQ5N19pLTcwU3FrSTgxWGVzMnF0bSIsInNjb3BlIjoiYmFzaWMgZW1haWwgd2ViLW9yaWdpbnMgYWNyIHByb2ZpbGUgcm9sZXMiLCJhdWRfeCI6WyJyZWFsbS1tYW5hZ2VtZW50IiwiYnJva2VyIiwiYWNjb3VudCJdfQ.FL-XnnJ7cR4RreJXAfSqNaKQBkayH_XvaYJyxqeYsjU0TXTV6MeguzJWIhH0tZ0OGF8eoMQGaKlhXuMUiCaOXw"}
+[20/5/2026, 5:08:08 pm] [INFO] 🪵 Logger initialized {"env":"development","log_level":"silly","toggles":{"master":true,"console":true,"file":true,"requests":false},"log_directory":"D:\\BRIGHTON\\DREAMHOUSE\\DHBACKEND\\logs"}
+[20/5/2026, 5:08:08 pm] [INFO] 🚀 Server running on port 8006 {"env":"development","pid":12048}
+[20/5/2026, 5:08:08 pm] [INFO] ✅ Redis connected: redis://127.0.0.1:6379
+[20/5/2026, 5:08:08 pm] [INFO] ✅ Redis connected: {"host":"127.0.0.1","port":6379,"db":0}
+[20/5/2026, 5:08:08 pm] [INFO] ✅ Database connected {"threadId":1263,"config":{"host":"localhost","database":"dreamhouse","connectionLimit":"10"}}
+[20/5/2026, 5:08:08 pm] [INFO] 🚀 Redis ready
+[20/5/2026, 5:08:08 pm] [INFO] ℹ️  [11:38:08.461] [SsoAuth:SSO_AUTH] 🔐 Redis health: healthy 
+[20/5/2026, 5:08:08 pm] [INFO] 🚀 Redis is ready to accept commands
+[20/5/2026, 5:08:08 pm] [INFO] ✅ MaxMind DB loaded
+[20/5/2026, 5:08:12 pm] [INFO] 🪵 Logger initialized {"env":"development","log_level":"silly","toggles":{"master":true,"console":true,"file":true,"requests":false},"log_directory":"D:\\BRIGHTON\\DREAMHOUSE\\DHBACKEND\\logs"}
+[20/5/2026, 5:08:12 pm] [INFO] 🚀 Server running on port 8006 {"env":"development","pid":17156}
+[20/5/2026, 5:08:12 pm] [INFO] ✅ Redis connected: redis://127.0.0.1:6379
+[20/5/2026, 5:08:12 pm] [INFO] ✅ Redis connected: {"host":"127.0.0.1","port":6379,"db":0}
+[20/5/2026, 5:08:12 pm] [INFO] ✅ Database connected {"threadId":1265,"config":{"host":"localhost","database":"dreamhouse","connectionLimit":"10"}}
+[20/5/2026, 5:08:12 pm] [INFO] 🚀 Redis ready
+[20/5/2026, 5:08:12 pm] [INFO] ℹ️  [11:38:12.914] [SsoAuth:SSO_AUTH] 🔐 Redis health: healthy 
+[20/5/2026, 5:08:12 pm] [INFO] 🚀 Redis is ready to accept commands
+[20/5/2026, 5:08:12 pm] [INFO] ✅ MaxMind DB loaded
+[20/5/2026, 6:13:39 pm] [INFO] KC error: {"error":"HTTP 401 Unauthorized"}
+[20/5/2026, 6:14:11 pm] [INFO] ⚠️ Redis key not found: dashboard:financials:1:1
+[20/5/2026, 6:14:11 pm] [INFO] ⚠️ Redis key not found: dashboard:summary:1:1
+[20/5/2026, 6:14:11 pm] [INFO] ⚠️ Redis key not found: labour:1:1:contractor:pay
+[20/5/2026, 6:14:11 pm] [INFO] ⚠️ Redis key not found: payment:material:fetch:1:1
+[20/5/2026, 6:14:11 pm] [INFO] ✅ Redis SET: labour:1:1:contractor:pay
+[20/5/2026, 6:14:11 pm] [INFO] ✅ Redis SET: dashboard:financials:1:1
+[20/5/2026, 6:14:11 pm] [INFO] ✅ Redis SET: payment:material:fetch:1:1
+[20/5/2026, 6:14:11 pm] [INFO] ✅ Redis GET: labour:1:1:contractor:pay
+[20/5/2026, 6:14:11 pm] [INFO] ✅ Redis GET: dashboard:financials:1:1
+[20/5/2026, 6:14:11 pm] [INFO] ✅ Redis SET: dashboard:summary:1:1
+[20/5/2026, 6:14:11 pm] [INFO] ✅ Redis GET: payment:material:fetch:1:1
+[20/5/2026, 6:14:11 pm] [INFO] ✅ Redis GET: dashboard:summary:1:1
+[20/5/2026, 6:14:12 pm] [INFO] ✅ Redis DELETE: session:18091c9c-d17e-4c40-8266-cb8da9b6530c (1 key(s) deleted)
+[20/5/2026, 6:14:12 pm] [INFO] ✅ Redis DELETE: api_count:18091c9c-d17e-4c40-8266-cb8da9b6530c (0 key(s) deleted)
+[20/5/2026, 6:14:12 pm] [INFO] ✅ Logout completed
+[20/5/2026, 6:14:25 pm] [INFO] ✅ Redis GET: dashboard:financials:1:1
+[20/5/2026, 6:14:25 pm] [INFO] ✅ Redis GET: dashboard:summary:1:1
+[20/5/2026, 6:14:25 pm] [INFO] ✅ Redis GET: dashboard:financials:1:1
+[20/5/2026, 6:14:25 pm] [INFO] ✅ Redis GET: labour:1:1:contractor:pay
+[20/5/2026, 6:14:25 pm] [INFO] ✅ Redis GET: payment:material:fetch:1:1
+[20/5/2026, 6:14:25 pm] [INFO] ✅ Redis GET: dashboard:summary:1:1
+[20/5/2026, 6:14:25 pm] [INFO] ✅ Redis GET: labour:1:1:contractor:pay
+[20/5/2026, 6:14:25 pm] [INFO] ✅ Redis GET: payment:material:fetch:1:1
+[20/5/2026, 6:14:27 pm] [INFO] ⚠️ Redis key not found: master:1:1:material:fetch
+[20/5/2026, 6:14:27 pm] [INFO] ⚠️ Redis key not found: master:1:1:labour:fetch
+[20/5/2026, 6:14:27 pm] [INFO] ⚠️ Redis key not found: master:contractor:1:1:fetch
+[20/5/2026, 6:14:27 pm] [INFO] ⚠️ No keys found to delete for pattern: master:material:*
+[20/5/2026, 6:14:27 pm] [INFO] ✅ Redis SET: master:1:1:material:fetch
+[20/5/2026, 6:14:27 pm] [INFO] ⚠️ No keys found to delete for pattern: master:contractor:*
+[20/5/2026, 6:14:27 pm] [INFO] ⚠️ No keys found to delete for pattern: master:supplier:*
+[20/5/2026, 6:14:27 pm] [INFO] ⚠️ No keys found to delete for pattern: master:labour:*
+[20/5/2026, 6:14:27 pm] [INFO] ✅ Redis SET: master:contractor:1:1:fetch
+[20/5/2026, 6:14:27 pm] [INFO] ✅ Redis SET: master:supplier:1:1:fetch
+[20/5/2026, 6:14:27 pm] [INFO] ✅ Redis SET: master:1:1:labour:fetch
+[20/5/2026, 6:14:27 pm] [INFO] ✅ Redis GET: master:1:1:material:fetch
+[20/5/2026, 6:14:27 pm] [INFO] ✅ Redis GET: master:contractor:1:1:fetch
+[20/5/2026, 6:14:27 pm] [INFO] ✅ Redis GET: master:1:1:labour:fetch
+[20/5/2026, 6:14:27 pm] [INFO] ✅ Redis DELETE PATTERN: master:supplier:* (1 key(s) deleted)
+[20/5/2026, 6:14:27 pm] [INFO] ✅ Redis SET: master:supplier:1:1:fetch
+[20/5/2026, 6:14:39 pm] [INFO] ⚠️ Redis key not found: material:1:1:stock:2
+[20/5/2026, 6:14:39 pm] [INFO] ⚠️ Redis key not found: material:1:1:stock:2
+[20/5/2026, 6:14:39 pm] [INFO] ✅ Redis SET: material:1:1:stock:2
+[20/5/2026, 6:14:39 pm] [INFO] ✅ Redis SET: material:1:1:stock:2
+[20/5/2026, 6:14:41 pm] [INFO] ⚠️ Redis key not found: branch:list:1
+[20/5/2026, 6:14:41 pm] [INFO] ✅ Redis SET: branch:list:1
+[20/5/2026, 6:14:41 pm] [INFO] ✅ Redis GET: branch:list:1
+[20/5/2026, 6:17:07 pm] [INFO] {}
+[20/5/2026, 6:17:07 pm] [INFO] cleanData: {"first_name":"ADMIN","last_name":"A","email":"admina@gmail.com","user_photo":"C:\\fakepath\\2.jpg","id_card_photo":"C:\\fakepath\\7.jpg","aadhaar_number":"745646765757","address":"ClinicA,Forest road","pincode":"625531","city":"Allinagaram","district":"Theni","state":"Tamil Nadu","country":"India","status":"A","failed_attempt_count":0,"account_locked":false} {"first_name":"ADMIN","last_name":"A","dateofbirth":"2005-11-04","email":"admina@gmail.com","phone_number":"8764654455","gender":"MALE","user_photo":"C:\\fakepath\\2.jpg","id_card_photo":"C:\\fakepath\\7.jpg","aadhaar_number":"745646765757","address":"ClinicA,Forest road","pincode":"625531","city":"Allinagaram","district":"Theni","state":"Tamil Nadu","country":"India","username":"Admina@123","password":"123456","role":"ADMIN","branch_ids":"6","status":"A","tenant_id":"1","created_by":"superuser1"}
+[20/5/2026, 6:17:07 pm] [INFO] addUser called with: {"details":{"first_name":"ADMIN","last_name":"A","dateofbirth":"2005-11-04","email":"admina@gmail.com","phone_number":"8764654455","gender":"MALE","user_photo":"C:\\fakepath\\2.jpg","id_card_photo":"C:\\fakepath\\7.jpg","aadhaar_number":"745646765757","address":"ClinicA,Forest road","pincode":"625531","city":"Allinagaram","district":"Theni","state":"Tamil Nadu","country":"India","username":"Admina@123","password":"123456","role":"ADMIN","branch_ids":"6","status":"A","tenant_id":"1","created_by":"superuser1"},"tenant_id":1,"branch_id":1}
+[20/5/2026, 6:17:07 pm] [INFO] Creating user with data: {"email":"admina@gmail.com","first_name":"ADMIN","last_name":"A","username":"Admina@123"}
+[20/5/2026, 6:17:07 pm] [INFO] User "Admina@123" created successfully.
+[20/5/2026, 6:17:07 pm] [INFO] keycloakdata: {"id":"a7babb5d-a536-4670-b521-258bd9e49c1a","username":"admina@123","firstName":"ADMIN","lastName":"A","email":"admina@gmail.com","emailVerified":true,"userProfileMetadata":{"attributes":[{"name":"username","displayName":"${username}","required":true,"readOnly":true,"validators":{"username-prohibited-characters":{"ignore.empty.value":true},"multivalued":{"max":"1"},"length":{"max":255,"ignore.empty.value":true,"min":3},"up-username-not-idn-homograph":{"ignore.empty.value":true}},"multivalued":false},{"name":"email","displayName":"${email}","required":false,"readOnly":false,"annotations":{},"validators":{"multivalued":{"max":"1"},"length":{"max":255,"ignore.empty.value":true},"email":{"ignore.empty.value":true}},"multivalued":false},{"name":"firstName","displayName":"${firstName}","required":false,"readOnly":false,"annotations":{},"validators":{"person-name-prohibited-characters":{"ignore.empty.value":true},"multivalued":{"max":"1"},"length":{"max":255,"ignore.empty.value":true}},"multivalued":false},{"name":"lastName","displayName":"${lastName}","required":false,"readOnly":false,"annotations":{},"validators":{"person-name-prohibited-characters":{"ignore.empty.value":true},"multivalued":{"max":"1"},"length":{"max":255,"ignore.empty.value":true}},"multivalued":false}],"groups":[{"name":"user-metadata","displayHeader":"User metadata","displayDescription":"Attributes, which refer to user metadata"}]},"enabled":true,"createdTimestamp":1779281227513,"totp":false,"disableableCredentialTypes":[],"requiredActions":[],"notBefore":0,"access":{"manage":true}}
+[20/5/2026, 6:17:08 pm] [INFO] Keycloak user "a7babb5d-a536-4670-b521-258bd9e49c1a" deleted successfully.
+[20/5/2026, 6:17:08 pm] [ERROR] Transaction failed, rolled back: (conn:1265, no: 1048, SQLState: 23000) Column 'created_by' cannot be null
+sql: 
+      INSERT INTO user 
+      (tenant_id, first_name, last_name,dateofbirth, email, phone_number, role, status,
+       password_hash, keycloak_id, username, user_photo, id_card_photo, 
+       aadhaar_number, address, district, city, state, country, pincod...
+[20/5/2026, 6:17:08 pm] [ERROR] ❌ Error: {"name":"SqlError","sqlMessage":"Column 'created_by' cannot be null","sql":"\n      INSERT INTO user \n      (tenant_id, first_name, last_name,dateofbirth, email, phone_number, role, status,\n       password_hash, keycloak_id, username, user_photo, id_card_photo, \n       aadhaar_number, address, district, city, state, country, pincod...","fatal":false,"errno":1048,"sqlState":"23000","code":"ER_BAD_NULL_ERROR"}
+[20/5/2026, 6:17:08 pm] [ERROR] 💥 Unknown Error: {"name":"SqlError","sqlMessage":"Column 'created_by' cannot be null","sql":"\n      INSERT INTO user \n      (tenant_id, first_name, last_name,dateofbirth, email, phone_number, role, status,\n       password_hash, keycloak_id, username, user_photo, id_card_photo, \n       aadhaar_number, address, district, city, state, country, pincod...","fatal":false,"errno":1048,"sqlState":"23000","code":"ER_BAD_NULL_ERROR"}
+[20/5/2026, 6:18:15 pm] [INFO] 🪵 Logger initialized {"env":"development","log_level":"silly","toggles":{"master":true,"console":true,"file":true,"requests":false},"log_directory":"D:\\BRIGHTON\\DREAMHOUSE\\DHBACKEND\\logs"}
+[20/5/2026, 6:18:15 pm] [INFO] 🚀 Server running on port 8006 {"env":"development","pid":23332}
+[20/5/2026, 6:18:15 pm] [INFO] ✅ Redis connected: redis://127.0.0.1:6379
+[20/5/2026, 6:18:15 pm] [INFO] ✅ Redis connected: {"host":"127.0.0.1","port":6379,"db":0}
+[20/5/2026, 6:18:15 pm] [INFO] ✅ Database connected {"threadId":1269,"config":{"host":"localhost","database":"dreamhouse","connectionLimit":"10"}}
+[20/5/2026, 6:18:15 pm] [INFO] 🚀 Redis ready
+[20/5/2026, 6:18:15 pm] [INFO] 🚀 Redis is ready to accept commands
+[20/5/2026, 6:18:15 pm] [INFO] ℹ️  [12:48:15.971] [SsoAuth:SSO_AUTH] 🔐 Redis health: healthy 
+[20/5/2026, 6:18:16 pm] [INFO] ✅ MaxMind DB loaded
+[20/5/2026, 6:18:49 pm] [INFO] 🪵 Logger initialized {"env":"development","log_level":"silly","toggles":{"master":true,"console":true,"file":true,"requests":false},"log_directory":"D:\\BRIGHTON\\DREAMHOUSE\\DHBACKEND\\logs"}
+[20/5/2026, 6:18:49 pm] [INFO] 🚀 Server running on port 8006 {"env":"development","pid":29232}
+[20/5/2026, 6:18:49 pm] [INFO] ✅ Redis connected: redis://127.0.0.1:6379
+[20/5/2026, 6:18:49 pm] [INFO] ✅ Redis connected: {"host":"127.0.0.1","port":6379,"db":0}
+[20/5/2026, 6:18:49 pm] [INFO] ✅ Database connected {"threadId":1271,"config":{"host":"localhost","database":"dreamhouse","connectionLimit":"10"}}
+[20/5/2026, 6:18:49 pm] [INFO] 🚀 Redis ready
+[20/5/2026, 6:18:49 pm] [INFO] ℹ️  [12:48:49.768] [SsoAuth:SSO_AUTH] 🔐 Redis health: healthy 
+[20/5/2026, 6:18:49 pm] [INFO] 🚀 Redis is ready to accept commands
+[20/5/2026, 6:18:49 pm] [INFO] ✅ MaxMind DB loaded
+[20/5/2026, 6:18:58 pm] [INFO] {}
+[20/5/2026, 6:18:58 pm] [INFO] cleanData: {"first_name":"ADMIN","last_name":"A","email":"admina@gmail.com","user_photo":"C:\\fakepath\\2.jpg","id_card_photo":"C:\\fakepath\\7.jpg","aadhaar_number":"745646765757","address":"ClinicA,Forest road","pincode":"625531","city":"Allinagaram","district":"Theni","state":"Tamil Nadu","country":"India","status":"A","failed_attempt_count":0,"account_locked":false} {"first_name":"ADMIN","last_name":"A","dateofbirth":"2005-11-04","email":"admina@gmail.com","phone_number":"8764654455","gender":"MALE","user_photo":"C:\\fakepath\\2.jpg","id_card_photo":"C:\\fakepath\\7.jpg","aadhaar_number":"745646765757","address":"ClinicA,Forest road","pincode":"625531","city":"Allinagaram","district":"Theni","state":"Tamil Nadu","country":"India","username":"Admina@123","password":"123456","role":"ADMIN","branch_ids":"6","status":"A","tenant_id":"1","created_by":"superuser1"}
+[20/5/2026, 6:18:58 pm] [INFO] addUser called with: {"details":{"first_name":"ADMIN","last_name":"A","dateofbirth":"2005-11-04","email":"admina@gmail.com","phone_number":"8764654455","gender":"MALE","user_photo":"C:\\fakepath\\2.jpg","id_card_photo":"C:\\fakepath\\7.jpg","aadhaar_number":"745646765757","address":"ClinicA,Forest road","pincode":"625531","city":"Allinagaram","district":"Theni","state":"Tamil Nadu","country":"India","username":"Admina@123","password":"123456","role":"ADMIN","branch_ids":"6","status":"A","tenant_id":"1","created_by":"superuser1"},"tenant_id":1,"branch_id":1}
+[20/5/2026, 6:18:58 pm] [INFO] Creating user with data: {"email":"admina@gmail.com","first_name":"ADMIN","last_name":"A","username":"Admina@123"}
+[20/5/2026, 6:18:58 pm] [INFO] User "Admina@123" created successfully.
+[20/5/2026, 6:18:58 pm] [INFO] [6]
+[20/5/2026, 6:18:58 pm] [INFO] ✅ Redis SET: user:27
+[20/5/2026, 6:18:58 pm] [INFO] ⚠️ No keys found to delete for pattern: user:list:*
+[20/5/2026, 6:18:58 pm] [INFO] ⚠️ No keys found to delete for pattern: user:details:*
+[20/5/2026, 6:18:59 pm] [INFO] 1 1 SUPERUSER
+[20/5/2026, 6:18:59 pm] [INFO] ⚠️ Redis key not found: user:details:1:1:SUPERUSER
+[20/5/2026, 6:18:59 pm] [INFO] 🔹 SUPERUSER query
+[20/5/2026, 6:18:59 pm] [INFO] ✅ Returned 1 active users
+[20/5/2026, 6:18:59 pm] [INFO] ✅ Redis SET: user:details:1:1:SUPERUSER
+[20/5/2026, 6:18:59 pm] [INFO] 1 1 SUPERUSER
+[20/5/2026, 6:18:59 pm] [INFO] ✅ Redis GET: user:details:1:1:SUPERUSER
+[20/5/2026, 6:19:08 pm] [INFO] 1 1 SUPERUSER
+[20/5/2026, 6:19:08 pm] [INFO] ✅ Redis GET: user:details:1:1:SUPERUSER
+[20/5/2026, 6:19:08 pm] [INFO] 1 1 SUPERUSER
+[20/5/2026, 6:19:08 pm] [INFO] ✅ Redis GET: user:details:1:1:SUPERUSER
+[20/5/2026, 6:25:22 pm] [INFO] 🪵 Logger initialized {"env":"development","log_level":"silly","toggles":{"master":true,"console":true,"file":true,"requests":false},"log_directory":"D:\\BRIGHTON\\DREAMHOUSE\\DHBACKEND\\logs"}
+[20/5/2026, 6:25:22 pm] [INFO] 🚀 Server running on port 8006 {"env":"development","pid":5444}
+[20/5/2026, 6:25:22 pm] [INFO] ✅ Redis connected: redis://127.0.0.1:6379
+[20/5/2026, 6:25:22 pm] [INFO] ✅ Redis connected: {"host":"127.0.0.1","port":6379,"db":0}
+[20/5/2026, 6:25:22 pm] [INFO] ✅ Database connected {"threadId":1273,"config":{"host":"localhost","database":"dreamhouse","connectionLimit":"10"}}
+[20/5/2026, 6:25:22 pm] [INFO] 🚀 Redis is ready to accept commands
+[20/5/2026, 6:25:22 pm] [INFO] 🚀 Redis ready
+[20/5/2026, 6:25:22 pm] [INFO] ℹ️  [12:55:22.591] [SsoAuth:SSO_AUTH] 🔐 Redis health: healthy 
+[20/5/2026, 6:25:22 pm] [INFO] ✅ MaxMind DB loaded
+[20/5/2026, 6:25:26 pm] [ERROR] ❌ [12:55:26.379] [SsoAuth:Keycloak] ❌ Login failed {"status":400,"error":{"error":"invalid_grant","error_description":"Invalid user credentials"}}
+[20/5/2026, 6:25:26 pm] [ERROR] ❌ [12:55:26.381] [SsoAuth:RESET_PASSWORD_ROUTE] 💥 Password reset failed {"error":"Invalid user credentials"}
+[20/5/2026, 6:25:26 pm] [ERROR] ❌ Error: {"statusCode":500,"isOperational":true,"errors":null}
+[20/5/2026, 6:27:27 pm] [INFO] 1 1 SUPERUSER
+[20/5/2026, 6:27:27 pm] [INFO] ⚠️ Redis key not found: user:details:1:1:SUPERUSER
+[20/5/2026, 6:27:27 pm] [INFO] 🔹 SUPERUSER query
+[20/5/2026, 6:27:27 pm] [INFO] ✅ Returned 1 active users
+[20/5/2026, 6:27:27 pm] [INFO] ✅ Redis SET: user:details:1:1:SUPERUSER
+[20/5/2026, 6:27:27 pm] [INFO] 1 1 SUPERUSER
+[20/5/2026, 6:27:27 pm] [INFO] ✅ Redis GET: user:details:1:1:SUPERUSER
+[20/5/2026, 6:32:40 pm] [INFO] ✅ Redis GET: dashboard:financials:1:1
+[20/5/2026, 6:32:40 pm] [INFO] ⚠️ Redis key not found: dashboard:summary:1:1
+[20/5/2026, 6:32:40 pm] [INFO] ⚠️ Redis key not found: labour:1:1:contractor:pay
+[20/5/2026, 6:32:40 pm] [INFO] ⚠️ Redis key not found: payment:material:fetch:1:1
+[20/5/2026, 6:32:40 pm] [INFO] ✅ Redis GET: dashboard:financials:1:1
+[20/5/2026, 6:32:40 pm] [INFO] ✅ Redis SET: payment:material:fetch:1:1
+[20/5/2026, 6:32:40 pm] [INFO] ✅ Redis SET: labour:1:1:contractor:pay
+[20/5/2026, 6:32:40 pm] [INFO] ✅ Redis GET: payment:material:fetch:1:1
+[20/5/2026, 6:32:40 pm] [INFO] ✅ Redis SET: dashboard:summary:1:1
+[20/5/2026, 6:32:40 pm] [INFO] ✅ Redis GET: labour:1:1:contractor:pay
+[20/5/2026, 6:32:40 pm] [INFO] ✅ Redis GET: dashboard:summary:1:1
+[20/5/2026, 6:32:41 pm] [INFO] ✅ Redis DELETE: session:539a718f-8baa-4557-8d52-59d4b47fc48f (1 key(s) deleted)
+[20/5/2026, 6:32:41 pm] [INFO] ✅ Redis DELETE: api_count:539a718f-8baa-4557-8d52-59d4b47fc48f (0 key(s) deleted)
+[20/5/2026, 6:32:41 pm] [INFO] ✅ Logout completed
+[20/5/2026, 6:34:27 pm] [INFO] 🪵 Logger initialized {"env":"development","log_level":"silly","toggles":{"master":true,"console":true,"file":true,"requests":false},"log_directory":"D:\\BRIGHTON\\DREAMHOUSE\\DHBACKEND\\logs"}
+[20/5/2026, 6:34:27 pm] [INFO] 🚀 Server running on port 8006 {"env":"development","pid":18704}
+[20/5/2026, 6:34:27 pm] [INFO] ✅ Redis connected: redis://127.0.0.1:6379
+[20/5/2026, 6:34:27 pm] [INFO] ✅ Redis connected: {"host":"127.0.0.1","port":6379,"db":0}
+[20/5/2026, 6:34:27 pm] [INFO] ✅ Database connected {"threadId":1276,"config":{"host":"localhost","database":"dreamhouse","connectionLimit":"10"}}
+[20/5/2026, 6:34:27 pm] [INFO] 🚀 Redis ready
+[20/5/2026, 6:34:27 pm] [INFO] ℹ️  [13:04:27.770] [SsoAuth:SSO_AUTH] 🔐 Redis health: healthy 
+[20/5/2026, 6:34:27 pm] [INFO] 🚀 Redis is ready to accept commands
+[20/5/2026, 6:34:27 pm] [INFO] ✅ MaxMind DB loaded

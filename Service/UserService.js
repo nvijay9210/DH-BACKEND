@@ -455,7 +455,7 @@ exports.addUser = async (details,tenant_id,branch_id,created_by, req) => {
     await conn.beginTransaction();
 
      keycloakdata = await createUser(req);
-    console.log('keycloakdata:',keycloakdata)
+    // console.log('keycloakdata:',keycloakdata)
     details.keycloak_id = keycloakdata.id;
 
     const safe = (val) => (val === undefined ? null : val);
@@ -489,7 +489,7 @@ exports.addUser = async (details,tenant_id,branch_id,created_by, req) => {
       safe(details.state),
       safe(details.country),
       safe(details.pincode),
-      safe(created_by)
+      safe(details.created_by)
     ];
 
     if (values.length !== 21) {

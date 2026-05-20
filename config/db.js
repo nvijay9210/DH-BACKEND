@@ -23,37 +23,26 @@ const log = (type, msg, data = null) => {
 // 🔹 POOL CONFIG - From .env with Fallbacks
 // ============================================================================
 const poolConfig = {
-  // Connection
   host: process.env.DB_HOST || "localhost",
   user: process.env.DB_USER || "root",
   password: process.env.DB_PASS || process.env.DB_PASSWORD || "",
-  database: process.env.DB_NAME || "goldloan",
+  database: process.env.DB_NAME || "dreamhouse",
   port: Number(process.env.DB_PORT) || 3306,
-
-  // Pool Behavior
   waitForConnections: process.env.DB_WAIT_FOR_CONNECTIONS !== "false",
   connectionLimit: Number(process.env.DB_CONNECTION_LIMIT) || 10,
   queueLimit: Number(process.env.DB_QUEUE_LIMIT) || 0,
   minimumIdle: Number(process.env.DB_MINIMUM_IDLE) || 2,
-
-  // Timeouts (in ms)
   connectTimeout: Number(process.env.DB_CONNECT_TIMEOUT) || 10000,
   acquireTimeout: Number(process.env.DB_ACQUIRE_TIMEOUT) || 20000,
   idleTimeout: Number(process.env.DB_IDLE_TIMEOUT) || 60000,
   idleConnectionCheckInterval: Number(process.env.DB_IDLE_CHECK_INTERVAL) || 30000,
-
-  // Validation
   validateConnections: process.env.DB_VALIDATE_CONNECTIONS !== "false",
   connectionValidationQuery: process.env.DB_VALIDATION_QUERY || "SELECT 1",
-
-  // Data Handling
   timezone: process.env.DB_TIMEZONE || "+00:00",
   supportBigNumbers: process.env.DB_SUPPORT_BIG_NUMBERS !== "false",
   bigNumberStrings: process.env.DB_BIG_NUMBER_STRINGS === "true",
   charset: process.env.DB_CHARSET || "utf8mb4",
   dateStrings: process.env.DB_DATE_STRINGS === "true",
-
-  // Security
   ssl: process.env.DB_SSL === "true" ? { rejectUnauthorized: false } : false,
 };
 
@@ -71,7 +60,7 @@ if (!global._mariaPool) {
 
   global._mariaPool = mariadb.createPool(poolConfig);
 
-  // ✅ Optional: Idle Connection Cleanup Timer
+  // ✅ Idle Connection Cleanup Timer
   if (process.env.DB_CLEANUP_TIMER_ENABLED !== "false") {
     const IDLE_TIMEOUT = poolConfig.idleTimeout;
     const MIN_IDLE = poolConfig.minimumIdle;
@@ -81,18 +70,13 @@ if (!global._mariaPool) {
       try {
         const poolInternal = global._mariaPool._pool;
         if (!poolInternal?.freeConnections) return;
-
         const freeConns = poolInternal.freeConnections;
         const now = Date.now();
         let cleaned = 0;
 
         for (let i = freeConns.length - 1; i >= 0; i--) {
           const conn = freeConns[i];
-          if (!conn?._lastUsed) {
-            conn._lastUsed = now;
-            continue;
-          }
-
+          if (!conn?._lastUsed) { conn._lastUsed = now; continue; }
           const idleTime = now - conn._lastUsed;
           if (idleTime > IDLE_TIMEOUT && freeConns.length > MIN_IDLE) {
             freeConns.splice(i, 1);
@@ -108,7 +92,6 @@ if (!global._mariaPool) {
       }
     }, CHECK_INTERVAL);
 
-    // Track usage for cleanup logic
     global._mariaPool.on("acquire", (conn) => { if (conn) conn._lastUsed = Date.now(); });
     global._mariaPool.on("release", (conn) => { if (conn) conn._lastUsed = Date.now(); });
   }
@@ -121,88 +104,68 @@ if (!global._mariaPool) {
 pool = global._mariaPool;
 
 // ============================================================================
-// 🔹 HELPER METHODS (For Monitoring/Health Checks)
+// 🔹 HELPER METHODS (Attach to pool instance)
 // ============================================================================
-
-// Get pool stats
-pool.getStats = () => {
+pool.getStats = function() {
   const p = pool._pool;
   if (!p) return null;
   const total = p._allConnections?.length || p.allConnections?.length || 0;
   const free = p._freeConnections?.length || p.freeConnections?.length || 0;
   const queued = p._connectionQueue?.length || p.connectionQueue?.length || 0;
-  return {
-    total,
-    free,
-    active: total - free,
-    queued,
-    config: {
-      connectionLimit: poolConfig.connectionLimit,
-      idleTimeout: poolConfig.idleTimeout,
-      minimumIdle: poolConfig.minimumIdle,
-    },
-  };
+  return { total, free, active: total - free, queued, config: { connectionLimit: poolConfig.connectionLimit, idleTimeout: poolConfig.idleTimeout, minimumIdle: poolConfig.minimumIdle } };
 };
 
-// Get pool health summary
-pool.getHealth = () => {
+pool.getHealth = function() {
   const stats = pool.getStats();
   if (!stats) return { status: "unknown" };
   const { active, queued, config } = stats;
   const utilization = config.connectionLimit > 0 ? Math.round((active / config.connectionLimit) * 100) : 0;
-  
   let status = "healthy";
   if (queued > 0 || utilization > 90) status = "critical";
   else if (utilization > 70) status = "warning";
-
-  return {
-    status,
-    ...stats,
-    utilization_percent: utilization,
-    timestamp: new Date().toISOString(),
-  };
+  return { status, ...stats, utilization_percent: utilization, timestamp: new Date().toISOString() };
 };
 
-// Stop cleanup timer on shutdown
-pool.cleanup = () => {
+pool.cleanup = function() {
   if (global._mariaPool._idleCleanupTimer) {
     clearInterval(global._mariaPool._idleCleanupTimer);
     log("init", "⏹️ Cleanup timer stopped");
   }
 };
 
-// Optional: Debug query wrapper for slow query detection
 if (DEBUG) {
-  pool.debugQuery = async (sql, params = null) => {
+  pool.debugQuery = async function(sql, params = null) {
     const start = Date.now();
     let conn;
     try {
       conn = await pool.getConnection();
       const result = await conn.query(sql, params);
       const duration = Date.now() - start;
-      if (duration > 1000) {
-        log("slow", `🐌 Slow query (${duration}ms)`, { sql: sql.substring(0, 100) });
-      }
+      if (duration > 1000) log("slow", `🐌 Slow query (${duration}ms)`, { sql: sql.substring(0, 100) });
       return result;
     } catch (err) {
       log("error", `Query failed: ${err.message}`, { sql: sql.substring(0, 100) });
       throw err;
-    } finally {
-      if (conn) conn.release();
-    }
+    } finally { if (conn) conn.release(); }
   };
 }
 
 // ============================================================================
-// 🔹 EXPORT
+// 🔹 ✅ FIXED EXPORTS - Named exports for { pool } destructuring
 // ============================================================================
-log("init", "✅ DbConfig loaded", {
-  DEBUG,
-  connectionLimit: poolConfig.connectionLimit,
+log("init", "✅ DbConfig loaded", { 
+  DEBUG, 
+  connectionLimit: poolConfig.connectionLimit, 
   idleTimeout: `${poolConfig.idleTimeout}ms`,
+  database: poolConfig.database 
 });
 
-module.exports = pool;
-module.exports = { pool };
-module.exports.DEBUG = DEBUG;
-module.exports.poolConfig = poolConfig; // Optional: expose config for debugging
+// ✅ Export as object with named properties
+module.exports = {
+  pool,                    // ✅ Main pool instance (for getConnection, query, etc.)
+  DEBUG,                   // ✅ Debug flag
+  poolConfig,              // ✅ Config object for debugging
+  getStats: () => pool.getStats(),    // ✅ Helper methods
+  getHealth: () => pool.getHealth(),
+  cleanup: () => pool.cleanup(),
+};

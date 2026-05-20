@@ -113,7 +113,7 @@ router.post("/check-username", async (req, res) => {
   const { username } = req.body;
 
   const realm = req.cookies.realm; // ⬅️ realm from cookie
-  const token = req.cookies.access_token; // ⬅️ token from cookie
+  const token = req.cookies.access_token; // ⬅️ token from cookie 
 
   if (!username) return res.status(400).json({ message: "username required" });
 

@@ -99,3 +99,23 @@
 [18/5/2026, 3:04:51 pm] [ERROR] ❌ Error: {"statusCode":500,"isOperational":true,"errors":{"name":"SqlError","sqlMessage":"Truncated incorrect datetime value: '2026-05-01T00:00:00.000Z'","sql":"\n        UPDATE labour_worked_details\n        SET Paid = Total, status = 'Paid', Balance = 0, Payment_Date = ?\n        WHERE tenant_id = ? AND branch_id = ? AND Project_id = ?\n        AND Contractor = ? AND status != 'Paid' AND Date BETWEEN ? AND ?\n       ...","fatal":false,"errno":1292,"sqlState":"22007","code":"ER_TRUNCATED_WRONG_VALUE"}}
 [18/5/2026, 3:41:27 pm] [ERROR] ❌ overAllReports Error: {"name":"SqlError","sqlMessage":"Unknown column 'site_location' in 'SELECT'","sql":"\n  SELECT \n    DATE,\n    contractor,\n    NULL AS site_location,\n    total,\n    paid,\n    balance,\n    STATUS\n  FROM labour_worked_details\n  WHERE tenant_id = ?\n    AND branch_id = ?\n    AND Project_id = ?\n    AND DATE BETWEEN ? AND ?\n\n  UNION ALL\n\n  SELECT...","fatal":false,"errno":1054,"sqlState":"42S22","code":"ER_BAD_FIELD_ERROR"}
 [18/5/2026, 3:41:27 pm] [ERROR] ❌ Error: {"statusCode":500,"isOperational":true,"errors":{"name":"SqlError","sqlMessage":"Unknown column 'site_location' in 'SELECT'","sql":"\n  SELECT \n    DATE,\n    contractor,\n    NULL AS site_location,\n    total,\n    paid,\n    balance,\n    STATUS\n  FROM labour_worked_details\n  WHERE tenant_id = ?\n    AND branch_id = ?\n    AND Project_id = ?\n    AND DATE BETWEEN ? AND ?\n\n  UNION ALL\n\n  SELECT...","fatal":false,"errno":1054,"sqlState":"42S22","code":"ER_BAD_FIELD_ERROR"}}
+[19/5/2026, 12:30:53 pm] [ERROR] ❌ Database connection failed {"error":"Cannot read properties of undefined (reading 'getConnection')"}
+[19/5/2026, 12:35:13 pm] [ERROR] ❌ Database connection failed {"error":"Cannot read properties of undefined (reading 'getConnection')"}
+[19/5/2026, 12:38:22 pm] [ERROR] ❌ Database connection failed {"error":"Cannot read properties of undefined (reading 'getConnection')"}
+[19/5/2026, 12:39:59 pm] [ERROR] ❌ [07:09:59.726] [SsoAuth:Route] Login failed getTenant is not a function
+[19/5/2026, 12:40:52 pm] [ERROR] ❌ [07:10:52.150] [SsoAuth:Route] Login failed getTenant is not a function
+[20/5/2026, 2:11:10 pm] [ERROR] Error creating user: {"error":"HTTP 403 Forbidden"}
+[20/5/2026, 2:11:10 pm] [ERROR] Transaction failed, rolled back: Cannot read properties of undefined (reading 'id')
+[20/5/2026, 2:11:10 pm] [ERROR] ❌ Error: {}
+[20/5/2026, 2:11:10 pm] [ERROR] 💥 Unknown Error: {}
+[20/5/2026, 6:17:08 pm] [ERROR] Transaction failed, rolled back: (conn:1265, no: 1048, SQLState: 23000) Column 'created_by' cannot be null
+sql: 
+      INSERT INTO user 
+      (tenant_id, first_name, last_name,dateofbirth, email, phone_number, role, status,
+       password_hash, keycloak_id, username, user_photo, id_card_photo, 
+       aadhaar_number, address, district, city, state, country, pincod...
+[20/5/2026, 6:17:08 pm] [ERROR] ❌ Error: {"name":"SqlError","sqlMessage":"Column 'created_by' cannot be null","sql":"\n      INSERT INTO user \n      (tenant_id, first_name, last_name,dateofbirth, email, phone_number, role, status,\n       password_hash, keycloak_id, username, user_photo, id_card_photo, \n       aadhaar_number, address, district, city, state, country, pincod...","fatal":false,"errno":1048,"sqlState":"23000","code":"ER_BAD_NULL_ERROR"}
+[20/5/2026, 6:17:08 pm] [ERROR] 💥 Unknown Error: {"name":"SqlError","sqlMessage":"Column 'created_by' cannot be null","sql":"\n      INSERT INTO user \n      (tenant_id, first_name, last_name,dateofbirth, email, phone_number, role, status,\n       password_hash, keycloak_id, username, user_photo, id_card_photo, \n       aadhaar_number, address, district, city, state, country, pincod...","fatal":false,"errno":1048,"sqlState":"23000","code":"ER_BAD_NULL_ERROR"}
+[20/5/2026, 6:25:26 pm] [ERROR] ❌ [12:55:26.379] [SsoAuth:Keycloak] ❌ Login failed {"status":400,"error":{"error":"invalid_grant","error_description":"Invalid user credentials"}}
+[20/5/2026, 6:25:26 pm] [ERROR] ❌ [12:55:26.381] [SsoAuth:RESET_PASSWORD_ROUTE] 💥 Password reset failed {"error":"Invalid user credentials"}
+[20/5/2026, 6:25:26 pm] [ERROR] ❌ Error: {"statusCode":500,"isOperational":true,"errors":null}
